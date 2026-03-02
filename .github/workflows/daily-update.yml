@@ -1,0 +1,80 @@
+name: Daily Data Update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Test
+        run: uv run pytest -q
+
+      - name: Type check
+        run: uv run mypy src
+
+      - name: Update event -> BVID mapping
+        id: event
+        continue-on-error: true
+        run: uv run python -m src.cli update-event-bvid
+
+      - name: Update manga data
+        id: manga
+        continue-on-error: true
+        env:
+          BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
+        run: uv run python -m src.cli update-manga
+
+      - name: Update music aliases
+        id: alias
+        continue-on-error: true
+        run: uv run python -m src.cli update-music-alias
+
+      - name: Fail if all tasks failed
+        if: ${{ steps.event.outcome == 'failure' && steps.manga.outcome == 'failure' && steps.alias.outcome == 'failure' }}
+        run: |
+          echo "All update tasks failed."
+          exit 1
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/event_bvid/events_bilibili.json data/event_bvid/unmatched_events.json
+          git add data/music_alias/music_aliases.json
+          git add mangas/mangas.json
+          find mangas -maxdepth 1 -type f -name '*.png' -print0 | xargs -0r git add --
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(data): daily incremental update [skip ci]"
+          git push
