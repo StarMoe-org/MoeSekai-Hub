@@ -6,6 +6,7 @@ import json
 import sys
 from collections.abc import Awaitable, Callable
 
+from src.tasks.b30_csv import update_b30_csv
 from src.tasks.event_bvid import update_event_bvid
 from src.tasks.manga import update_manga
 from src.tasks.music_alias import update_music_aliases
@@ -29,6 +30,7 @@ async def _run_all() -> int:
         ("update-event-bvid", update_event_bvid),
         ("update-manga", update_manga),
         ("update-music-alias", update_music_aliases),
+        ("update-b30-csv", update_b30_csv),
     ]
     failed: list[str] = []
     for name, task in pipeline:
@@ -54,6 +56,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("update-event-bvid")
     subparsers.add_parser("update-manga")
     subparsers.add_parser("update-music-alias")
+    subparsers.add_parser("update-b30-csv")
     subparsers.add_parser("run-all")
     return parser
 
@@ -68,6 +71,8 @@ def main() -> int:
         return asyncio.run(_run_single("update-manga", update_manga))
     if args.command == "update-music-alias":
         return asyncio.run(_run_single("update-music-alias", update_music_aliases))
+    if args.command == "update-b30-csv":
+        return asyncio.run(_run_single("update-b30-csv", update_b30_csv))
     if args.command == "run-all":
         return asyncio.run(_run_all())
 
@@ -77,4 +82,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
