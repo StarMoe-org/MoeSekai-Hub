@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-07T01:44:28Z",
+  "generated_at": "2026-03-08T01:51:37Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -8243,7 +8243,6 @@
         "爱莉3",
         "七星",
         "遮阳伞汽水",
-        "波子汽水",
         "苹果酒",
         "汽水",
         "⛱",
@@ -16414,7 +16413,9 @@
       "title": "ブラッドドール",
       "aliases": [
         "blood doll",
-        "血玩偶"
+        "血玩偶",
+        "血娃娃",
+        "白葱"
       ]
     },
     {
@@ -16618,7 +16619,8 @@
       "music_id": 689,
       "title": "最愛人生ランナー",
       "aliases": [
-        "最爱人生runner"
+        "最爱人生runner",
+        "最爱人生"
       ]
     },
     {
@@ -16708,7 +16710,9 @@
     {
       "music_id": 702,
       "title": "ラムネ",
-      "aliases": []
+      "aliases": [
+        "波子汽水"
+      ]
     },
     {
       "music_id": 704,
@@ -16758,7 +16762,10 @@
     {
       "music_id": 718,
       "title": "幕を下ろそう、パレードへ",
-      "aliases": []
+      "aliases": [
+        "落下帷幕吧，向着游行",
+        "闭幕"
+      ]
     },
     {
       "music_id": 719,
