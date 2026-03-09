@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-08T01:51:37Z",
+  "generated_at": "2026-03-09T01:53:20Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16513,7 +16513,8 @@
       "music_id": 670,
       "title": "い〜やい〜やい〜や",
       "aliases": [
-        "咿呀咿呀咿呀"
+        "咿呀咿呀咿呀",
+        "咿呀"
       ]
     },
     {
@@ -16679,7 +16680,8 @@
         "dreamkiss",
         "梦吻",
         "没有hold的紫谱",
-        "吐息"
+        "吐息",
+        "梦之吻"
       ]
     },
     {
@@ -16725,7 +16727,12 @@
     {
       "music_id": 707,
       "title": "さいたま2000",
-      "aliases": []
+      "aliases": [
+        "琦玉",
+        "琦玉2000",
+        "埼玉2000",
+        "埼玉"
+      ]
     },
     {
       "music_id": 708,
