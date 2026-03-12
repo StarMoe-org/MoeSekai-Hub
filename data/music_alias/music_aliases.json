@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-11T01:46:31Z",
+  "generated_at": "2026-03-12T01:50:56Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16579,7 +16579,9 @@
     {
       "music_id": 683,
       "title": "カラフルファンデーション",
-      "aliases": []
+      "aliases": [
+        "airi7"
+      ]
     },
     {
       "music_id": 684,
