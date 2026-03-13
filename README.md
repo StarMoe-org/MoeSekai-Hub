@@ -20,6 +20,8 @@
 - `data/pjskb30/cn_chart.csv`：B30 国服原表
 - `data/pjskb30/merged_chart.csv`：B30 合并表（不附加 `server` 字段）
 - `mangas/mangas.json`、`mangas/*.png`：四格漫画历史数据与图片
+- `guides/guides-index.json`：攻略文章索引
+- `guides/**/*.md`：攻略 Markdown 文件（按分类子目录组织）
 
 ## 本地使用
 
