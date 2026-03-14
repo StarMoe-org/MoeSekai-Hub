@@ -2366,11 +2366,15 @@
   },
   "150": {
     "id": 150,
-    "title": "之后进行产假休息。",
-    "manga": "https://i0.hdslb.com/bfs/new_dyn/65ae653849a439925631e2aeec1c6bb213148307.png",
-    "date": 1674738300,
-    "url": "https://www.bilibili.com/opus/755484318065754211",
-    "contributors": {}
+    "title": "在梦中的舞台",
+    "manga": "https://i0.hdslb.com/bfs/album/ff5127781555f3a403c2f1515539c36b3414f6eb.jpg",
+    "date": 1675089950,
+    "url": "https://www.bilibili.com/opus/756994643327975432",
+    "contributors": {
+      "翻译": "Mizora@未穹_Mizora39",
+      "校对": "麻雀@jj麻雀",
+      "嵌字": "长星@nagahoshi"
+    }
   },
   "149": {
     "id": 149,
@@ -3196,13 +3200,12 @@
   },
   "70": {
     "id": 70,
-    "title": "各自的MIKU",
-    "manga": "https://i0.hdslb.com/bfs/album/e7987080d120fb1560b4539929de7b2117dc4d17.jpg",
-    "date": 1633788051,
-    "url": "https://www.bilibili.com/opus/579604337661475896",
+    "title": "后记[初音未来_期待] https://twitter.com/U_s0/status/1446681985242468354  本人云：因为想着25Miku没能一起画出来于是就连带着把小奏也一起画了。但这样一来就又变成唯独司君没能一起画出来的局面于是连带着画了第二遍WS Miku…（未穹译）   第七十话链接https://t.bilibili.com/579604337661475896?tab=2",
+    "manga": "https://i0.hdslb.com/bfs/album/621bdf414916efea905404f6829a75cc069124fd.png",
+    "date": 1633789912,
+    "url": "https://www.bilibili.com/opus/579612330587291306",
     "contributors": {
-      "翻译": "Mizora@未穹_Mizora   校对",
-      "嵌字": "伦琴@伦琴猫"
+      "https": "//twitter.com/U_s0/status/1446681985242468354  本人云"
     }
   },
   "69": {
@@ -3869,11 +3872,14 @@
   },
   "6": {
     "id": 6,
-    "title": "抱不过来的感谢之情",
-    "manga": "https://i0.hdslb.com/bfs/album/820cc3e3e9fc9f05efa578ef9841689e034398a4.jpg",
-    "date": 1601894385,
-    "url": "https://www.bilibili.com/opus/442622085239112696",
-    "contributors": {}
+    "title": "怒发冲冠之歌",
+    "manga": "https://i0.hdslb.com/bfs/album/72ee70f317a88450d1cda1ac3b24fc67cf91d14e.jpg",
+    "date": 1632926255,
+    "url": "https://www.bilibili.com/opus/575902952019572251",
+    "contributors": {
+      "翻译": "匿名 校对",
+      "嵌字": "L"
+    }
   },
   "5": {
     "id": 5,
@@ -3899,13 +3905,14 @@
   },
   "3": {
     "id": 3,
-    "title": "老师们",
-    "manga": "https://i0.hdslb.com/bfs/album/96b65a401cad2bb3a475bb318b7c34552e1e3494.jpg",
-    "date": 1630998821,
-    "url": "https://www.bilibili.com/opus/567624686023532235",
+    "title": "喜欢的口味篇",
+    "manga": "https://i0.hdslb.com/bfs/new_dyn/f5086c7b330a4ff9a45e58c9ce02ff5513148307.png",
+    "date": 1694741405,
+    "url": "https://www.bilibili.com/opus/841396999692484608",
     "contributors": {
-      "翻译": "匿名 校对",
-      "嵌字": "伦琴@伦琴猫"
+      "翻译": "玛丽@音乐剧玛丽",
+      "校对": "乌冬味破壳@pokemonch",
+      "嵌字": "鼓鼓@大智若鱼鱼鱼鱼鱼"
     }
   },
   "2": {

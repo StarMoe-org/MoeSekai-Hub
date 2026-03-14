@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-13T01:49:54Z",
+  "generated_at": "2026-03-14T01:47:40Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16718,7 +16718,8 @@
       "music_id": 700,
       "title": "魔法少女とチョコレゐト",
       "aliases": [
-        "魔法少女巧克力"
+        "魔法少女巧克力",
+        "魔法少女"
       ]
     },
     {
@@ -16727,6 +16728,11 @@
       "aliases": [
         "波子汽水"
       ]
+    },
+    {
+      "music_id": 703,
+      "title": "バイオレンストリガー",
+      "aliases": []
     },
     {
       "music_id": 704,
@@ -16800,6 +16806,11 @@
       "aliases": []
     },
     {
+      "music_id": 723,
+      "title": "ラヴィ",
+      "aliases": []
+    },
+    {
       "music_id": 724,
       "title": "ハオ",
       "aliases": [
@@ -16808,6 +16819,11 @@
         "good",
         "发财"
       ]
+    },
+    {
+      "music_id": 726,
+      "title": "アルカリレットウセイ",
+      "aliases": []
     }
   ]
 }
