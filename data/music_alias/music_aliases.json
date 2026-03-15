@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-14T01:47:40Z",
+  "generated_at": "2026-03-15T02:03:33Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16548,7 +16548,8 @@
       "music_id": 675,
       "title": "プロセカULTIMATE楽曲メドレー",
       "aliases": [
-        "ultimate"
+        "ultimate",
+        "六坨"
       ]
     },
     {
@@ -16699,7 +16700,8 @@
         "搬屎的",
         "网垃",
         "ijj",
-        "网瘾大"
+        "网瘾大",
+        "互联网"
       ]
     },
     {
@@ -16732,7 +16734,11 @@
     {
       "music_id": 703,
       "title": "バイオレンストリガー",
-      "aliases": []
+      "aliases": [
+        "暴力扳机",
+        "Violence Trigger",
+        "扳机"
+      ]
     },
     {
       "music_id": 704,
