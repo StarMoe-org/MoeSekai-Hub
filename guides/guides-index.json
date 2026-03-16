@@ -1,6 +1,12 @@
 {
   "version": "1.0",
   "generated_at": "2025-03-12T00:00:00Z",
+  "servers": {
+    "cn": "国服",
+    "jp": "日服",
+    "en": "国际服",
+    "tw": "繁中服"
+  },
   "categories": {
     "gacha": "卡池攻略",
     "event": "活动攻略",
@@ -14,10 +20,19 @@
       "title": "卡池更新攻略：回归 & 新手 Step-up 卡池",
       "category": "gacha",
       "tags": ["卡池", "step-up", "攻略"],
+      "server": "cn",
       "date": "2025-03-12",
       "path": "gacha/2025-03-12_stepup-gacha-update.md",
       "source": "https://d.xiumius.cn/board/v5/7EpxN/686889048",
       "xiumi_show_id": 686889048,
+      "images": [
+        "gacha/images/return-stepup-banner.png",
+        "gacha/images/newbie-stepup-banner.png",
+        "gacha/images/gacha-3k-10pick1.png",
+        "gacha/images/gacha-9k-select4.png",
+        "gacha/images/gacha-newbie-stepup.png",
+        "gacha/images/gacha-comparison.png"
+      ],
       "author": {
         "group": "Moe攻略组",
         "supervisor": "惜花"
