@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-15T02:03:33Z",
+  "generated_at": "2026-03-16T02:05:17Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -5690,7 +5690,6 @@
         "ぬゆり2",
         "低下",
         "低功率",
-        "拉薇",
         "how is this append harder than regulus",
         "幽默白谱13",
         "米米",
@@ -16814,7 +16813,10 @@
     {
       "music_id": 723,
       "title": "ラヴィ",
-      "aliases": []
+      "aliases": [
+        "拉薇",
+        "lavie"
+      ]
     },
     {
       "music_id": 724,
