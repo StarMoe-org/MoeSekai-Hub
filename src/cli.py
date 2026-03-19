@@ -10,6 +10,7 @@ from src.tasks.b30_csv import update_b30_csv
 from src.tasks.event_bvid import update_event_bvid
 from src.tasks.manga import update_manga
 from src.tasks.music_alias import update_music_aliases
+from src.tasks.story_asset import update_story_asset
 
 TaskFunc = Callable[[], Awaitable[dict[str, int]]]
 
@@ -22,6 +23,17 @@ def _print_stats(task_name: str, stats: dict[str, int]) -> None:
 async def _run_single(task_name: str, task: TaskFunc) -> int:
     stats = await task()
     _print_stats(task_name, stats)
+    return 0
+
+
+async def _run_story_asset(lang_src_pairs: list[tuple[str, str]], *, full: bool = False) -> int:
+    all_stats: dict[str, int] = {}
+    for lang, src in lang_src_pairs:
+        tag = f"{lang}/{src}"
+        stats = await update_story_asset(lang=lang, src=src, full=full)
+        for k, v in stats.items():
+            all_stats[f"{tag}_{k}"] = v
+    _print_stats("update-story-asset", all_stats)
     return 0
 
 
@@ -57,6 +69,23 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("update-manga")
     subparsers.add_parser("update-music-alias")
     subparsers.add_parser("update-b30-csv")
+
+    story_parser = subparsers.add_parser("update-story-asset")
+    story_parser.add_argument(
+        "--lang-src",
+        nargs=2,
+        action="append",
+        metavar=("LANG", "SRC"),
+        dest="lang_src_pairs",
+        help="Language and source pair, e.g. --lang-src jp sekai.best --lang-src cn haruki",
+    )
+    story_parser.add_argument(
+        "--full",
+        action="store_true",
+        default=False,
+        help="Force full re-download, ignoring existing files",
+    )
+
     subparsers.add_parser("run-all")
     return parser
 
@@ -73,6 +102,9 @@ def main() -> int:
         return asyncio.run(_run_single("update-music-alias", update_music_aliases))
     if args.command == "update-b30-csv":
         return asyncio.run(_run_single("update-b30-csv", update_b30_csv))
+    if args.command == "update-story-asset":
+        pairs = args.lang_src_pairs or [("jp", "sekai.best"), ("cn", "sekai.best"), ("jp", "haruki"), ("cn", "haruki")]
+        return asyncio.run(_run_story_asset(pairs, full=args.full))
     if args.command == "run-all":
         return asyncio.run(_run_all())
 
