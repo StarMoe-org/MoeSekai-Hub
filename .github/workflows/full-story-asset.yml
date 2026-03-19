@@ -1,0 +1,65 @@
+name: Full Story Asset Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      lang_src:
+        description: "Lang/source pairs (space-separated: jp:sekai.best cn:sekai.best jp:haruki cn:haruki)"
+        required: false
+        default: "jp:sekai.best cn:sekai.best jp:haruki cn:haruki"
+
+permissions:
+  contents: write
+
+jobs:
+  full-update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Build lang-src args
+        id: args
+        run: |
+          ARGS=""
+          for pair in ${{ inputs.lang_src }}; do
+            LANG="${pair%%:*}"
+            SRC="${pair##*:}"
+            ARGS="$ARGS --lang-src $LANG $SRC"
+          done
+          echo "flags=$ARGS" >> "$GITHUB_OUTPUT"
+
+      - name: Full update story assets
+        run: uv run python -m src.cli update-story-asset --full ${{ steps.args.outputs.flags }}
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -d story_assets ]; then
+            git add story_assets/
+          fi
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(data): full story asset update [skip ci]"
+          git push
