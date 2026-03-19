@@ -1,23 +1,26 @@
-name: Story Asset Incremental Update
+name: Story Asset Full Update
 
 on:
-  schedule:
-    - cron: "0 7 * * *"
   workflow_dispatch:
+    inputs:
+      lang_src:
+        description: "Lang/source pairs (space-separated: jp:sekai.best cn:sekai.best jp:haruki cn:haruki)"
+        required: false
+        default: "jp:sekai.best cn:sekai.best jp:haruki cn:haruki"
 
 permissions:
   contents: write
 
 jobs:
-  update:
+  full-update:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 360
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -30,8 +33,19 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
-      - name: Incremental update story assets
-        run: uv run python -m src.cli update-story-asset --lang-src jp sekai.best --lang-src cn sekai.best --lang-src jp haruki --lang-src cn haruki
+      - name: Build lang-src args
+        id: args
+        run: |
+          ARGS=""
+          for pair in ${{ inputs.lang_src }}; do
+            LANG="${pair%%:*}"
+            SRC="${pair##*:}"
+            ARGS="$ARGS --lang-src $LANG $SRC"
+          done
+          echo "flags=$ARGS" >> "$GITHUB_OUTPUT"
+
+      - name: Full update story assets
+        run: uv run python -m src.cli update-story-asset --full ${{ steps.args.outputs.flags }}
 
       - name: Commit and push if changed
         run: |
@@ -47,5 +61,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(data): incremental story asset update [skip ci]"
+          git commit -m "chore(data): full story asset update [skip ci]"
           git push
