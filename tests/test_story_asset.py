@@ -1,4 +1,5 @@
 import math
+from pathlib import Path
 
 from src.tasks.story_asset import (
     _asset_url,
@@ -11,7 +12,6 @@ from src.tasks.story_asset import (
     _load_urls,
     _url_to_local_path,
 )
-from pathlib import Path
 
 
 def _tpl(asset_type: str) -> str:

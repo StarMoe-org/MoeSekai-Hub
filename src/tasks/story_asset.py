@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-import brotli
 import json
 import math
 from pathlib import Path
 from typing import Any
 
+import brotli
 import httpx
 
 from src.common.http import create_async_client, get_json
