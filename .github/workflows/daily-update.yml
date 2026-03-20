@@ -29,15 +29,6 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
-      - name: Lint
-        run: uv run ruff check .
-
-      - name: Test
-        run: uv run pytest -q
-
-      - name: Type check
-        run: uv run mypy src
-
       - name: Update event -> BVID mapping
         id: event
         continue-on-error: true

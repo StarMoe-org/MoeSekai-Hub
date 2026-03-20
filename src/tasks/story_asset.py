@@ -22,7 +22,8 @@ _DOWNLOAD_CONCURRENCY = 20
 
 def _load_urls() -> dict[str, Any]:
     with _URLS_JSON.open("r", encoding="utf-8") as f:
-        return json.load(f)
+        result: dict[str, Any] = json.load(f)
+        return result
 
 
 def _master_url(urls: dict[str, Any], src: str, lang: str, file: str) -> str:
@@ -75,6 +76,8 @@ def _collect_card_urls(card_episodes: list[dict[str, Any]], cards_lookup: dict[i
     urls: list[str] = []
     for ce in card_episodes:
         card_id = ce.get("cardId")
+        if not isinstance(card_id, int):
+            continue
         card = cards_lookup.get(card_id)
         if card is None:
             continue
