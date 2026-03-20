@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-19T01:57:15Z",
+  "generated_at": "2026-03-20T14:34:39Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16834,6 +16834,11 @@
       "aliases": [
         "劣等生"
       ]
+    },
+    {
+      "music_id": 732,
+      "title": "天藍のアイスヘヴン",
+      "aliases": []
     }
   ]
 }
