@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-23T01:58:23Z",
+  "generated_at": "2026-03-24T01:50:22Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16838,7 +16838,9 @@
     {
       "music_id": 732,
       "title": "天藍のアイスヘヴン",
-      "aliases": []
+      "aliases": [
+        "天蓝的冰天堂"
+      ]
     }
   ]
 }
