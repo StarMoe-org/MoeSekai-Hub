@@ -1,12 +1,14 @@
 name: Story Asset Full Update
 
 on:
+  schedule:
+    - cron: "0 7 * * 1"
   workflow_dispatch:
     inputs:
-      lang_src:
-        description: "Lang/source pairs (space-separated: jp:sekai.best cn:sekai.best jp:haruki cn:haruki)"
+      lang_srcs:
+        description: "Per-language source lists, semicolon-separated. e.g. jp haruki sekai.best;cn haruki sekai.best"
         required: false
-        default: "jp:sekai.best cn:sekai.best jp:haruki cn:haruki"
+        default: "jp haruki sekai.best;cn haruki sekai.best"
 
 permissions:
   contents: write
@@ -33,19 +35,15 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
-      - name: Build lang-src args
-        id: args
-        run: |
-          ARGS=""
-          for pair in ${{ inputs.lang_src }}; do
-            LANG="${pair%%:*}"
-            SRC="${pair##*:}"
-            ARGS="$ARGS --lang-src $LANG $SRC"
-          done
-          echo "flags=$ARGS" >> "$GITHUB_OUTPUT"
-
       - name: Full update story assets
-        run: uv run python -m src.cli update-story-asset --full ${{ steps.args.outputs.flags }}
+        run: |
+          LANG_SRCS="${{ inputs.lang_srcs || 'jp haruki sekai.best;cn haruki sekai.best' }}"
+          ARGS=""
+          IFS=';' read -ra ENTRIES <<< "$LANG_SRCS"
+          for entry in "${ENTRIES[@]}"; do
+            ARGS="$ARGS --lang-srcs $entry"
+          done
+          uv run python -m src.cli update-story-asset --full $ARGS
 
       - name: Commit and push if changed
         run: |

@@ -16,7 +16,9 @@
       "cn": "cn-",
       "jp": "jp-",
       "tw": "tc-"
-    }
+    },
+    "path_extractor": "(sekai-\\w+-assets)/(.*)",
+    "path_extractor_group": 2
   },
   "haruki": {
     "master": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-{lang}master/refs/heads/main/master/{file}.json",
@@ -35,6 +37,8 @@
       "cn": "cn-",
       "jp": "jp-",
       "tw": "tw-"
-    }
+    },
+    "path_extractor": "(ondemand|startapp)/(.*)",
+    "path_extractor_group": 2
   }
 }

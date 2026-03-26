@@ -26,11 +26,11 @@ async def _run_single(task_name: str, task: TaskFunc) -> int:
     return 0
 
 
-async def _run_story_asset(lang_src_pairs: list[tuple[str, str]], *, full: bool = False) -> int:
+async def _run_story_asset(lang_srcs_pairs: list[tuple[str, list[str]]], *, full: bool = False) -> int:
     all_stats: dict[str, int] = {}
-    for lang, src in lang_src_pairs:
-        tag = f"{lang}/{src}"
-        stats = await update_story_asset(lang=lang, src=src, full=full)
+    for lang, srcs in lang_srcs_pairs:
+        tag = f"{lang}/{'|'.join(srcs)}"
+        stats = await update_story_asset(lang=lang, srcs=srcs, full=full)
         for k, v in stats.items():
             all_stats[f"{tag}_{k}"] = v
     _print_stats("update-story-asset", all_stats)
@@ -72,12 +72,16 @@ def build_parser() -> argparse.ArgumentParser:
 
     story_parser = subparsers.add_parser("update-story-asset")
     story_parser.add_argument(
-        "--lang-src",
-        nargs=2,
+        "--lang-srcs",
+        nargs="+",
         action="append",
         metavar=("LANG", "SRC"),
-        dest="lang_src_pairs",
-        help="Language and source pair, e.g. --lang-src jp sekai.best --lang-src cn haruki",
+        dest="lang_srcs_list",
+        help=(
+            "Language followed by one or more sources in priority order. "
+            "Can be repeated for multiple languages. "
+            "e.g. --lang-srcs jp haruki sekai.best --lang-srcs cn sekai.best"
+        ),
     )
     story_parser.add_argument(
         "--full",
@@ -103,7 +107,10 @@ def main() -> int:
     if args.command == "update-b30-csv":
         return asyncio.run(_run_single("update-b30-csv", update_b30_csv))
     if args.command == "update-story-asset":
-        pairs = args.lang_src_pairs or [("jp", "sekai.best"), ("cn", "sekai.best"), ("jp", "haruki"), ("cn", "haruki")]
+        if args.lang_srcs_list:
+            pairs = [(entry[0], entry[1:]) for entry in args.lang_srcs_list if len(entry) >= 2]
+        else:
+            pairs = [("jp", ["haruki", "sekai.best"]), ("cn", ["haruki", "sekai.best"])]
         return asyncio.run(_run_story_asset(pairs, full=args.full))
     if args.command == "run-all":
         return asyncio.run(_run_all())

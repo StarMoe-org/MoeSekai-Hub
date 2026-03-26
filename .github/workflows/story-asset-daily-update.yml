@@ -2,7 +2,7 @@ name: Story Asset Incremental Update
 
 on:
   schedule:
-    - cron: "0 7 * * *"
+    - cron: "0 7 * * 2-7"
   workflow_dispatch:
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
         run: uv sync --locked
 
       - name: Incremental update story assets
-        run: uv run python -m src.cli update-story-asset --lang-src jp sekai.best --lang-src cn sekai.best --lang-src jp haruki --lang-src cn haruki
+        run: uv run python -m src.cli update-story-asset --lang-srcs jp haruki sekai.best --lang-srcs cn haruki sekai.best
 
       - name: Commit and push if changed
         run: |

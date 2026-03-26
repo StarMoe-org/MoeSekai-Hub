@@ -9,20 +9,72 @@ from src.tasks.story_asset import (
     _collect_special_urls,
     _collect_talk_urls,
     _collect_unit_urls,
+    _extract_asset_path,
     _load_urls,
     _url_to_local_path,
 )
 
 
-def _tpl(asset_type: str) -> str:
+def _tpl(asset_type: str, src: str = "sekai.best") -> str:
     urls = _load_urls()
-    return _asset_url(urls, "sekai.best", "jp", asset_type)
+    return _asset_url(urls, src, "jp", asset_type)
 
 
-def test_url_to_local_path() -> None:
+def _sekai_best_extractor() -> tuple[str, int]:
+    urls = _load_urls()
+    return urls["sekai.best"]["path_extractor"], urls["sekai.best"]["path_extractor_group"]
+
+
+def _haruki_extractor() -> tuple[str, int]:
+    urls = _load_urls()
+    return urls["haruki"]["path_extractor"], urls["haruki"]["path_extractor_group"]
+
+
+def test_extract_asset_path_sekai_best() -> None:
     url = "https://storage.sekai.best/sekai-jp-assets/event_story/ev_01/scenario/ev_01_01.asset"
-    result = _url_to_local_path(url, Path("story_assets"))
-    assert result == Path("story_assets/storage.sekai.best/sekai-jp-assets/event_story/ev_01/scenario/ev_01_01.asset.br")
+    pattern, group = _sekai_best_extractor()
+    result = _extract_asset_path(url, pattern, group)
+    assert result == "event_story/ev_01/scenario/ev_01_01.asset"
+
+
+def test_extract_asset_path_haruki_ondemand() -> None:
+    url = "https://sekai-assets-bdf29c81.seiunx.net/jp-assets/ondemand/event_story/ev_01/scenario/ev_01_01.asset"
+    pattern, group = _haruki_extractor()
+    result = _extract_asset_path(url, pattern, group)
+    assert result == "event_story/ev_01/scenario/ev_01_01.asset"
+
+
+def test_extract_asset_path_haruki_startapp() -> None:
+    url = "https://sekai-assets-bdf29c81.seiunx.net/jp-assets/startapp/scenario/unitstory/unit_01/unit_01_01.asset"
+    pattern, group = _haruki_extractor()
+    result = _extract_asset_path(url, pattern, group)
+    assert result == "scenario/unitstory/unit_01/unit_01_01.asset"
+
+
+def test_url_to_local_path_unified() -> None:
+    """Both sources should map the same logical asset to the same local path."""
+    sekai_url = "https://storage.sekai.best/sekai-jp-assets/event_story/ev_01/scenario/ev_01_01.asset"
+    haruki_url = "https://sekai-assets-bdf29c81.seiunx.net/jp-assets/ondemand/event_story/ev_01/scenario/ev_01_01.asset"
+    out = Path("story_assets")
+
+    sp, sg = _sekai_best_extractor()
+    hp, hg = _haruki_extractor()
+
+    sekai_path = _url_to_local_path(sekai_url, out, sp, sg, "jp")
+    haruki_path = _url_to_local_path(haruki_url, out, hp, hg, "jp")
+    assert sekai_path == haruki_path
+    assert sekai_path == Path("story_assets/pjsk-jp-assets/event_story/ev_01/scenario/ev_01_01.asset.br")
+
+
+def test_url_to_local_path_lang_separation() -> None:
+    """jp and cn assets should land in different subdirectories."""
+    url = "https://storage.sekai.best/sekai-jp-assets/event_story/ev_01/scenario/ev_01_01.asset"
+    sp, sg = _sekai_best_extractor()
+    jp_path = _url_to_local_path(url, Path("story_assets"), sp, sg, "jp")
+    cn_path = _url_to_local_path(url, Path("story_assets"), sp, sg, "cn")
+    assert jp_path != cn_path
+    assert "pjsk-jp-assets" in jp_path.parts
+    assert "pjsk-cn-assets" in cn_path.parts
 
 
 def test_collect_event_urls() -> None:
@@ -111,5 +163,7 @@ def test_load_urls_has_both_sources() -> None:
     assert "sekai.best" in urls
     assert "haruki" in urls
     for src in ("sekai.best", "haruki"):
-        for key in ("master", "event_asset", "unit_asset", "card_asset", "talk_asset", "self_asset", "special_asset"):
+        for key in ("master", "event_asset", "unit_asset", "card_asset", "talk_asset", "self_asset", "special_asset",
+                    "path_extractor", "path_extractor_group"):
             assert key in urls[src], f"missing {key} in {src}"
+
