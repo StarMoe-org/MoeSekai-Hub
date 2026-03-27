@@ -23,7 +23,7 @@
 - `data/pjskb30/cn_chart.csv`：B30 国服原表
 - `data/pjskb30/merged_chart.csv`：B30 合并表（不附加 `server` 字段）
 - `mangas/mangas.json`、`mangas/*.png`：四格漫画历史数据与图片
-- `story_assets/`：剧情原始 asset，按原始 URL 路径镜像存储，`.asset.br` 为 brotli 压缩的 JSON
+- `story_assets/`：剧情原始 asset，按原始 URL 有效路径镜像存储，`.asset.br` 为 brotli 压缩的 JSON
 - `guides/guides-index.json`：攻略文章索引
 - `guides/**/*.md`：攻略 Markdown 文件（按分类子目录组织）
 
@@ -75,12 +75,12 @@ uv run python -m src.cli update-story-asset --full
 
 ### `story_assets/`
 
-- 路径结构镜像原始 URL，去掉协议头后直接作为相对路径，附加 `.br` 后缀
+- 路径结构镜像原始 URL，去掉通用前缀后直接作为相对路径，附加 `.br` 后缀
 - 例：`https://storage.sekai.best/sekai-jp-assets/event_story/ev_01/scenario/ev_01_01.asset`
-  → `story_assets/storage.sekai.best/sekai-jp-assets/event_story/ev_01/scenario/ev_01_01.asset.br`
+  → `story_assets/pjsk-jp-assets/event_story/ev_01/scenario/ev_01_01.asset.br`
 - 文件内容为原始 JSON compact 序列化后经 brotli（quality=11）压缩的二进制数据
 - 覆盖六类剧情：活动剧情（event）、组合剧情（unit）、卡面剧情（card）、区域对话（talk）、自我介绍（self）、特殊剧情（special）
-- 支持四个数据源：`jp/sekai.best`、`cn/sekai.best`、`jp/haruki`、`cn/haruki`
+- 支持两个语言、两个数据源：`jp haruki sekai.best`、`cn haruki sekai.best`
 
 读取示例：
 
