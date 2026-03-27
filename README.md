@@ -92,8 +92,8 @@ data = json.loads(brotli.decompress(open("story_assets/...", "rb").read()))
 ## GitHub Actions
 
 - `daily-update.yml`：每天 UTC `00:00`（北京时间 `08:00`），运行原有四类数据更新任务
-- `story-asset-daily-update.yml`：每天 UTC `07:00`（北京时间 `15:00`），四个源增量爬取剧情 asset
-- `story-asset-full-update.yml`：手动触发，四个源全量覆盖更新，支持自定义 lang/src 组合
+- `story-asset-daily-update.yml`：每周二到周日 UTC `07:00`（北京时间 `15:00`），增量爬取剧情 asset
+- `story-asset-full-update.yml`：每周一 UTC `07:00`（北京时间 `15:00`），全量覆盖更新
 
 每个任务均 `continue-on-error: true`；仅当全部任务失败时 workflow 失败。
 
