@@ -31,7 +31,24 @@ jobs:
         run: uv sync --locked
 
       - name: Incremental update story assets
+        id: asset
+        continue-on-error: true
         run: uv run python -m src.cli update-story-asset --lang-srcs jp haruki sekai.best --lang-srcs cn haruki sekai.best
+
+      - name: Generate latest story summary
+        id: summary
+        continue-on-error: true
+        env:
+          STORY_SUMMARY_API_KEY: ${{ secrets.STORY_SUMMARY_API_KEY }}
+          STORY_SUMMARY_BASE_URL: ${{ vars.STORY_SUMMARY_BASE_URL }}
+          STORY_SUMMARY_MODEL: ${{ vars.STORY_SUMMARY_MODEL }}
+        run: uv run python -m src.cli update-story-summary
+
+      - name: Fail if all tasks failed
+        if: ${{ steps.asset.outcome == 'failure' && steps.summary.outcome == 'failure' }}
+        run: |
+          echo "All story update tasks failed."
+          exit 1
 
       - name: Commit and push if changed
         run: |
@@ -41,11 +58,14 @@ jobs:
           if [ -d story_assets ]; then
             git add story_assets/
           fi
+          if [ -d story ]; then
+            git add story/
+          fi
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          git commit -m "chore(data): incremental story asset update [skip ci]"
+          git commit -m "chore(data): incremental story asset and summary update [skip ci]"
           git push

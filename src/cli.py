@@ -5,12 +5,14 @@ import asyncio
 import json
 import sys
 from collections.abc import Awaitable, Callable
+from pathlib import Path
 
 from src.tasks.b30_csv import update_b30_csv
 from src.tasks.event_bvid import update_event_bvid
 from src.tasks.manga import update_manga
 from src.tasks.music_alias import update_music_aliases
 from src.tasks.story_asset import update_story_asset
+from src.tasks.story_summary import update_story_summary
 
 TaskFunc = Callable[[], Awaitable[dict[str, int]]]
 
@@ -34,6 +36,13 @@ async def _run_story_asset(lang_srcs_pairs: list[tuple[str, list[str]]], *, full
         for k, v in stats.items():
             all_stats[f"{tag}_{k}"] = v
     _print_stats("update-story-asset", all_stats)
+    return 0
+
+
+async def _run_story_summary(*, event_id: int | None = None, output_dir: str | None = None, force: bool = False) -> int:
+    resolved_output_dir = Path(output_dir) if output_dir is not None else Path("story/detail")
+    stats = await update_story_summary(event_id=event_id, output_dir=resolved_output_dir, force=force)
+    _print_stats("update-story-summary", stats)
     return 0
 
 
@@ -90,6 +99,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="Force full re-download, ignoring existing files",
     )
 
+    summary_parser = subparsers.add_parser("update-story-summary")
+    summary_parser.add_argument("--event-id", type=int, default=None, help="Generate summary for a specific event ID")
+    summary_parser.add_argument(
+        "--output-dir",
+        type=str,
+        default=None,
+        help="Directory for generated story summary JSON files (default: story/detail)",
+    )
+    summary_parser.add_argument(
+        "--force",
+        action="store_true",
+        default=False,
+        help="Regenerate summary even if the output file already exists",
+    )
+
     subparsers.add_parser("run-all")
     return parser
 
@@ -112,6 +136,8 @@ def main() -> int:
         else:
             pairs = [("jp", ["haruki", "sekai.best"]), ("cn", ["haruki", "sekai.best"])]
         return asyncio.run(_run_story_asset(pairs, full=args.full))
+    if args.command == "update-story-summary":
+        return asyncio.run(_run_story_summary(event_id=args.event_id, output_dir=args.output_dir, force=args.force))
     if args.command == "run-all":
         return asyncio.run(_run_all())
 
