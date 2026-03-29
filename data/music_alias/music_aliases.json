@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-28T01:54:08Z",
+  "generated_at": "2026-03-29T02:05:38Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -4288,7 +4288,6 @@
       "music_id": 154,
       "title": "地球最後の告白を",
       "aliases": [
-        "告白",
         "地球最后的告白",
         "地球最後の告白を",
         "地球告白",
@@ -16444,7 +16443,9 @@
     {
       "music_id": 662,
       "title": "告白",
-      "aliases": []
+      "aliases": [
+        "mzk7"
+      ]
     },
     {
       "music_id": 663,
