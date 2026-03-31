@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-30T02:08:02Z",
+  "generated_at": "2026-03-31T02:03:52Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16780,6 +16780,21 @@
       ]
     },
     {
+      "music_id": 711,
+      "title": "ワンダーラスト",
+      "aliases": []
+    },
+    {
+      "music_id": 713,
+      "title": "Nyanyanyanyanyanyanya!",
+      "aliases": []
+    },
+    {
+      "music_id": 714,
+      "title": "フロイライン＝オジョウサマ",
+      "aliases": []
+    },
+    {
       "music_id": 716,
       "title": "透過する温度",
       "aliases": [
@@ -16818,6 +16833,16 @@
       "aliases": []
     },
     {
+      "music_id": 721,
+      "title": "あいしていたのに",
+      "aliases": []
+    },
+    {
+      "music_id": 722,
+      "title": "ダイダイダイダイダイキライ",
+      "aliases": []
+    },
+    {
       "music_id": 723,
       "title": "ラヴィ",
       "aliases": [
@@ -16843,10 +16868,23 @@
       ]
     },
     {
+      "music_id": 727,
+      "title": "T氏の話を信じるな",
+      "aliases": []
+    },
+    {
       "music_id": 732,
       "title": "天藍のアイスヘヴン",
       "aliases": [
         "天蓝的冰天堂"
+      ]
+    },
+    {
+      "music_id": 735,
+      "title": "傀儡のうつつ",
+      "aliases": [
+        "rui6",
+        "类6"
       ]
     }
   ]
