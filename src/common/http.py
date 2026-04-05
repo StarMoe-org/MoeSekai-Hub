@@ -43,11 +43,13 @@ def create_async_client(
     headers: dict[str, str] | None = None,
     timeout_seconds: float = 20.0,
     follow_redirects: bool = True,
+    trust_env: bool = False,
 ) -> httpx.AsyncClient:
     return httpx.AsyncClient(
         headers=build_headers(headers),
         timeout=httpx.Timeout(timeout_seconds),
         follow_redirects=follow_redirects,
+        trust_env=trust_env,
     )
 
 
