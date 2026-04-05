@@ -51,8 +51,13 @@ jobs:
         continue-on-error: true
         run: uv run python -m src.cli update-b30-csv
 
+      - name: Update music meta
+        id: music_meta
+        continue-on-error: true
+        run: uv run python -m src.cli update-music-meta
+
       - name: Fail if all tasks failed
-        if: ${{ steps.event.outcome == 'failure' && steps.manga.outcome == 'failure' && steps.alias.outcome == 'failure' && steps.b30.outcome == 'failure' }}
+        if: ${{ steps.event.outcome == 'failure' && steps.manga.outcome == 'failure' && steps.alias.outcome == 'failure' && steps.b30.outcome == 'failure' && steps.music_meta.outcome == 'failure' }}
         run: |
           echo "All update tasks failed."
           exit 1
@@ -66,6 +71,9 @@ jobs:
           git add data/music_alias/music_aliases.json
           if [ -d data/pjskb30 ]; then
             find data/pjskb30 -maxdepth 1 -type f -name '*.csv' -print0 | xargs -0r git add --
+          fi
+          if [ -d data/music_meta ]; then
+            find data/music_meta -maxdepth 1 -type f -name '*.json' -print0 | xargs -0r git add --
           fi
           git add mangas/mangas.json
           find mangas -maxdepth 1 -type f -name '*.png' -print0 | xargs -0r git add --
