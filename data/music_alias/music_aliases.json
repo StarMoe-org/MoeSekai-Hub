@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-11T01:58:43Z",
+  "generated_at": "2026-04-12T02:11:59Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -1542,7 +1542,6 @@
         "一個人的捉迷藏",
         "孑然神",
         "孑然妒火",
-        "捉迷藏",
         "西库西库",
         "t西库西库",
         "孜然火烧",
@@ -11503,7 +11502,6 @@
         "이터널 아리아",
         "이터널아리아",
         "吉他女孩",
-        "aria",
         "重生",
         "背着吉他?",
         "背着吉他",
@@ -13338,6 +13336,7 @@
         "has",
         "hide and seek",
         "捉迷藏2",
+        "捉迷藏",
         "电子天使2",
         "19SF2"
       ]
@@ -15400,7 +15399,8 @@
         "最终之所",
         "9993",
         "最果て",
-        "最果"
+        "最果",
+        "最终之物"
       ]
     },
     {
@@ -16734,7 +16734,9 @@
       "music_id": 702,
       "title": "ラムネ",
       "aliases": [
-        "波子汽水"
+        "波子汽水",
+        "弹珠汽水",
+        "ramune"
       ]
     },
     {
@@ -16832,7 +16834,9 @@
     {
       "music_id": 720,
       "title": "アリア",
-      "aliases": []
+      "aliases": [
+        "aria"
+      ]
     },
     {
       "music_id": 721,
