@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-13T02:16:03Z",
+  "generated_at": "2026-04-14T02:10:57Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16584,6 +16584,11 @@
       ]
     },
     {
+      "music_id": 679,
+      "title": "CRASH THE PARTY",
+      "aliases": []
+    },
+    {
       "music_id": 683,
       "title": "カラフルファンデーション",
       "aliases": [
@@ -16782,6 +16787,13 @@
       ]
     },
     {
+      "music_id": 710,
+      "title": "ヘッジホッグ",
+      "aliases": [
+        "刺猬"
+      ]
+    },
+    {
       "music_id": 711,
       "title": "ワンダーラスト",
       "aliases": [
@@ -16791,7 +16803,9 @@
     {
       "music_id": 713,
       "title": "Nyanyanyanyanyanyanya!",
-      "aliases": []
+      "aliases": [
+        "彩虹猫"
+      ]
     },
     {
       "music_id": 714,
