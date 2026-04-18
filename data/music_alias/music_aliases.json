@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-17T02:12:12Z",
+  "generated_at": "2026-04-18T02:03:04Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16589,6 +16589,11 @@
       "aliases": []
     },
     {
+      "music_id": 680,
+      "title": "Who?",
+      "aliases": []
+    },
+    {
       "music_id": 683,
       "title": "カラフルファンデーション",
       "aliases": [
@@ -16906,6 +16911,11 @@
         "rui6",
         "类6"
       ]
+    },
+    {
+      "music_id": 737,
+      "title": "導火愛",
+      "aliases": []
     }
   ]
 }
