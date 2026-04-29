@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-28T02:37:37Z",
+  "generated_at": "2026-04-29T02:37:28Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16915,6 +16915,11 @@
     {
       "music_id": 737,
       "title": "導火愛",
+      "aliases": []
+    },
+    {
+      "music_id": 739,
+      "title": "世界の歩き方",
       "aliases": []
     }
   ]
