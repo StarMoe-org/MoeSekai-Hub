@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-07T02:34:31Z",
+  "generated_at": "2026-05-08T02:41:17Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16442,6 +16442,11 @@
       ]
     },
     {
+      "music_id": 661,
+      "title": "卑怯戦隊うろたんだー",
+      "aliases": []
+    },
+    {
       "music_id": 662,
       "title": "告白",
       "aliases": [
@@ -16930,6 +16935,11 @@
     {
       "music_id": 739,
       "title": "世界の歩き方",
+      "aliases": []
+    },
+    {
+      "music_id": 740,
+      "title": "羽歌",
       "aliases": []
     }
   ]
