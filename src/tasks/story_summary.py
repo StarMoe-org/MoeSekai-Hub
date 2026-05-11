@@ -198,7 +198,7 @@ def _build_episode_image_url(assetbundle_name: str, chapter_no: int) -> str:
 
 
 async def _fetch_master_json(file_name: str) -> Any:
-    url = f"{_MASTER_BASE_URL}/{file_name}"
+    url = f"{_MASTER_BASE_URL}/{file_name}.json"
     async with _create_async_client(timeout_seconds=30.0) as client:
         try:
             return await get_json(client, url)
