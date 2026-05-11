@@ -2,16 +2,8 @@ import asyncio
 import json
 from pathlib import Path
 
-import brotli
-
 from src.tasks import story_summary as module
 from src.tasks.story_summary import ChapterContent, EpisodeMeta, EventMeta, LLMConfig, StorySnippet
-
-
-def _write_story_asset(path: Path, payload: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    content = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    path.write_bytes(brotli.compress(content, quality=11))
 
 
 async def _fake_character2d_map() -> dict[int, int]:
@@ -116,51 +108,7 @@ def test_fetch_event_meta_prefers_latest_event_story(monkeypatch) -> None:
 
 
 def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> None:
-    asset_dir = tmp_path / "story_assets"
     output_dir = tmp_path / "story" / "detail"
-
-    _write_story_asset(
-        asset_dir / "pjsk-jp-assets" / "event_story" / "event_test_2026" / "scenario" / "event_002_01.asset.br",
-        {
-            "Snippets": [
-                {"Index": 0, "Action": 1, "ReferenceIndex": 0},
-                {"Index": 1, "Action": 6, "ReferenceIndex": 0},
-                {"Index": 2, "Action": 6, "ReferenceIndex": 1},
-            ],
-            "SpecialEffectData": [{"EffectType": 8, "StringVal": "Live House", "StringValSub": "", "Duration": 0.0, "IntVal": 0}],
-            "TalkData": [
-                {
-                    "WindowDisplayName": "一歌",
-                    "Body": "行こう、みんな。",
-                    "TalkCharacters": [{"Character2dId": 101}],
-                },
-                {
-                    "WindowDisplayName": "咲希",
-                    "Body": "うん、楽しもう！",
-                    "TalkCharacters": [{"Character2dId": 102}],
-                },
-            ],
-            "AppearCharacters": [{"Character2dId": 101}, {"Character2dId": 102}],
-        },
-    )
-    _write_story_asset(
-        asset_dir / "pjsk-jp-assets" / "event_story" / "event_test_2026" / "scenario" / "event_002_02.asset.br",
-        {
-            "Snippets": [
-                {"Index": 0, "Action": 6, "ReferenceIndex": 0},
-                {"Index": 1, "Action": 1, "ReferenceIndex": 0},
-            ],
-            "SpecialEffectData": [{"EffectType": 8, "StringVal": "屋上", "StringValSub": "", "Duration": 0.0, "IntVal": 0}],
-            "TalkData": [
-                {
-                    "WindowDisplayName": "咲希",
-                    "Body": "また次も頑張ろうね。",
-                    "TalkCharacters": [{"Character2dId": 102}],
-                }
-            ],
-            "AppearCharacters": [{"Character2dId": 102}, {"Character2dId": 101}],
-        },
-    )
 
     async def fake_fetch_master_json(file_name: str, *, lang: str = "jp", srcs=None):  # noqa: ANN001
         if file_name == "events":
@@ -184,22 +132,63 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
             ]
         raise AssertionError(file_name)
 
+    async def fake_load_story_payload(client, url: str):  # noqa: ANN001
+        if "event_002_01.json" in url:
+            return {
+                "Snippets": [
+                    {"Index": 0, "Action": 1, "ReferenceIndex": 0},
+                    {"Index": 1, "Action": 6, "ReferenceIndex": 0},
+                    {"Index": 2, "Action": 6, "ReferenceIndex": 1},
+                ],
+                "SpecialEffectData": [{"EffectType": 8, "StringVal": "Live House", "StringValSub": "", "Duration": 0.0, "IntVal": 0}],
+                "TalkData": [
+                    {
+                        "WindowDisplayName": "一歌",
+                        "Body": "行こう、みんな。",
+                        "TalkCharacters": [{"Character2dId": 101}],
+                    },
+                    {
+                        "WindowDisplayName": "咲希",
+                        "Body": "うん、楽しもう!",
+                        "TalkCharacters": [{"Character2dId": 102}],
+                    },
+                ],
+                "AppearCharacters": [{"Character2dId": 101}, {"Character2dId": 102}],
+            }
+        if "event_002_02.json" in url:
+            return {
+                "Snippets": [
+                    {"Index": 0, "Action": 6, "ReferenceIndex": 0},
+                    {"Index": 1, "Action": 1, "ReferenceIndex": 0},
+                ],
+                "SpecialEffectData": [{"EffectType": 8, "StringVal": "屋上", "StringValSub": "", "Duration": 0.0, "IntVal": 0}],
+                "TalkData": [
+                    {
+                        "WindowDisplayName": "咲希",
+                        "Body": "また次も頑張ろうね。",
+                        "TalkCharacters": [{"Character2dId": 102}],
+                    }
+                ],
+                "AppearCharacters": [{"Character2dId": 102}, {"Character2dId": 101}],
+            }
+        raise AssertionError(url)
+
     responses = iter(
         [
             {
                 "title": "测试活动",
                 "outline": "伙伴们为了演出而齐心协力。",
                 "ep_1_title": "开始",
-                "ep_1_summary": "大家为了演出开始行动，并在对话中确认了彼此的心意。",
+                "ep_1_summary": "大家为了演出开始行动,并在对话中确认了彼此的心意。",
             },
             {
                 "ep_2_title": "结束",
-                "ep_2_summary": "演出准备告一段落，成员们在收尾时约定今后也要继续努力。",
+                "ep_2_summary": "演出准备告一段落,成员们在收尾时约定今后也要继续努力。",
             },
             {
                 "summary": (
-                    "为了迎接演出，伙伴们在准备过程中互相鼓励，逐步确认了共同前进的决心。"
-                    "随着最后的收尾完成，众人也约定今后继续并肩努力，让这次经历成为迈向下一步的起点。"
+                    "为了迎接演出,伙伴们在准备过程中互相鼓励,逐步确认了共同前进的决心。"
+                    "随着最后的收尾完成,众人也约定今后继续并肩努力,让这次经历成为迈向下一步的起点。"
                 )
             },
         ]
@@ -209,13 +198,13 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
         return next(responses)
 
     monkeypatch.setattr(module, "_fetch_master_json", fake_fetch_master_json)
+    monkeypatch.setattr(module, "_load_story_payload", fake_load_story_payload)
     monkeypatch.setattr(module, "_chat_completion_json", fake_chat_completion_json)
     monkeypatch.setattr(module, "_load_translation_name_map", lambda: {})
 
     stats = asyncio.run(
         module.update_story_summary(
             event_id=2,
-            asset_dir=asset_dir,
             output_dir=output_dir,
             llm_config=LLMConfig(api_key="test-key"),
         )
@@ -294,13 +283,8 @@ def test_update_story_summary_regenerates_when_existing_output_is_outdated(tmp_p
         ),
     )
 
-    monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=(event_meta,)))
-    monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
-    monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
-    monkeypatch.setattr(
-        module,
-        "_build_chapter_contents",
-        lambda *args, **kwargs: (
+    async def fake_build_chapter_contents(event_meta, character2d_map):  # noqa: ANN001
+        return (
             ChapterContent(
                 meta=EpisodeMeta(1, "はじまり", "event_002_01", "https://example.com/1.webp"),
                 prompt_text="---\n奏:\n开始吧\n",
@@ -315,8 +299,12 @@ def test_update_story_summary_regenerates_when_existing_output_is_outdated(tmp_p
                 snippet_count=1,
                 implemented=True,
             ),
-        ),
-    )
+        )
+
+    monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=(event_meta,)))
+    monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
+    monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
+    monkeypatch.setattr(module, "_build_chapter_contents", fake_build_chapter_contents)
     monkeypatch.setattr(module, "_load_translation_name_map", lambda: {})
     monkeypatch.setattr(module, "_generate_summary_rows", _fake_generate_summary_rows)
 
@@ -382,13 +370,8 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
             ],
         )
 
-    monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=event_metas))
-    monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
-    monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
-    monkeypatch.setattr(
-        module,
-        "_build_chapter_contents",
-        lambda event_meta, *args, **kwargs: (
+    async def fake_build_chapter_contents(event_meta, character2d_map):  # noqa: ANN001
+        return (
             ChapterContent(
                 meta=event_meta.episodes[0],
                 prompt_text="---\n奏:\n开始吧\n",
@@ -396,8 +379,12 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
                 snippet_count=1,
                 implemented=True,
             ),
-        ),
-    )
+        )
+
+    monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=event_metas))
+    monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
+    monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
+    monkeypatch.setattr(module, "_build_chapter_contents", fake_build_chapter_contents)
     monkeypatch.setattr(module, "_load_translation_name_map", lambda: {})
     monkeypatch.setattr(module, "_generate_summary_rows", fake_generate_summary_rows)
 

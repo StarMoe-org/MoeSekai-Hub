@@ -8,18 +8,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import brotli
 import httpx
 
 from src.common.http import build_headers, get_json, request_with_retry
 from src.common.io import read_json, write_json
 
-_URLS_JSON = Path(__file__).with_name("story_asset_urls.json")
 _TRANSLATION_EVENTS_JSON = Path("translation/events.json")
-_DEFAULT_MASTER_SRCS = ["sekai.best", "haruki"]
-_DEFAULT_ASSET_DIR = Path("story_assets")
 _DEFAULT_OUTPUT_DIR = Path("story/detail")
 _JSON_BLOCK_PATTERN = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
+_MASTER_BASE_URL = "https://sekaimaster.exmeaning.com/master"
 
 _TALK_ACTION = 6
 _SPECIAL_EFFECT_ACTION = 1
@@ -187,22 +184,6 @@ class ChapterContent:
     implemented: bool
 
 
-def _load_urls() -> dict[str, Any]:
-    with _URLS_JSON.open("r", encoding="utf-8") as f:
-        result: dict[str, Any] = json.load(f)
-        return result
-
-
-def _master_url(urls: dict[str, Any], src: str, lang: str, file_name: str) -> str:
-    base: str = urls[src]["master"]
-    lang_prefix: str = urls[src]["master_lang"][lang]
-    return base.format(lang=lang_prefix, file=file_name)
-
-
-def _build_episode_image_url(assetbundle_name: str, chapter_no: int) -> str:
-    return _EPISODE_IMAGE_URL_TEMPLATE.format(assetbundle_name=assetbundle_name, chapter_no=chapter_no)
-
-
 def _create_async_client(*, headers: dict[str, str] | None = None, timeout_seconds: float = 30.0) -> httpx.AsyncClient:
     return httpx.AsyncClient(
         headers=build_headers(headers),
@@ -212,17 +193,17 @@ def _create_async_client(*, headers: dict[str, str] | None = None, timeout_secon
     )
 
 
-async def _fetch_master_json(file_name: str, *, lang: str = "jp", srcs: list[str] | None = None) -> Any:
-    if srcs is None:
-        srcs = _DEFAULT_MASTER_SRCS
-    urls = _load_urls()
+def _build_episode_image_url(assetbundle_name: str, chapter_no: int) -> str:
+    return _EPISODE_IMAGE_URL_TEMPLATE.format(assetbundle_name=assetbundle_name, chapter_no=chapter_no)
+
+
+async def _fetch_master_json(file_name: str) -> Any:
+    url = f"{_MASTER_BASE_URL}/{file_name}"
     async with _create_async_client(timeout_seconds=30.0) as client:
-        for src in srcs:
-            try:
-                return await get_json(client, _master_url(urls, src, lang, file_name))
-            except Exception as exc:
-                print(f"[story-summary] master {file_name} failed on {src}: {type(exc).__name__}: {exc}")
-    raise StorySummaryError(f"All master sources failed for {file_name}")
+        try:
+            return await get_json(client, url)
+        except Exception as exc:
+            raise StorySummaryError(f"Failed to fetch master {file_name}: {type(exc).__name__}: {exc}")
 
 
 def _build_event_meta(event_row: dict[str, Any], event_story_row: dict[str, Any]) -> EventMeta:
@@ -339,16 +320,18 @@ async def _fetch_character2d_map() -> dict[int, int]:
     return result
 
 
-def _scenario_asset_path(asset_dir: Path, event_meta: EventMeta, episode: EpisodeMeta) -> Path:
-    return asset_dir / "pjsk-jp-assets" / "event_story" / event_meta.assetbundle_name / "scenario" / f"{episode.scenario_id}.asset.br"
+def _scenario_asset_url(event_meta: EventMeta, episode: EpisodeMeta) -> str:
+    return f"https://storage.exmeaning.com/sekai-jp-assets/event_story/{event_meta.assetbundle_name}/scenario/{episode.scenario_id}.json"
 
 
-def _load_story_payload(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        raise StorySummaryError(f"Story asset does not exist: {path}")
-    data = json.loads(brotli.decompress(path.read_bytes()))
+async def _load_story_payload(client: httpx.AsyncClient, url: str) -> dict[str, Any]:
+    try:
+        response = await request_with_retry(client, "GET", url)
+        data = response.json()
+    except Exception as exc:
+        raise StorySummaryError(f"Failed to fetch story asset from {url}: {type(exc).__name__}: {exc}")
     if not isinstance(data, dict):
-        raise StorySummaryError(f"Unexpected story asset payload shape: {path}")
+        raise StorySummaryError(f"Unexpected story asset payload shape: {url}")
     return data
 
 
@@ -451,20 +434,22 @@ def _build_prompt_story_text(chapter_no: int, chapter_title: str, snippets: tupl
     return "\n".join(parts) + "\n"
 
 
-def _build_chapter_contents(event_meta: EventMeta, asset_dir: Path, character2d_map: dict[int, int]) -> tuple[ChapterContent, ...]:
+async def _build_chapter_contents(event_meta: EventMeta, character2d_map: dict[int, int]) -> tuple[ChapterContent, ...]:
     results: list[ChapterContent] = []
-    for episode in event_meta.episodes:
-        payload = _load_story_payload(_scenario_asset_path(asset_dir, event_meta, episode))
-        story_snippets = _extract_story_snippets(payload)
-        results.append(
-            ChapterContent(
-                meta=episode,
-                prompt_text=_build_prompt_story_text(episode.chapter_no, episode.title_jp, story_snippets) if story_snippets else "",
-                character_ids=_extract_character_ids(payload, character2d_map),
-                snippet_count=len(story_snippets),
-                implemented=bool(story_snippets),
+    async with _create_async_client(timeout_seconds=30.0) as client:
+        for episode in event_meta.episodes:
+            url = _scenario_asset_url(event_meta, episode)
+            payload = await _load_story_payload(client, url)
+            story_snippets = _extract_story_snippets(payload)
+            results.append(
+                ChapterContent(
+                    meta=episode,
+                    prompt_text=_build_prompt_story_text(episode.chapter_no, episode.title_jp, story_snippets) if story_snippets else "",
+                    character_ids=_extract_character_ids(payload, character2d_map),
+                    snippet_count=len(story_snippets),
+                    implemented=bool(story_snippets),
+                )
             )
-        )
     return tuple(results)
 
 
@@ -766,13 +751,12 @@ def _should_skip_event(output_path: Path, episode_count: int, *, force: bool) ->
 async def _generate_event_summary_file(
     event_meta: EventMeta,
     *,
-    asset_dir: Path,
     output_dir: Path,
     character2d_map: dict[int, int],
     llm_config: LLMConfig,
     translation_name_map: dict[str, str],
 ) -> tuple[int, int]:
-    chapter_contents = _build_chapter_contents(event_meta, asset_dir, character2d_map)
+    chapter_contents = await _build_chapter_contents(event_meta, character2d_map)
     title_cn, outline_cn, summary_cn, chapter_rows = await _generate_summary_rows(
         llm_config,
         event_meta,
@@ -798,7 +782,6 @@ async def _generate_event_summary_file(
 async def update_story_summary(
     *,
     event_id: int | None = None,
-    asset_dir: Path = _DEFAULT_ASSET_DIR,
     output_dir: Path = _DEFAULT_OUTPUT_DIR,
     force: bool = False,
     llm_config: LLMConfig | None = None,
@@ -822,7 +805,6 @@ async def update_story_summary(
         translation_name_map = _load_translation_name_map()
         chapters_total, dialogue_lines_total = await _generate_event_summary_file(
             event_meta,
-            asset_dir=asset_dir,
             output_dir=output_dir,
             character2d_map=character2d_map,
             llm_config=resolved_llm_config,
@@ -868,7 +850,6 @@ async def update_story_summary(
         try:
             event_chapters_total, event_dialogue_lines_total = await _generate_event_summary_file(
                 event_meta,
-                asset_dir=asset_dir,
                 output_dir=output_dir,
                 character2d_map=character2d_map,
                 llm_config=resolved_llm_config,
