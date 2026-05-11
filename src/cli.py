@@ -12,7 +12,6 @@ from src.tasks.event_bvid import update_event_bvid
 from src.tasks.manga import update_manga
 from src.tasks.music_alias import update_music_aliases
 from src.tasks.music_meta import update_music_meta
-from src.tasks.story_asset import update_story_asset
 from src.tasks.story_summary import update_story_summary
 
 TaskFunc = Callable[[], Awaitable[dict[str, int]]]
@@ -30,6 +29,9 @@ async def _run_single(task_name: str, task: TaskFunc) -> int:
 
 
 async def _run_story_asset(lang_srcs_pairs: list[tuple[str, list[str]]], *, full: bool = False) -> int:
+    # Lazy import to avoid brotli dependency when not using this command
+    from src.tasks.story_asset import update_story_asset
+
     all_stats: dict[str, int] = {}
     for lang, srcs in lang_srcs_pairs:
         tag = f"{lang}/{'|'.join(srcs)}"
