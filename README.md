@@ -136,7 +136,7 @@ data = json.loads(brotli.decompress(open("story_assets/...", "rb").read()))
 ## GitHub Actions
 
 - `daily-update.yml`：每天 UTC `00:00`（北京时间 `08:00`），运行四类基础数据更新任务
-- `story-summary-daily-update.yml`：每天 UTC `03:00`（北京时间 `11:00`），生成最新活动剧情摘要
+- `story-summary-update.yml`：每天 UTC `03:00`（北京时间 `11:00`），生成最新活动剧情摘要
 
 ## 主要数据来源
 
