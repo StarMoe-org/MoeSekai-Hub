@@ -27,6 +27,8 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
+        env:
+          UV_INDEX_URL: https://pypi.org/simple
         run: uv sync --locked
 
       - name: Update event -> BVID mapping
