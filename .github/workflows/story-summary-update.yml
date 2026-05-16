@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         env:
           UV_INDEX_URL: https://pypi.org/simple
-        run: uv sync --locked
+        run: uv sync
 
       - name: Generate latest story summary
         env:
