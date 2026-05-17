@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T05:50:41Z",
+  "generated_at": "2026-05-17T02:45:58Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
@@ -16604,6 +16604,11 @@
       "aliases": []
     },
     {
+      "music_id": 682,
+      "title": "あなたしか見えないの",
+      "aliases": []
+    },
+    {
       "music_id": 683,
       "title": "カラフルファンデーション",
       "aliases": [
@@ -16816,6 +16821,11 @@
       ]
     },
     {
+      "music_id": 712,
+      "title": "比較症候群",
+      "aliases": []
+    },
+    {
       "music_id": 713,
       "title": "Nyanyanyanyanyanyanya!",
       "aliases": [
@@ -16930,6 +16940,11 @@
     {
       "music_id": 737,
       "title": "導火愛",
+      "aliases": []
+    },
+    {
+      "music_id": 738,
+      "title": "ストラタでまちあわせ",
       "aliases": []
     },
     {
