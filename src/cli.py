@@ -8,6 +8,7 @@ from collections.abc import Awaitable, Callable
 from pathlib import Path
 
 from src.tasks.b30_csv import update_b30_csv
+from src.tasks.bgm_duration import update_bgm_duration
 from src.tasks.event_bvid import update_event_bvid
 from src.tasks.manga import update_manga
 from src.tasks.music_alias import update_music_aliases
@@ -56,6 +57,7 @@ async def _run_all() -> int:
         ("update-music-alias", update_music_aliases),
         ("update-b30-csv", update_b30_csv),
         ("update-music-meta", update_music_meta),
+        ("update-bgm-duration", update_bgm_duration),
     ]
     failed: list[str] = []
     for name, task in pipeline:
@@ -75,7 +77,9 @@ async def _run_all() -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Unified daily updater for event BVID, manga, music aliases, B30 CSV, and music meta.")
+    parser = argparse.ArgumentParser(
+        description="Unified daily updater for event BVID, manga, music aliases, B30 CSV, music meta, and BGM durations."
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     subparsers.add_parser("update-event-bvid")
@@ -83,6 +87,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("update-music-alias")
     subparsers.add_parser("update-b30-csv")
     subparsers.add_parser("update-music-meta")
+    subparsers.add_parser("update-bgm-duration")
 
     story_parser = subparsers.add_parser("update-story-asset")
     story_parser.add_argument(
@@ -137,6 +142,8 @@ def main() -> int:
         return asyncio.run(_run_single("update-b30-csv", update_b30_csv))
     if args.command == "update-music-meta":
         return asyncio.run(_run_single("update-music-meta", update_music_meta))
+    if args.command == "update-bgm-duration":
+        return asyncio.run(_run_single("update-bgm-duration", update_bgm_duration))
     if args.command == "update-story-asset":
         if args.lang_srcs_list:
             pairs = [(entry[0], entry[1:]) for entry in args.lang_srcs_list if len(entry) >= 2]

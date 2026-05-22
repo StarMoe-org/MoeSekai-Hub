@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import random
-from collections.abc import Iterable
+from collections.abc import Awaitable, Callable, Iterable
 from dataclasses import dataclass
 from typing import Any
 
@@ -29,6 +29,31 @@ class RetryConfig:
 
 
 DEFAULT_RETRY_CONFIG = RetryConfig()
+
+
+class AsyncRateLimiter:
+    def __init__(self, *, max_rate: float) -> None:
+        if max_rate <= 0:
+            raise ValueError("max_rate must be positive")
+        self._min_interval_seconds = 1.0 / max_rate
+        self._lock = asyncio.Lock()
+        self._next_request_at = 0.0
+
+    async def wait(self) -> None:
+        async with self._lock:
+            now = asyncio.get_running_loop().time()
+            if now < self._next_request_at:
+                await asyncio.sleep(self._next_request_at - now)
+                now = asyncio.get_running_loop().time()
+            self._next_request_at = now + self._min_interval_seconds
+
+
+async def with_rate_limit(
+    rate_limiter: AsyncRateLimiter,
+    func: Callable[[], Awaitable[Any]],
+) -> Any:
+    await rate_limiter.wait()
+    return await func()
 
 
 def build_headers(extra_headers: dict[str, str] | None = None) -> dict[str, str]:

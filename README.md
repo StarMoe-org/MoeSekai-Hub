@@ -7,7 +7,8 @@
 2. 资讯站汉化四格漫画元数据与图片
 3. Haruki 音乐别名库（全量歌曲 ID）
 4. PJSK B30 JP/CN CSV 与合并表
-5. PJSK 活动剧情摘要（AI生成的中文翻译与总结）
+5. PJSK BGM / MySekai BGM 时长索引
+6. PJSK 活动剧情摘要（AI生成的中文翻译与总结）
 
 **已停止维护**：
 - PJSK 剧情原始 asset（brotli 压缩）- 代码保留但不再自动更新
@@ -19,12 +20,14 @@
 - `src/tasks/manga.py`：四格漫画元数据抓取与图片增量下载
 - `src/tasks/music_alias.py`：Haruki 音乐别名抓取
 - `src/tasks/b30_csv.py`：B30 JP/CN CSV 抓取与合并
+- `src/tasks/bgm_duration.py`：BGM / MySekai BGM 时长增量索引
 - `src/tasks/story_summary.py`：活动剧情摘要生成（基于LLM）
 - `src/tasks/story_asset.py`：剧情 asset 爬虫（已停止维护）
 - `src/tasks/story_asset_urls.json`：数据源 URL 配置
 - `data/event_bvid/events_bilibili.json`：活动映射主文件
 - `data/event_bvid/unmatched_events.json`：未匹配活动清单
 - `data/music_alias/music_aliases.json`：音乐别名主文件
+- `data/bgm_duration/bgm_durations.json`：BGM / MySekai BGM 时长索引
 - `data/pjskb30/jp_chart.csv`：B30 日服原表
 - `data/pjskb30/cn_chart.csv`：B30 国服原表
 - `data/pjskb30/merged_chart.csv`：B30 合并表（不附加 `server` 字段）
@@ -42,6 +45,7 @@ uv run python -m src.cli update-event-bvid
 uv run python -m src.cli update-manga
 uv run python -m src.cli update-music-alias
 uv run python -m src.cli update-b30-csv
+uv run python -m src.cli update-bgm-duration
 uv run python -m src.cli run-all
 ```
 
@@ -101,6 +105,13 @@ uv run python -m src.cli update-story-asset --full
 - 合并规则：按顺序拼接 JP 行 + CN 行，不新增任何额外字段
 - 校验规则：表头必须匹配；行数过小会报错并阻止落盘
 
+### `data/bgm_duration/bgm_durations.json`
+
+- 顶层：`generated_at`、`source`、`total_indexed`、`total_recorded`、`tracks`、`failures`
+- `tracks` 每项：`key`、`route`、`file_name`、`size`、`etag`、`last_modified`、`duration_seconds`、`duration_milliseconds`、`duration_source`、`duration_fetched_at`
+- 索引来源：`storage2.pjsk.moe/sekai-jp-assets/` 的 `sound/scenario/bgm/` 与 `mysekai/sound/bgm/`
+- 时长来源：从 `storage.pjsk.moe/sekai-jp-assets/{key}` 读取 MP3 头部解析；已有有效时长的 `key` 会复用缓存，重复 CI 不重新请求音频文件
+
 ### `story/detail/event_*.json`
 
 活动剧情摘要，包含：
@@ -145,6 +156,8 @@ data = json.loads(brotli.decompress(open("story_assets/...", "rb").read()))
 - B 站资讯站动态接口（四格漫画）
 - `https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json`
 - `https://public-api.haruki.seiunx.com/alias/v1/music/{mid}`
+- `https://storage2.pjsk.moe/sekai-jp-assets/`（BGM 对象索引）
+- `https://storage.pjsk.moe/sekai-jp-assets/`（BGM MP3 头部读取）
 - `https://docs.google.com/spreadsheets/d/1B8tX9VL2PcSJKyuHFVd2UT_8kYlY4ZdwHwg9MfWOPug/export?format=csv&gid=1855810409`
 - `https://docs.google.com/spreadsheets/d/1Yv3GXnCIgEIbHL72EuZ-d5q_l-auPgddWi4Efa14jq0/export?format=csv&gid=182216`
 - `https://sekaimaster.exmeaning.com/master/`（游戏主数据）

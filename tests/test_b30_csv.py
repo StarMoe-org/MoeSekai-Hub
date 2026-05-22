@@ -14,14 +14,8 @@ def test_parse_csv_rows_strips_bom() -> None:
 
 def test_merge_b30_csv_texts_combines_without_server_column() -> None:
     header = "Song,,Constant,Level,Note Count,Difficulty,Song ID,Notes\n"
-    jp_rows = [
-        f"JP-{idx},JP-{idx},30.1,30,1000,Master,{idx},n{idx}\n"
-        for idx in range(1, 101)
-    ]
-    cn_rows = [
-        f"CN-{idx},CN-{idx},29.8,29,900,Master,{1000 + idx},n{1000 + idx}\n"
-        for idx in range(1, 6)
-    ]
+    jp_rows = [f"JP-{idx},JP-{idx},30.1,30,1000,Master,{idx},n{idx}\n" for idx in range(1, 101)]
+    cn_rows = [f"CN-{idx},CN-{idx},29.8,29,900,Master,{1000 + idx},n{1000 + idx}\n" for idx in range(1, 6)]
     jp_text = header + "".join(jp_rows)
     cn_text = header + "".join(cn_rows)
     merged_text, jp_rows, cn_rows = merge_b30_csv_texts(jp_text, cn_text)
@@ -38,6 +32,33 @@ def test_merge_b30_csv_texts_combines_without_server_column() -> None:
     assert len(rows) == 105
     assert rows[0]["Song"] == "JP-1"
     assert rows[100]["Song"] == "CN-1"
+
+
+def test_merge_b30_csv_texts_ignores_empty_trailing_column() -> None:
+    header = "Song,,Constant,Level,Note Count,Difficulty,Song ID,Notes\n"
+    cn_header = "Song,,Constant,Level,Note Count,Difficulty,Song ID,Notes,\n"
+    jp_rows = [f"JP-{idx},JP-Alias-{idx},30.1,30,1000,Master,{idx},n{idx}\n" for idx in range(1, 101)]
+    cn_rows = [f"CN-{idx},CN-Alias-{idx},29.8,29,900,Master,{1000 + idx},n{1000 + idx},\n" for idx in range(1, 6)]
+    merged_text, jp_count, cn_count = merge_b30_csv_texts(header + "".join(jp_rows), cn_header + "".join(cn_rows))
+
+    assert jp_count == 100
+    assert cn_count == 5
+    assert merged_text.splitlines()[0] == "Song,,Constant,Level,Note Count,Difficulty,Song ID,Notes"
+
+    fields, rows = parse_csv_rows(merged_text)
+    assert fields == ["Song", "", "Constant", "Level", "Note Count", "Difficulty", "Song ID", "Notes"]
+    assert rows[100][""] == "CN-Alias-1"
+    assert rows[100]["Notes"] == "n1001"
+
+
+def test_merge_b30_csv_texts_rejects_non_empty_trailing_column() -> None:
+    header = "Song,,Constant,Level,Note Count,Difficulty,Song ID,Notes\n"
+    cn_header = "Song,,Constant,Level,Note Count,Difficulty,Song ID,Notes,\n"
+    jp_rows = [f"JP-{idx},JP-{idx},30.1,30,1000,Master,{idx},n{idx}\n" for idx in range(1, 101)]
+    cn_rows = [f"CN-{idx},CN-{idx},29.8,29,900,Master,{1000 + idx},n{1000 + idx},extra\n" for idx in range(1, 6)]
+
+    with pytest.raises(ValueError, match="header mismatch"):
+        merge_b30_csv_texts(header + "".join(jp_rows), cn_header + "".join(cn_rows))
 
 
 def test_merge_b30_csv_texts_rejects_mismatched_headers() -> None:

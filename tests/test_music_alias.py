@@ -23,6 +23,17 @@ def test_parse_alias_payload_empty_aliases() -> None:
     assert parse_alias_payload(payload) == []
 
 
+def test_parse_alias_payload_accepts_neo_public_bot_envelope() -> None:
+    payload = {
+        "status": 200,
+        "message": "ok",
+        "data": {
+            "aliases": ["sekai", "セカイ", "sekai", "  "],
+        },
+    }
+    assert parse_alias_payload(payload) == ["sekai", "セカイ"]
+
+
 def test_parse_alias_payload_invalid_json_shapes() -> None:
     assert parse_alias_payload({"music_id": 1}) == []
     assert parse_alias_payload({"music_id": 1, "aliases": "tyw"}) == []

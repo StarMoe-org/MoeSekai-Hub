@@ -20,13 +20,36 @@ MIN_JP_ROWS = 100
 MIN_CN_ROWS = 5
 
 
+def _strip_ignorable_trailing_columns(fieldnames: list[str], rows: list[list[str]]) -> tuple[list[str], list[list[str]]]:
+    expected_len = len(EXPECTED_HEADERS)
+    if len(fieldnames) <= expected_len:
+        return fieldnames, rows
+
+    extra_fieldnames = fieldnames[expected_len:]
+    if fieldnames[:expected_len] != EXPECTED_HEADERS or any(fieldname.strip() for fieldname in extra_fieldnames):
+        return fieldnames, rows
+
+    for row in rows:
+        if any(cell.strip() for cell in row[expected_len:]):
+            return fieldnames, rows
+
+    return fieldnames[:expected_len], [row[:expected_len] for row in rows]
+
+
 def parse_csv_rows(csv_text: str) -> tuple[list[str], list[dict[str, str]]]:
-    reader = csv.DictReader(io.StringIO(csv_text.lstrip("\ufeff")))
-    fieldnames = reader.fieldnames
-    if fieldnames is None:
-        raise ValueError("CSV has no header row")
-    rows = [{key: (value or "") for key, value in row.items()} for row in reader]
-    return list(fieldnames), rows
+    reader = csv.reader(io.StringIO(csv_text.lstrip("\ufeff")))
+    try:
+        fieldnames = next(reader)
+    except StopIteration as exc:
+        raise ValueError("CSV has no header row") from exc
+
+    raw_rows = list(reader)
+    fieldnames, raw_rows = _strip_ignorable_trailing_columns(fieldnames, raw_rows)
+    rows = [
+        {fieldname: (row[index] if index < len(row) else "") for index, fieldname in enumerate(fieldnames)}
+        for row in raw_rows
+    ]
+    return fieldnames, rows
 
 
 def _build_csv_text(fieldnames: list[str], rows: list[dict[str, str]]) -> str:
