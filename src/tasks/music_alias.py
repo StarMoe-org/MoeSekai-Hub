@@ -6,22 +6,24 @@ from typing import Any
 
 import httpx
 
-from src.common.http import RetryConfig, create_async_client, get_json
+from src.common.http import AsyncRateLimiter, RetryConfig, create_async_client, get_json, with_rate_limit
 from src.common.io import read_json, utc_now_iso, write_json
 
 MUSICS_SOURCE_URL = (
     "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json"
 )
-ALIAS_API_URL_TEMPLATE = "https://public-api.haruki.seiunx.com/alias/v1/music/{music_id}"
+ALIAS_API_URL_TEMPLATE = "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
 FETCH_CONCURRENCY = 3
 RETRY_CONCURRENCY = 1
-REQUEST_DELAY_SECONDS = 0.15
+ALIAS_API_MAX_QPS = 10
 
 
 def parse_alias_payload(payload: Any) -> list[str]:
     if not isinstance(payload, dict):
         return []
-    aliases_raw = payload.get("aliases")
+    data = payload.get("data")
+    alias_source = data if isinstance(data, dict) else payload
+    aliases_raw = alias_source.get("aliases")
     if not isinstance(aliases_raw, list):
         return []
 
@@ -61,17 +63,20 @@ def _load_previous_alias_map(path: Path) -> dict[int, list[str]]:
 async def _fetch_alias_for_music(
     client: httpx.AsyncClient,
     semaphore: asyncio.Semaphore,
+    rate_limiter: AsyncRateLimiter,
     music_id: int,
     retry_attempts: int = 6,
 ) -> tuple[int, list[str] | None]:
     async with semaphore:
         try:
-            payload = await get_json(
-                client,
-                ALIAS_API_URL_TEMPLATE.format(music_id=music_id),
-                retry_config=RetryConfig(attempts=retry_attempts),
+            payload = await with_rate_limit(
+                rate_limiter,
+                lambda: get_json(
+                    client,
+                    ALIAS_API_URL_TEMPLATE.format(music_id=music_id),
+                    retry_config=RetryConfig(attempts=retry_attempts),
+                ),
             )
-            await asyncio.sleep(REQUEST_DELAY_SECONDS)
         except (httpx.HTTPError, ValueError):
             return music_id, None
         return music_id, parse_alias_payload(payload)
@@ -152,9 +157,16 @@ async def update_music_aliases(
                 "used_cached_data": 0,
             }
 
+        alias_rate_limiter = AsyncRateLimiter(max_rate=ALIAS_API_MAX_QPS)
         probe_semaphore = asyncio.Semaphore(1)
         probe_music_id = records[0][0]
-        _, probe_aliases = await _fetch_alias_for_music(client, probe_semaphore, probe_music_id, retry_attempts=2)
+        _, probe_aliases = await _fetch_alias_for_music(
+            client,
+            probe_semaphore,
+            alias_rate_limiter,
+            probe_music_id,
+            retry_attempts=2,
+        )
         if probe_aliases is None:
             if not previous_alias_map:
                 raise RuntimeError("Alias API unavailable and no cached data available.")
@@ -169,8 +181,9 @@ async def update_music_aliases(
 
         semaphore = asyncio.Semaphore(FETCH_CONCURRENCY)
         tasks = [
-            _fetch_alias_for_music(client, semaphore, music_id, retry_attempts=6)
+            _fetch_alias_for_music(client, semaphore, alias_rate_limiter, music_id, retry_attempts=6)
             for music_id, _ in records
+            if music_id != probe_music_id
         ]
         results = await asyncio.gather(*tasks)
         fetched_alias_map: dict[int, list[str] | None] = dict(results)
@@ -180,7 +193,7 @@ async def update_music_aliases(
         if failed_ids:
             retry_semaphore = asyncio.Semaphore(RETRY_CONCURRENCY)
             retry_tasks = [
-                _fetch_alias_for_music(client, retry_semaphore, music_id, retry_attempts=8)
+                _fetch_alias_for_music(client, retry_semaphore, alias_rate_limiter, music_id, retry_attempts=8)
                 for music_id in failed_ids
             ]
             retry_results = await asyncio.gather(*retry_tasks)

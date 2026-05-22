@@ -8,10 +8,11 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urljoin, urlparse
 
+import httpx
 from parsel import Selector
 
 from src.common.http import create_async_client, get_json, get_text, request_with_retry
-from src.common.io import utc_now_iso, write_json
+from src.common.io import read_json, utc_now_iso, write_json
 
 MOEGIRL_EVENTS_URL = (
     "https://mzh.moegirl.org.cn/"
@@ -223,13 +224,44 @@ async def resolve_short_links(entries: list[WikiEventEntry], concurrency: int = 
     return resolved
 
 
+def _payload_source() -> dict[str, str]:
+    return {
+        "wiki_page": MOEGIRL_EVENTS_URL,
+        "events_api": EVENTS_API_URL,
+    }
+
+
+def _build_payloads_from_merged_events(merged_events: list[dict[str, Any]]) -> tuple[dict[str, Any], dict[str, Any]]:
+    unmatched_events = [
+        {
+            "event_id": event["event_id"],
+            "event_name": event["event_name"],
+        }
+        for event in merged_events
+        if event.get("match_status") == "unmatched"
+    ]
+    generated_at = utc_now_iso()
+    source = _payload_source()
+
+    main_payload = {
+        "generated_at": generated_at,
+        "source": source,
+        "events": merged_events,
+    }
+    unmatched_payload = {
+        "generated_at": generated_at,
+        "source": source,
+        "unmatched_events": unmatched_events,
+    }
+    return main_payload, unmatched_payload
+
+
 def build_event_payloads(
     events: list[dict[str, Any]],
     exact_map: dict[str, WikiEventEntry],
     normalized_map: dict[str, WikiEventEntry],
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     merged_events: list[dict[str, Any]] = []
-    unmatched_events: list[dict[str, Any]] = []
 
     for event in sorted(events, key=lambda row: int(row.get("id", 0))):
         event_id_raw = event.get("id")
@@ -250,31 +282,64 @@ def build_event_payloads(
                 "match_status": status,
             }
         )
-        if status == "unmatched":
-            unmatched_events.append(
+
+    return _build_payloads_from_merged_events(merged_events)
+
+
+def build_cached_event_payloads(events: list[dict[str, Any]], cached_payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    cached_events_raw = cached_payload.get("events")
+    if not isinstance(cached_events_raw, list):
+        raise ValueError("Invalid cached event payload: expected an events list")
+
+    cached_events: dict[int, dict[str, Any]] = {}
+    for cached_event in cached_events_raw:
+        if not isinstance(cached_event, dict):
+            continue
+        event_id = cached_event.get("event_id")
+        if isinstance(event_id, int):
+            cached_events[event_id] = cached_event
+
+    if not cached_events:
+        raise ValueError("Invalid cached event payload: no cached events available")
+
+    merged_events: list[dict[str, Any]] = []
+    for event in sorted(events, key=lambda row: int(row.get("id", 0))):
+        event_id_raw = event.get("id")
+        event_name_raw = event.get("name")
+        if not isinstance(event_id_raw, int) or not isinstance(event_name_raw, str):
+            continue
+
+        cached_event = cached_events.get(event_id_raw)
+        if cached_event is None:
+            merged_events.append(
                 {
                     "event_id": event_id_raw,
                     "event_name": event_name_raw,
+                    "bilibili_url": None,
+                    "bvid": None,
+                    "match_status": "unmatched",
                 }
             )
+            continue
 
-    generated_at = utc_now_iso()
-    source = {
-        "wiki_page": MOEGIRL_EVENTS_URL,
-        "events_api": EVENTS_API_URL,
-    }
+        merged_events.append(
+            {
+                "event_id": event_id_raw,
+                "event_name": event_name_raw,
+                "bilibili_url": cached_event.get("bilibili_url") if isinstance(cached_event.get("bilibili_url"), str) else None,
+                "bvid": cached_event.get("bvid") if isinstance(cached_event.get("bvid"), str) else None,
+                "match_status": cached_event.get("match_status") if isinstance(cached_event.get("match_status"), str) else "cached",
+            }
+        )
 
-    main_payload = {
-        "generated_at": generated_at,
-        "source": source,
-        "events": merged_events,
-    }
-    unmatched_payload = {
-        "generated_at": generated_at,
-        "source": source,
-        "unmatched_events": unmatched_events,
-    }
-    return main_payload, unmatched_payload
+    return _build_payloads_from_merged_events(merged_events)
+
+
+def load_cached_event_payload(output_path: Path) -> dict[str, Any]:
+    payload = read_json(output_path, default=None)
+    if not isinstance(payload, dict):
+        raise ValueError(f"No cached event payload available at {output_path}")
+    return payload
 
 
 async def update_event_bvid(
@@ -285,17 +350,26 @@ async def update_event_bvid(
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Referer": "https://mzh.moegirl.org.cn/",
     }
+    wiki_fetch_failed = False
+    entries: list[WikiEventEntry] = []
     async with create_async_client(headers=wiki_headers) as client:
-        wiki_html = await get_text(client, MOEGIRL_EVENTS_URL)
+        try:
+            wiki_html = await get_text(client, MOEGIRL_EVENTS_URL)
+        except httpx.HTTPError:
+            wiki_fetch_failed = True
         events_data = await get_json(client, EVENTS_API_URL)
-
-    entries = parse_wiki_entries(wiki_html)
-    entries = await resolve_short_links(entries)
-    exact_map, normalized_map = build_entry_maps(entries)
 
     if not isinstance(events_data, list):
         raise ValueError("Invalid events API payload: expected a list")
-    main_payload, unmatched_payload = build_event_payloads(events_data, exact_map, normalized_map)
+
+    if wiki_fetch_failed:
+        cached_payload = load_cached_event_payload(output_path)
+        main_payload, unmatched_payload = build_cached_event_payloads(events_data, cached_payload)
+    else:
+        entries = parse_wiki_entries(wiki_html)
+        entries = await resolve_short_links(entries)
+        exact_map, normalized_map = build_entry_maps(entries)
+        main_payload, unmatched_payload = build_event_payloads(events_data, exact_map, normalized_map)
 
     write_json(output_path, main_payload)
     write_json(unmatched_path, unmatched_payload)
@@ -303,5 +377,7 @@ async def update_event_bvid(
         "wiki_entries": len(entries),
         "events_total": len(main_payload["events"]),
         "events_unmatched": len(unmatched_payload["unmatched_events"]),
+        "wiki_fetch_failed": int(wiki_fetch_failed),
+        "used_cached_events": int(wiki_fetch_failed),
     }
 
