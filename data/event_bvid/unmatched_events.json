@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-14T02:09:24Z",
+  "generated_at": "2026-05-23T02:39:44Z",
   "source": {
     "wiki_page": "https://mzh.moegirl.org.cn/%E4%B8%96%E7%95%8C%E8%AE%A1%E5%88%92_%E5%BD%A9%E8%89%B2%E8%88%9E%E5%8F%B0_feat._%E5%88%9D%E9%9F%B3%E6%9C%AA%E6%9D%A5/%E5%8E%86%E5%8F%B2%E6%B4%BB%E5%8A%A8",
     "events_api": "https://database.pjsekai.moe/events.json"
@@ -24,6 +24,22 @@
     {
       "event_id": 186,
       "event_name": "第2回チアフルカーニバルイベントテストイベント"
+    },
+    {
+      "event_id": 202,
+      "event_name": "約束のPasserelle"
+    },
+    {
+      "event_id": 203,
+      "event_name": "あたたかな思い出を辿って"
+    },
+    {
+      "event_id": 204,
+      "event_name": "Stay solid, No fold"
+    },
+    {
+      "event_id": 205,
+      "event_name": "Great Yell for Dreamers！"
     }
   ]
 }
