@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T02:45:51Z",
+  "generated_at": "2026-05-31T03:27:52Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -16804,6 +16804,11 @@
       ]
     },
     {
+      "music_id": 705,
+      "title": "ラズベリー＊モンスター",
+      "aliases": []
+    },
+    {
       "music_id": 707,
       "title": "さいたま2000",
       "aliases": [
@@ -16958,6 +16963,11 @@
       "aliases": [
         "天蓝的冰天堂"
       ]
+    },
+    {
+      "music_id": 734,
+      "title": "プロポーズ",
+      "aliases": []
     },
     {
       "music_id": 735,
