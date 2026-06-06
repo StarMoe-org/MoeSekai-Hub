@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05T03:00:47Z",
+  "generated_at": "2026-06-06T02:48:38Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -4749,6 +4749,7 @@
         "江江",
         "江江，我是有栖，我姐姐是刹那",
         "洞洞五专属曲",
+        "狗都不打",
         "用游客模式吗",
         "皇城カナデ",
         "皇城刹那",
@@ -6884,6 +6885,7 @@
         "88⭐",
         "883",
         "88 stars",
+        "88个ick6箱",
         "88号流星",
         "88☆彡",
         "88星",
@@ -14292,6 +14294,7 @@
         "孩小小孩",
         "寶寶",
         "小孩3",
+        "小孩姐",
         "巨婴",
         "我是小孩",
         "我是小宝宝所以没办法",
@@ -14374,6 +14377,7 @@
         "hotwind",
         "他说风雨中这点痛算什么",
         "冷水",
+        "副热带高压",
         "博库拉瓦",
         "四周年",
         "暖气",
@@ -16817,7 +16821,10 @@
     {
       "music_id": 705,
       "title": "ラズベリー＊モンスター",
-      "aliases": []
+      "aliases": [
+        "Raspberry Monster",
+        "树莓怪兽"
+      ]
     },
     {
       "music_id": 707,
