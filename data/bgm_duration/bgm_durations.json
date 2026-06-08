@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T03:27:55Z",
+  "generated_at": "2026-06-08T03:36:52Z",
   "source": {
     "index_base_url": "https://storage2.pjsk.moe/sekai-jp-assets/",
     "asset_base_url": "https://storage.pjsk.moe/sekai-jp-assets/",
@@ -8,8 +8,8 @@
       "mysekai/sound/bgm/"
     ]
   },
-  "total_indexed": 778,
-  "total_recorded": 778,
+  "total_indexed": 779,
+  "total_recorded": 779,
   "tracks": [
     {
       "key": "mysekai/sound/bgm/bgm_mysekai_beach/bgm_mysekai_beach_1.mp3",
@@ -5218,6 +5218,18 @@
       "duration_milliseconds": 66194,
       "duration_source": "info",
       "duration_fetched_at": "2026-05-31T03:27:55Z"
+    },
+    {
+      "key": "sound/scenario/bgm/bgm00361/bgm00361.mp3",
+      "route": "sound/scenario/bgm/",
+      "file_name": "bgm00361.mp3",
+      "size": 4106492,
+      "etag": "0d02fe034c379ebb1539c02189167df9",
+      "last_modified": "2026-06-08T02:43:10Z",
+      "duration_seconds": 102.635,
+      "duration_milliseconds": 102635,
+      "duration_source": "info",
+      "duration_fetched_at": "2026-06-08T03:36:52Z"
     },
     {
       "key": "sound/scenario/bgm/bgm10001/bgm_area_leoneed_untitled.mp3",
