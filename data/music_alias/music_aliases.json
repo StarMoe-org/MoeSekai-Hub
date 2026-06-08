@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-07T03:31:48Z",
+  "generated_at": "2026-06-08T03:36:50Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -4649,6 +4649,7 @@
         "摇篮曲",
         "敌方电磁脉冲炸弹已部署",
         "數學課本",
+        "昏君",
         "杀马红键4k",
         "来头",
         "歪歪歪",
@@ -15769,6 +15770,7 @@
         "rule book",
         "rulebook",
         "rurubu",
+        "儿儿7",
         "藤原",
         "规则书"
       ]
@@ -16571,6 +16573,7 @@
       "music_id": 672,
       "title": "ハウトゥー世界征服",
       "aliases": [
+        "How to World Domination",
         "世征",
         "世界征服"
       ]
@@ -16637,6 +16640,7 @@
       "music_id": 682,
       "title": "あなたしか見えないの",
       "aliases": [
+        "All I Can See Is You",
         "眼中只有你一人"
       ]
     },
@@ -16645,6 +16649,7 @@
       "title": "カラフルファンデーション",
       "aliases": [
         "airi7",
+        "Colorful Foundation",
         "多彩粉底",
         "桃7"
       ]
@@ -16827,6 +16832,11 @@
       ]
     },
     {
+      "music_id": 706,
+      "title": "永遠甚だしい",
+      "aliases": []
+    },
+    {
       "music_id": 707,
       "title": "さいたま2000",
       "aliases": [
@@ -16980,8 +16990,14 @@
       "music_id": 732,
       "title": "天藍のアイスヘヴン",
       "aliases": [
+        "Ice Heaven of Lazulite",
         "天蓝的冰天堂"
       ]
+    },
+    {
+      "music_id": 733,
+      "title": "いますぐ輪廻",
+      "aliases": []
     },
     {
       "music_id": 734,
@@ -17030,8 +17046,19 @@
       "music_id": 743,
       "title": "ドリーマーズビート",
       "aliases": [
+        "Dreamer’s Beat",
         "梦想家的节拍"
       ]
+    },
+    {
+      "music_id": 755,
+      "title": "初音狂奏曲第01番「彗惺」",
+      "aliases": []
+    },
+    {
+      "music_id": 757,
+      "title": "ひかりのあつめかた",
+      "aliases": []
     }
   ]
 }
