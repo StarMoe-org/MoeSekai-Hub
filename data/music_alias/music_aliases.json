@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-09T02:46:57Z",
+  "generated_at": "2026-06-10T02:59:56Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -16323,7 +16323,8 @@
         "深海2",
         "深海cityunderground",
         "深海地下城市",
-        "深海地下都市"
+        "深海地下都市",
+        "深海城市"
       ]
     },
     {
@@ -16997,7 +16998,9 @@
     {
       "music_id": 733,
       "title": "いますぐ輪廻",
-      "aliases": []
+      "aliases": [
+        "即刻轮回"
+      ]
     },
     {
       "music_id": 734,
