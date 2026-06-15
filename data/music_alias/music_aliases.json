@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T03:37:52Z",
+  "generated_at": "2026-06-15T03:48:24Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -15758,6 +15758,7 @@
       "music_id": 586,
       "title": "ヤンキーボーイ・ヤンキーガール",
       "aliases": [
+        "yankee boy yankee girl",
         "不良",
         "不良少年不良少女"
       ]
@@ -17056,7 +17057,9 @@
     {
       "music_id": 755,
       "title": "初音狂奏曲第01番「彗惺」",
-      "aliases": []
+      "aliases": [
+        "风呗"
+      ]
     },
     {
       "music_id": 757,
