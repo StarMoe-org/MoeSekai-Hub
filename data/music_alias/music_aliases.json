@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T03:33:58Z",
+  "generated_at": "2026-06-19T03:56:22Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17045,6 +17045,11 @@
         "khn7",
         "豆7"
       ]
+    },
+    {
+      "music_id": 742,
+      "title": "旅に帰る",
+      "aliases": []
     },
     {
       "music_id": 743,
