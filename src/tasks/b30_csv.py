@@ -29,17 +29,13 @@ def _strip_ignorable_trailing_columns(fieldnames: list[str], rows: list[list[str
     if fieldnames[:expected_len] != EXPECTED_HEADERS or any(fieldname.strip() for fieldname in extra_fieldnames):
         return fieldnames, rows
 
-    for row in rows:
-        if any(cell.strip() for cell in row[expected_len:]):
-            return fieldnames, rows
-
     return fieldnames[:expected_len], [row[:expected_len] for row in rows]
 
 
 def parse_csv_rows(csv_text: str) -> tuple[list[str], list[dict[str, str]]]:
     reader = csv.reader(io.StringIO(csv_text.lstrip("\ufeff")))
     try:
-        fieldnames = next(reader)
+        fieldnames = [f.strip() for f in next(reader)]
     except StopIteration as exc:
         raise ValueError("CSV has no header row") from exc
 
