@@ -4,11 +4,13 @@ import asyncio
 import os
 import re
 from dataclasses import dataclass
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
 import httpx
+from PIL import Image
 
 from src.common.http import RetryConfig, create_async_client, get_bytes, get_json
 from src.common.io import atomic_write_bytes, read_json, write_json
@@ -25,6 +27,22 @@ CONTRIBUTOR_PATTERN = re.compile(r"(?P<role>[^\s：:#]{1,12})\s*[：:]\s*(?P<nam
 DOWNLOAD_CONCURRENCY = 16
 PAGE_UPPER_BOUND = 500
 NO_PROGRESS_PAGE_LIMIT = 8
+
+MANGA_IMAGE_FORMAT = "webp"
+WEBP_QUALITY = 90
+WEBP_METHOD = 6
+
+
+def encode_image_as_webp(image_bytes: bytes) -> bytes:
+    """Decode raw image bytes and re-encode as WebP.
+
+    Raises on any decode/encode error so callers can treat it as a failed download.
+    """
+    with Image.open(BytesIO(image_bytes)) as image:
+        rgb = image.convert("RGB")
+        buffer = BytesIO()
+        rgb.save(buffer, format="WEBP", quality=WEBP_QUALITY, method=WEBP_METHOD)
+        return buffer.getvalue()
 
 
 def _is_manga_post(content: str) -> bool:
@@ -172,7 +190,8 @@ async def _download_image(
 ) -> bool:
     async with semaphore:
         image_bytes = await get_bytes(client, image_url, retry_config=RetryConfig(attempts=6))
-        atomic_write_bytes(target_path, image_bytes)
+        webp_bytes = encode_image_as_webp(image_bytes)
+        atomic_write_bytes(target_path, webp_bytes)
         return True
 
 
@@ -194,7 +213,7 @@ async def download_manga_images(
         if not parsed_url.scheme:
             continue
 
-        target_path = output_dir / f"{manga_id}.png"
+        target_path = output_dir / f"{manga_id}.{MANGA_IMAGE_FORMAT}"
         changed_url = False
         previous_item = previous_metadata.get(str(manga_id))
         if isinstance(previous_item, dict):

@@ -22,8 +22,6 @@
 - `src/tasks/b30_csv.py`：B30 JP/CN CSV 抓取与合并
 - `src/tasks/bgm_duration.py`：BGM / MySekai BGM 时长增量索引
 - `src/tasks/story_summary.py`：活动剧情摘要生成（基于LLM）
-- `src/tasks/story_asset.py`：剧情 asset 爬虫（已停止维护）
-- `src/tasks/story_asset_urls.json`：数据源 URL 配置
 - `data/event_bvid/events_bilibili.json`：活动映射主文件
 - `data/event_bvid/unmatched_events.json`：未匹配活动清单
 - `data/music_alias/music_aliases.json`：音乐别名主文件
@@ -31,9 +29,8 @@
 - `data/pjskb30/jp_chart.csv`：B30 日服原表
 - `data/pjskb30/cn_chart.csv`：B30 国服原表
 - `data/pjskb30/merged_chart.csv`：B30 合并表（不附加 `server` 字段）
-- `mangas/mangas.json`、`mangas/*.png`：四格漫画历史数据与图片
+- `mangas/mangas.json`、`mangas/*.webp`：四格漫画历史数据与图片（WebP 格式，由 `src/tasks/manga.py` 下载时实时转码）
 - `story/detail/event_*.json`：活动剧情摘要（中文翻译与总结）
-- `story_assets/`：剧情原始 asset（已停止维护）
 - `guides/guides-index.json`：攻略文章索引
 - `guides/**/*.md`：攻略 Markdown 文件（按分类子目录组织）
 
@@ -70,19 +67,13 @@ uv run python -m src.cli update-story-summary --event-id 123
 uv run python -m src.cli update-story-summary --force
 ```
 
-### 剧情 asset 爬虫（已停止维护）
+### 漫画图片格式迁移
 
-代码保留但不再自动执行：
+漫画图片以 WebP 格式存储。如需将历史 `mangas/*.png` 批量转换为 WebP，可使用迁移脚本：
 
 ```bash
-# 增量更新（默认四个源）
-uv run python -m src.cli update-story-asset
-
-# 指定源
-uv run python -m src.cli update-story-asset --lang-src jp sekai.best --lang-src cn haruki
-
-# 全量覆盖更新
-uv run python -m src.cli update-story-asset --full
+uv run python scripts/convert_mangas_to_webp.py            # 转换并删除原 PNG
+uv run python scripts/convert_mangas_to_webp.py --keep-png # 仅生成 WebP，保留原 PNG
 ```
 
 ## 数据格式
@@ -127,22 +118,6 @@ uv run python -m src.cli update-story-asset --full
   - `image_url`：章节封面图片URL
 
 数据来源：从 `https://storage.exmeaning.com/sekai-jp-assets/` 获取剧情JSON，通过LLM生成中文翻译与摘要。
-
-### `story_assets/`（已停止维护）
-
-- 路径结构镜像原始 URL，去掉通用前缀后直接作为相对路径，附加 `.br` 后缀
-- 例：`https://storage.sekai.best/sekai-jp-assets/event_story/ev_01/scenario/ev_01_01.asset`
-  → `story_assets/pjsk-jp-assets/event_story/ev_01/scenario/ev_01_01.asset.br`
-- 文件内容为原始 JSON compact 序列化后经 brotli（quality=11）压缩的二进制数据
-- 覆盖六类剧情：活动剧情（event）、组合剧情（unit）、卡面剧情（card）、区域对话（talk）、自我介绍（self）、特殊剧情（special）
-- 支持两个语言、两个数据源：`jp haruki sekai.best`、`cn haruki sekai.best`
-
-读取示例：
-
-```python
-import brotli, json
-data = json.loads(brotli.decompress(open("story_assets/...", "rb").read()))
-```
 
 ## GitHub Actions
 

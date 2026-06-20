@@ -86,7 +86,7 @@ jobs:
             find data/bgm_duration -maxdepth 1 -type f -name '*.json' -print0 | xargs -0r git add --
           fi
           git add mangas/mangas.json
-          find mangas -maxdepth 1 -type f -name '*.png' -print0 | xargs -0r git add --
+          find mangas -maxdepth 1 -type f -name '*.webp' -print0 | xargs -0r git add --
 
           if git diff --cached --quiet; then
             echo "No changes to commit."

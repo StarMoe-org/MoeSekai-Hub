@@ -13,7 +13,6 @@ import httpx
 from src.common.http import build_headers, get_json, request_with_retry
 from src.common.io import read_json, write_json
 
-_TRANSLATION_EVENTS_JSON = Path("translation/events.json")
 _DEFAULT_OUTPUT_DIR = Path("story/detail")
 _JSON_BLOCK_PATTERN = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
 _MASTER_BASE_URL = "https://sekaimaster.exmeaning.com/master"
@@ -453,20 +452,6 @@ async def _build_chapter_contents(event_meta: EventMeta, character2d_map: dict[i
     return tuple(results)
 
 
-def _load_translation_name_map() -> dict[str, str]:
-    payload = read_json(_TRANSLATION_EVENTS_JSON, default={})
-    if not isinstance(payload, dict):
-        return {}
-    names = payload.get("name")
-    if not isinstance(names, dict):
-        return {}
-    return {
-        str(key): str(value)
-        for key, value in names.items()
-        if isinstance(key, str) and isinstance(value, str) and key.strip() and value.strip()
-    }
-
-
 def _chat_completions_url(base_url: str) -> str:
     cleaned = base_url.rstrip("/")
     if cleaned.endswith("/chat/completions"):
@@ -614,7 +599,6 @@ async def _generate_summary_rows(
     llm_config: LLMConfig,
     event_meta: EventMeta,
     chapter_contents: tuple[ChapterContent, ...],
-    translation_name_map: dict[str, str],
 ) -> tuple[str, str, str, list[dict[str, Any]]]:
     implemented_chapters = [chapter for chapter in chapter_contents if chapter.implemented]
     if not implemented_chapters:
@@ -634,7 +618,7 @@ async def _generate_summary_rows(
     first_chapter_title_cn = _require_text_field(start_payload, "ep_1_title")
     first_chapter_summary_cn = _require_text_field(start_payload, "ep_1_summary")
 
-    title_cn = translation_name_map.get(event_meta.title_jp) or title_cn_generated
+    title_cn = title_cn_generated
 
     first_chapter = implemented_chapters[0]
     chapter_rows_by_no[first_chapter.meta.chapter_no] = {
@@ -754,14 +738,12 @@ async def _generate_event_summary_file(
     output_dir: Path,
     character2d_map: dict[int, int],
     llm_config: LLMConfig,
-    translation_name_map: dict[str, str],
 ) -> tuple[int, int]:
     chapter_contents = await _build_chapter_contents(event_meta, character2d_map)
     title_cn, outline_cn, summary_cn, chapter_rows = await _generate_summary_rows(
         llm_config,
         event_meta,
         chapter_contents,
-        translation_name_map,
     )
 
     payload = {
@@ -802,13 +784,11 @@ async def update_story_summary(
 
         resolved_llm_config = _resolve_llm_config(llm_config)
         character2d_map = await _fetch_character2d_map()
-        translation_name_map = _load_translation_name_map()
         chapters_total, dialogue_lines_total = await _generate_event_summary_file(
             event_meta,
             output_dir=output_dir,
             character2d_map=character2d_map,
             llm_config=resolved_llm_config,
-            translation_name_map=translation_name_map,
         )
         return {
             "event_id": event_meta.event_id,
@@ -840,7 +820,6 @@ async def update_story_summary(
 
     resolved_llm_config = _resolve_llm_config(llm_config)
     character2d_map = await _fetch_character2d_map()
-    translation_name_map = _load_translation_name_map()
 
     generated_events = 0
     failed_events = 0
@@ -853,7 +832,6 @@ async def update_story_summary(
                 output_dir=output_dir,
                 character2d_map=character2d_map,
                 llm_config=resolved_llm_config,
-                translation_name_map=translation_name_map,
             )
         except Exception as exc:
             failed_events += 1

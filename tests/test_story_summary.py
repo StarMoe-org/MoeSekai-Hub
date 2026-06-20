@@ -200,7 +200,6 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
     monkeypatch.setattr(module, "_fetch_master_json", fake_fetch_master_json)
     monkeypatch.setattr(module, "_load_story_payload", fake_load_story_payload)
     monkeypatch.setattr(module, "_chat_completion_json", fake_chat_completion_json)
-    monkeypatch.setattr(module, "_load_translation_name_map", lambda: {})
 
     stats = asyncio.run(
         module.update_story_summary(
@@ -305,7 +304,6 @@ def test_update_story_summary_regenerates_when_existing_output_is_outdated(tmp_p
     monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
     monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
     monkeypatch.setattr(module, "_build_chapter_contents", fake_build_chapter_contents)
-    monkeypatch.setattr(module, "_load_translation_name_map", lambda: {})
     monkeypatch.setattr(module, "_generate_summary_rows", _fake_generate_summary_rows)
 
     stats = asyncio.run(module.update_story_summary(event_id=2, output_dir=output_dir))
@@ -353,7 +351,7 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
         ),
     )
 
-    async def fake_generate_summary_rows(llm_config, event_meta, chapter_contents, translation_name_map):  # noqa: ANN001
+    async def fake_generate_summary_rows(llm_config, event_meta, chapter_contents):  # noqa: ANN001
         return (
             f"活动{event_meta.event_id}",
             f"概要{event_meta.event_id}",
@@ -385,7 +383,6 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
     monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
     monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
     monkeypatch.setattr(module, "_build_chapter_contents", fake_build_chapter_contents)
-    monkeypatch.setattr(module, "_load_translation_name_map", lambda: {})
     monkeypatch.setattr(module, "_generate_summary_rows", fake_generate_summary_rows)
 
     stats = asyncio.run(module.update_story_summary(output_dir=output_dir))
@@ -436,7 +433,6 @@ def test_update_story_summary_skips_failed_events_and_continues_scan(tmp_path, m
     monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=event_metas))
     monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
     monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
-    monkeypatch.setattr(module, "_load_translation_name_map", lambda: {})
     monkeypatch.setattr(module, "_generate_event_summary_file", fake_generate_event_summary_file)
 
     stats = asyncio.run(module.update_story_summary(output_dir=output_dir))

@@ -29,20 +29,6 @@ async def _run_single(task_name: str, task: TaskFunc) -> int:
     return 0
 
 
-async def _run_story_asset(lang_srcs_pairs: list[tuple[str, list[str]]], *, full: bool = False) -> int:
-    # Lazy import to avoid brotli dependency when not using this command
-    from src.tasks.story_asset import update_story_asset
-
-    all_stats: dict[str, int] = {}
-    for lang, srcs in lang_srcs_pairs:
-        tag = f"{lang}/{'|'.join(srcs)}"
-        stats = await update_story_asset(lang=lang, srcs=srcs, full=full)
-        for k, v in stats.items():
-            all_stats[f"{tag}_{k}"] = v
-    _print_stats("update-story-asset", all_stats)
-    return 0
-
-
 async def _run_story_summary(*, event_id: int | None = None, output_dir: str | None = None, force: bool = False) -> int:
     resolved_output_dir = Path(output_dir) if output_dir is not None else Path("story/detail")
     stats = await update_story_summary(event_id=event_id, output_dir=resolved_output_dir, force=force)
@@ -59,6 +45,7 @@ async def _run_all() -> int:
         ("update-music-meta", update_music_meta),
         ("update-bgm-duration", update_bgm_duration),
     ]
+
     failed: list[str] = []
     for name, task in pipeline:
         try:
@@ -88,26 +75,6 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("update-b30-csv")
     subparsers.add_parser("update-music-meta")
     subparsers.add_parser("update-bgm-duration")
-
-    story_parser = subparsers.add_parser("update-story-asset")
-    story_parser.add_argument(
-        "--lang-srcs",
-        nargs="+",
-        action="append",
-        metavar=("LANG", "SRC"),
-        dest="lang_srcs_list",
-        help=(
-            "Language followed by one or more sources in priority order. "
-            "Can be repeated for multiple languages. "
-            "e.g. --lang-srcs jp haruki sekai.best --lang-srcs cn sekai.best"
-        ),
-    )
-    story_parser.add_argument(
-        "--full",
-        action="store_true",
-        default=False,
-        help="Force full re-download, ignoring existing files",
-    )
 
     summary_parser = subparsers.add_parser("update-story-summary")
     summary_parser.add_argument("--event-id", type=int, default=None, help="Generate summary for a specific event ID")
@@ -144,12 +111,6 @@ def main() -> int:
         return asyncio.run(_run_single("update-music-meta", update_music_meta))
     if args.command == "update-bgm-duration":
         return asyncio.run(_run_single("update-bgm-duration", update_bgm_duration))
-    if args.command == "update-story-asset":
-        if args.lang_srcs_list:
-            pairs = [(entry[0], entry[1:]) for entry in args.lang_srcs_list if len(entry) >= 2]
-        else:
-            pairs = [("jp", ["haruki", "sekai.best"]), ("cn", ["haruki", "sekai.best"])]
-        return asyncio.run(_run_story_asset(pairs, full=args.full))
     if args.command == "update-story-summary":
         return asyncio.run(_run_story_summary(event_id=args.event_id, output_dir=args.output_dir, force=args.force))
     if args.command == "run-all":
