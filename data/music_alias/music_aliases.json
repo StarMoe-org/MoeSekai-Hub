@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T03:56:22Z",
+  "generated_at": "2026-06-20T02:58:23Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17060,6 +17060,36 @@
       ]
     },
     {
+      "music_id": 744,
+      "title": "CHAOS",
+      "aliases": []
+    },
+    {
+      "music_id": 745,
+      "title": "ANiMA",
+      "aliases": []
+    },
+    {
+      "music_id": 746,
+      "title": "Masquerade",
+      "aliases": []
+    },
+    {
+      "music_id": 747,
+      "title": "SAIRAI",
+      "aliases": []
+    },
+    {
+      "music_id": 748,
+      "title": "Saika",
+      "aliases": []
+    },
+    {
+      "music_id": 749,
+      "title": "99 Glooms",
+      "aliases": []
+    },
+    {
       "music_id": 755,
       "title": "初音狂奏曲第01番「彗惺」",
       "aliases": [
@@ -17069,6 +17099,11 @@
     {
       "music_id": 757,
       "title": "ひかりのあつめかた",
+      "aliases": []
+    },
+    {
+      "music_id": 760,
+      "title": "オールイン・ワン",
       "aliases": []
     }
   ]
