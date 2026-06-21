@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T02:58:23Z",
+  "generated_at": "2026-06-21T03:43:54Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -16836,7 +16836,9 @@
     {
       "music_id": 706,
       "title": "永遠甚だしい",
-      "aliases": []
+      "aliases": [
+        "永远至极"
+      ]
     },
     {
       "music_id": 707,
@@ -17049,7 +17051,9 @@
     {
       "music_id": 742,
       "title": "旅に帰る",
-      "aliases": []
+      "aliases": [
+        "重返旅途"
+      ]
     },
     {
       "music_id": 743,
@@ -17099,12 +17103,18 @@
     {
       "music_id": 757,
       "title": "ひかりのあつめかた",
-      "aliases": []
+      "aliases": [
+        "光的收集方式",
+        "光的收集方法"
+      ]
     },
     {
       "music_id": 760,
       "title": "オールイン・ワン",
-      "aliases": []
+      "aliases": [
+        "tks7",
+        "司7"
+      ]
     }
   ]
 }
