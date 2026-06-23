@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22T03:47:56Z",
+  "generated_at": "2026-06-23T02:52:25Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17066,7 +17066,11 @@
     {
       "music_id": 744,
       "title": "CHAOS",
-      "aliases": []
+      "aliases": [
+        "吵死",
+        "萝卜头",
+        "超市"
+      ]
     },
     {
       "music_id": 745,
