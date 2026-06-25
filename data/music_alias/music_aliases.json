@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24T02:53:19Z",
+  "generated_at": "2026-06-25T02:52:35Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -15939,7 +15939,9 @@
     {
       "music_id": 604,
       "title": "Packaged",
-      "aliases": []
+      "aliases": [
+        "包装"
+      ]
     },
     {
       "music_id": 605,
@@ -17090,7 +17092,11 @@
     {
       "music_id": 748,
       "title": "Saika",
-      "aliases": []
+      "aliases": [
+        "彩华",
+        "彩華",
+        "菜花"
+      ]
     },
     {
       "music_id": 749,
