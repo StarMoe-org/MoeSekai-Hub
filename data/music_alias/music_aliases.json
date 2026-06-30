@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T03:31:36Z",
+  "generated_at": "2026-06-30T02:56:41Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -16210,6 +16210,11 @@
       ]
     },
     {
+      "music_id": 631,
+      "title": "天才ロック",
+      "aliases": []
+    },
+    {
       "music_id": 632,
       "title": "Surges",
       "aliases": [
@@ -17051,6 +17056,11 @@
       ]
     },
     {
+      "music_id": 741,
+      "title": "アイ・メイカー！",
+      "aliases": []
+    },
+    {
       "music_id": 742,
       "title": "旅に帰る",
       "aliases": [
@@ -17109,6 +17119,11 @@
       "aliases": [
         "风呗"
       ]
+    },
+    {
+      "music_id": 756,
+      "title": "Gimme more!",
+      "aliases": []
     },
     {
       "music_id": 757,
