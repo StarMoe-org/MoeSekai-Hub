@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T02:56:08Z",
+  "generated_at": "2026-07-03T02:33:59Z",
   "source": {
     "wiki_page": "https://mzh.moegirl.org.cn/%E4%B8%96%E7%95%8C%E8%AE%A1%E5%88%92_%E5%BD%A9%E8%89%B2%E8%88%9E%E5%8F%B0_feat._%E5%88%9D%E9%9F%B3%E6%9C%AA%E6%9D%A5/%E5%8E%86%E5%8F%B2%E6%B4%BB%E5%8A%A8",
     "events_api": "https://database.pjsekai.moe/events.json"
@@ -48,6 +48,14 @@
     {
       "event_id": 207,
       "event_name": "Into the New Light"
+    },
+    {
+      "event_id": 208,
+      "event_name": "Phantom maze monster"
+    },
+    {
+      "event_id": 209,
+      "event_name": "アイドル・花里みのり～夢の最前線～"
     }
   ]
 }

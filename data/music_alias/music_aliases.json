@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-20T02:58:23Z",
+  "generated_at": "2026-07-03T02:36:02Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -15939,7 +15939,9 @@
     {
       "music_id": 604,
       "title": "Packaged",
-      "aliases": []
+      "aliases": [
+        "包装"
+      ]
     },
     {
       "music_id": 605,
@@ -16206,6 +16208,11 @@
         "knd6",
         "奏6"
       ]
+    },
+    {
+      "music_id": 631,
+      "title": "天才ロック",
+      "aliases": []
     },
     {
       "music_id": 632,
@@ -16836,7 +16843,9 @@
     {
       "music_id": 706,
       "title": "永遠甚だしい",
-      "aliases": []
+      "aliases": [
+        "永远至极"
+      ]
     },
     {
       "music_id": 707,
@@ -17047,9 +17056,16 @@
       ]
     },
     {
+      "music_id": 741,
+      "title": "アイ・メイカー！",
+      "aliases": []
+    },
+    {
       "music_id": 742,
       "title": "旅に帰る",
-      "aliases": []
+      "aliases": [
+        "重返旅途"
+      ]
     },
     {
       "music_id": 743,
@@ -17062,7 +17078,11 @@
     {
       "music_id": 744,
       "title": "CHAOS",
-      "aliases": []
+      "aliases": [
+        "吵死",
+        "萝卜头",
+        "超市"
+      ]
     },
     {
       "music_id": 745,
@@ -17082,7 +17102,11 @@
     {
       "music_id": 748,
       "title": "Saika",
-      "aliases": []
+      "aliases": [
+        "彩华",
+        "彩華",
+        "菜花"
+      ]
     },
     {
       "music_id": 749,
@@ -17097,14 +17121,25 @@
       ]
     },
     {
+      "music_id": 756,
+      "title": "Gimme more!",
+      "aliases": []
+    },
+    {
       "music_id": 757,
       "title": "ひかりのあつめかた",
-      "aliases": []
+      "aliases": [
+        "光的收集方式",
+        "光的收集方法"
+      ]
     },
     {
       "music_id": 760,
       "title": "オールイン・ワン",
-      "aliases": []
+      "aliases": [
+        "tks7",
+        "司7"
+      ]
     }
   ]
 }
