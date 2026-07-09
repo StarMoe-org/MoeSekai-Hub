@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08T02:22:59Z",
+  "generated_at": "2026-07-09T02:35:58Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17114,6 +17114,11 @@
       "aliases": []
     },
     {
+      "music_id": 754,
+      "title": "光",
+      "aliases": []
+    },
+    {
       "music_id": 755,
       "title": "初音狂奏曲第01番「彗惺」",
       "aliases": [
@@ -17132,6 +17137,16 @@
         "光的收集方式",
         "光的收集方法"
       ]
+    },
+    {
+      "music_id": 758,
+      "title": "ラプス",
+      "aliases": []
+    },
+    {
+      "music_id": 759,
+      "title": "ハナタバ",
+      "aliases": []
     },
     {
       "music_id": 760,
