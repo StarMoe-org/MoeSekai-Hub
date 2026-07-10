@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T02:35:58Z",
+  "generated_at": "2026-07-10T02:37:56Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -609,6 +609,7 @@
         "43",
         "arcaea联动",
         "kusanagi nene",
+        "nekusutonesuto",
         "next",
         "next nest",
         "nn",
@@ -15709,6 +15710,7 @@
         "chinozo3",
         "hrk5",
         "主人公2",
+        "俺踢你",
         "反了你",
         "反你",
         "反对你",
@@ -16212,7 +16214,9 @@
     {
       "music_id": 631,
       "title": "天才ロック",
-      "aliases": []
+      "aliases": [
+        "天才摇滚"
+      ]
     },
     {
       "music_id": 632,
@@ -17058,7 +17062,9 @@
     {
       "music_id": 741,
       "title": "アイ・メイカー！",
-      "aliases": []
+      "aliases": [
+        "i marker"
+      ]
     },
     {
       "music_id": 742,
@@ -17087,7 +17093,11 @@
     {
       "music_id": 745,
       "title": "ANiMA",
-      "aliases": []
+      "aliases": [
+        "2212212222",
+        "Deemo招牌曲",
+        "阿尼玛"
+      ]
     },
     {
       "music_id": 746,
@@ -17111,12 +17121,18 @@
     {
       "music_id": 749,
       "title": "99 Glooms",
-      "aliases": []
+      "aliases": [
+        "99G"
+      ]
     },
     {
       "music_id": 754,
       "title": "光",
-      "aliases": []
+      "aliases": [
+        "ena7",
+        "hikari",
+        "画7"
+      ]
     },
     {
       "music_id": 755,
@@ -17128,7 +17144,10 @@
     {
       "music_id": 756,
       "title": "Gimme more!",
-      "aliases": []
+      "aliases": [
+        "mnr7",
+        "给我摸"
+      ]
     },
     {
       "music_id": 757,
@@ -17152,6 +17171,7 @@
       "music_id": 760,
       "title": "オールイン・ワン",
       "aliases": [
+        "all in one",
         "tks7",
         "司7"
       ]
