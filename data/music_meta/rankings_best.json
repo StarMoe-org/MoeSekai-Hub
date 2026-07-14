@@ -1,6 +1,6 @@
 {
   "total_songs": 697,
-  "generated_at": "2026-07-13 02:25:32",
+  "generated_at": "2026-07-14 02:05:37",
   "rankings": {
     "pt_per_hour_multi": [
       {
@@ -2497,269 +2497,269 @@
       },
       {
         "rank": 357,
-        "music_id": 759,
-        "difficulty": "expert",
-        "value": 212072,
-        "pspi": 1045.3
-      },
-      {
-        "rank": 358,
         "music_id": 296,
         "difficulty": "master",
         "value": 212055,
         "pspi": 1045.3
       },
       {
-        "rank": 359,
+        "rank": 358,
         "music_id": 510,
         "difficulty": "expert",
         "value": 212055,
         "pspi": 1045.3
       },
       {
-        "rank": 360,
+        "rank": 359,
         "music_id": 572,
         "difficulty": "master",
         "value": 212055,
         "pspi": 1045.3
       },
       {
-        "rank": 361,
+        "rank": 360,
         "music_id": 724,
         "difficulty": "master",
         "value": 212055,
         "pspi": 1045.3
       },
       {
-        "rank": 362,
+        "rank": 361,
         "music_id": 233,
         "difficulty": "master",
         "value": 211974,
         "pspi": 1044.9
       },
       {
-        "rank": 363,
+        "rank": 362,
         "music_id": 664,
         "difficulty": "expert",
         "value": 211974,
         "pspi": 1044.9
       },
       {
-        "rank": 364,
+        "rank": 363,
         "music_id": 685,
         "difficulty": "master",
         "value": 211932,
         "pspi": 1044.7
       },
       {
-        "rank": 365,
+        "rank": 364,
         "music_id": 165,
         "difficulty": "expert",
         "value": 211926,
         "pspi": 1044.6
       },
       {
-        "rank": 366,
+        "rank": 365,
         "music_id": 469,
         "difficulty": "master",
         "value": 211926,
         "pspi": 1044.6
       },
       {
-        "rank": 367,
+        "rank": 366,
         "music_id": 173,
         "difficulty": "master",
         "value": 211896,
         "pspi": 1044.5
       },
       {
-        "rank": 368,
+        "rank": 367,
         "music_id": 463,
         "difficulty": "expert",
         "value": 211896,
         "pspi": 1044.5
       },
       {
-        "rank": 369,
+        "rank": 368,
         "music_id": 504,
         "difficulty": "master",
         "value": 211896,
         "pspi": 1044.5
       },
       {
-        "rank": 370,
+        "rank": 369,
         "music_id": 521,
         "difficulty": "master",
         "value": 211896,
         "pspi": 1044.5
       },
       {
-        "rank": 371,
+        "rank": 370,
         "music_id": 756,
         "difficulty": "master",
         "value": 211882,
         "pspi": 1044.4
       },
       {
-        "rank": 372,
+        "rank": 371,
         "music_id": 172,
         "difficulty": "master",
         "value": 211860,
         "pspi": 1044.3
       },
       {
-        "rank": 373,
+        "rank": 372,
         "music_id": 505,
         "difficulty": "expert",
         "value": 211828,
         "pspi": 1044.1
       },
       {
-        "rank": 374,
+        "rank": 373,
         "music_id": 8,
         "difficulty": "master",
         "value": 211788,
         "pspi": 1043.9
       },
       {
-        "rank": 375,
+        "rank": 374,
         "music_id": 428,
         "difficulty": "master",
         "value": 211788,
         "pspi": 1043.9
       },
       {
-        "rank": 376,
+        "rank": 375,
         "music_id": 438,
         "difficulty": "master",
         "value": 211788,
         "pspi": 1043.9
       },
       {
-        "rank": 377,
+        "rank": 376,
         "music_id": 458,
         "difficulty": "master",
         "value": 211788,
         "pspi": 1043.9
       },
       {
-        "rank": 378,
+        "rank": 377,
         "music_id": 695,
         "difficulty": "master",
         "value": 211788,
         "pspi": 1043.9
       },
       {
-        "rank": 379,
+        "rank": 378,
         "music_id": 705,
         "difficulty": "master",
         "value": 211788,
         "pspi": 1043.9
       },
       {
-        "rank": 380,
+        "rank": 379,
         "music_id": 561,
         "difficulty": "master",
         "value": 211665,
         "pspi": 1043.3
       },
       {
-        "rank": 381,
+        "rank": 380,
         "music_id": 454,
         "difficulty": "master",
         "value": 211050,
         "pspi": 1040.3
       },
       {
-        "rank": 382,
+        "rank": 381,
         "music_id": 648,
         "difficulty": "master",
         "value": 211050,
         "pspi": 1040.3
       },
       {
-        "rank": 383,
+        "rank": 382,
         "music_id": 650,
         "difficulty": "master",
         "value": 211050,
         "pspi": 1040.3
       },
       {
-        "rank": 384,
+        "rank": 383,
         "music_id": 704,
         "difficulty": "expert",
         "value": 211047,
         "pspi": 1040.3
       },
       {
-        "rank": 385,
+        "rank": 384,
         "music_id": 654,
         "difficulty": "master",
         "value": 210888,
         "pspi": 1039.5
       },
       {
-        "rank": 386,
+        "rank": 385,
         "music_id": 697,
         "difficulty": "master",
         "value": 210870,
         "pspi": 1039.4
       },
       {
-        "rank": 387,
+        "rank": 386,
         "music_id": 537,
         "difficulty": "master",
         "value": 210830,
         "pspi": 1039.2
       },
       {
-        "rank": 388,
+        "rank": 387,
         "music_id": 596,
         "difficulty": "master",
         "value": 210830,
         "pspi": 1039.2
       },
       {
-        "rank": 389,
+        "rank": 388,
         "music_id": 758,
         "difficulty": "master",
         "value": 210789,
         "pspi": 1039.0
       },
       {
-        "rank": 390,
+        "rank": 389,
         "music_id": 496,
         "difficulty": "expert",
         "value": 210714,
         "pspi": 1038.7
       },
       {
-        "rank": 391,
+        "rank": 390,
         "music_id": 621,
         "difficulty": "master",
         "value": 210714,
         "pspi": 1038.7
       },
       {
-        "rank": 392,
+        "rank": 391,
         "music_id": 693,
         "difficulty": "master",
         "value": 210638,
         "pspi": 1038.3
       },
       {
-        "rank": 393,
+        "rank": 392,
         "music_id": 614,
         "difficulty": "master",
         "value": 210600,
         "pspi": 1038.1
       },
       {
-        "rank": 394,
+        "rank": 393,
         "music_id": 157,
         "difficulty": "master",
         "value": 210282,
         "pspi": 1036.5
+      },
+      {
+        "rank": 394,
+        "music_id": 759,
+        "difficulty": "expert",
+        "value": 210208,
+        "pspi": 1036.2
       },
       {
         "rank": 395,
@@ -7651,241 +7651,241 @@
       },
       {
         "rank": 396,
-        "music_id": 759,
-        "difficulty": "expert",
-        "value": 170610,
-        "pspi": 1013.9
-      },
-      {
-        "rank": 397,
         "music_id": 596,
         "difficulty": "master",
         "value": 170610,
         "pspi": 1013.9
       },
       {
-        "rank": 398,
+        "rank": 397,
         "music_id": 682,
         "difficulty": "master",
         "value": 170610,
         "pspi": 1013.9
       },
       {
-        "rank": 399,
+        "rank": 398,
         "music_id": 737,
         "difficulty": "master",
         "value": 170595,
         "pspi": 1013.9
       },
       {
-        "rank": 400,
+        "rank": 399,
         "music_id": 611,
         "difficulty": "master",
         "value": 170595,
         "pspi": 1013.9
       },
       {
-        "rank": 401,
+        "rank": 400,
         "music_id": 348,
         "difficulty": "master",
         "value": 170391,
         "pspi": 1012.6
       },
       {
-        "rank": 402,
+        "rank": 401,
         "music_id": 746,
         "difficulty": "append",
         "value": 170391,
         "pspi": 1012.6
       },
       {
-        "rank": 403,
+        "rank": 402,
         "music_id": 294,
         "difficulty": "master",
         "value": 170391,
         "pspi": 1012.6
       },
       {
-        "rank": 404,
+        "rank": 403,
         "music_id": 274,
         "difficulty": "master",
         "value": 170391,
         "pspi": 1012.6
       },
       {
-        "rank": 405,
+        "rank": 404,
         "music_id": 534,
         "difficulty": "master",
         "value": 170280,
         "pspi": 1012.0
       },
       {
-        "rank": 406,
+        "rank": 405,
         "music_id": 454,
         "difficulty": "master",
         "value": 170260,
         "pspi": 1011.9
       },
       {
-        "rank": 407,
+        "rank": 406,
         "music_id": 324,
         "difficulty": "master",
         "value": 170163,
         "pspi": 1011.3
       },
       {
-        "rank": 408,
+        "rank": 407,
         "music_id": 496,
         "difficulty": "master",
         "value": 170100,
         "pspi": 1010.9
       },
       {
-        "rank": 409,
+        "rank": 408,
         "music_id": 708,
         "difficulty": "master",
         "value": 170060,
         "pspi": 1010.7
       },
       {
-        "rank": 410,
+        "rank": 409,
         "music_id": 567,
         "difficulty": "hard",
         "value": 170040,
         "pspi": 1010.6
       },
       {
-        "rank": 411,
+        "rank": 410,
         "music_id": 726,
         "difficulty": "master",
         "value": 170016,
         "pspi": 1010.4
       },
       {
-        "rank": 412,
+        "rank": 411,
         "music_id": 518,
         "difficulty": "master",
         "value": 169911,
         "pspi": 1009.8
       },
       {
-        "rank": 413,
+        "rank": 412,
         "music_id": 638,
         "difficulty": "master",
         "value": 169911,
         "pspi": 1009.8
       },
       {
-        "rank": 414,
+        "rank": 413,
         "music_id": 128,
         "difficulty": "append",
         "value": 169911,
         "pspi": 1009.8
       },
       {
-        "rank": 415,
+        "rank": 414,
         "music_id": 664,
         "difficulty": "expert",
         "value": 169834,
         "pspi": 1009.3
       },
       {
-        "rank": 416,
+        "rank": 415,
         "music_id": 618,
         "difficulty": "master",
         "value": 169834,
         "pspi": 1009.3
       },
       {
-        "rank": 417,
+        "rank": 416,
         "music_id": 603,
         "difficulty": "master",
         "value": 169834,
         "pspi": 1009.3
       },
       {
-        "rank": 418,
+        "rank": 417,
         "music_id": 430,
         "difficulty": "master",
         "value": 169620,
         "pspi": 1008.1
       },
       {
-        "rank": 419,
+        "rank": 418,
         "music_id": 494,
         "difficulty": "master",
         "value": 169620,
         "pspi": 1008.1
       },
       {
-        "rank": 420,
+        "rank": 419,
         "music_id": 316,
         "difficulty": "master",
         "value": 169620,
         "pspi": 1008.1
       },
       {
-        "rank": 421,
+        "rank": 420,
         "music_id": 659,
         "difficulty": "master",
         "value": 169497,
         "pspi": 1007.3
       },
       {
-        "rank": 422,
+        "rank": 421,
         "music_id": 681,
         "difficulty": "master",
         "value": 169497,
         "pspi": 1007.3
       },
       {
-        "rank": 423,
+        "rank": 422,
         "music_id": 407,
         "difficulty": "master",
         "value": 169494,
         "pspi": 1007.3
       },
       {
-        "rank": 424,
+        "rank": 423,
         "music_id": 211,
         "difficulty": "append",
         "value": 169386,
         "pspi": 1006.7
       },
       {
-        "rank": 425,
+        "rank": 424,
         "music_id": 143,
         "difficulty": "master",
         "value": 169386,
         "pspi": 1006.7
       },
       {
-        "rank": 426,
+        "rank": 425,
         "music_id": 542,
         "difficulty": "expert",
         "value": 169386,
         "pspi": 1006.7
       },
       {
-        "rank": 427,
+        "rank": 426,
         "music_id": 556,
         "difficulty": "master",
         "value": 169386,
         "pspi": 1006.7
       },
       {
-        "rank": 428,
+        "rank": 427,
         "music_id": 612,
         "difficulty": "master",
         "value": 169386,
         "pspi": 1006.7
       },
       {
-        "rank": 429,
+        "rank": 428,
         "music_id": 621,
         "difficulty": "master",
         "value": 169312,
         "pspi": 1006.2
+      },
+      {
+        "rank": 429,
+        "music_id": 759,
+        "difficulty": "expert",
+        "value": 169290,
+        "pspi": 1006.1
       },
       {
         "rank": 430,
@@ -26580,561 +26580,561 @@
       },
       {
         "rank": 311,
-        "music_id": 759,
-        "difficulty": "expert",
-        "value": 7755,
-        "pspi": 1050.8
-      },
-      {
-        "rank": 312,
         "music_id": 596,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 313,
+        "rank": 312,
         "music_id": 618,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 314,
+        "rank": 313,
         "music_id": 469,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 315,
+        "rank": 314,
         "music_id": 483,
         "difficulty": "expert",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 316,
+        "rank": 315,
         "music_id": 515,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 317,
+        "rank": 316,
         "music_id": 603,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 318,
+        "rank": 317,
         "music_id": 492,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 319,
+        "rank": 318,
         "music_id": 595,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 320,
+        "rank": 319,
         "music_id": 682,
         "difficulty": "master",
         "value": 7755,
         "pspi": 1050.8
       },
       {
-        "rank": 321,
+        "rank": 320,
         "music_id": 174,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 322,
+        "rank": 321,
         "music_id": 499,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 323,
+        "rank": 322,
         "music_id": 28,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 324,
+        "rank": 323,
         "music_id": 477,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 325,
+        "rank": 324,
         "music_id": 520,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 326,
+        "rank": 325,
         "music_id": 548,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 327,
+        "rank": 326,
         "music_id": 586,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 328,
+        "rank": 327,
         "music_id": 587,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 329,
+        "rank": 328,
         "music_id": 688,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 330,
+        "rank": 329,
         "music_id": 46,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 331,
+        "rank": 330,
         "music_id": 113,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 332,
+        "rank": 331,
         "music_id": 179,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 333,
+        "rank": 332,
         "music_id": 451,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 334,
+        "rank": 333,
         "music_id": 503,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 335,
+        "rank": 334,
         "music_id": 553,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 336,
+        "rank": 335,
         "music_id": 557,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 337,
+        "rank": 336,
         "music_id": 127,
         "difficulty": "append",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 338,
+        "rank": 337,
         "music_id": 244,
         "difficulty": "append",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 339,
+        "rank": 338,
         "music_id": 182,
         "difficulty": "append",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 340,
+        "rank": 339,
         "music_id": 69,
         "difficulty": "append",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 341,
+        "rank": 340,
         "music_id": 196,
         "difficulty": "append",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 342,
+        "rank": 341,
         "music_id": 473,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 343,
+        "rank": 342,
         "music_id": 660,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 344,
+        "rank": 343,
         "music_id": 44,
         "difficulty": "append",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 345,
+        "rank": 344,
         "music_id": 534,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 346,
+        "rank": 345,
         "music_id": 572,
         "difficulty": "master",
         "value": 7740,
         "pspi": 1048.8
       },
       {
-        "rank": 347,
+        "rank": 346,
         "music_id": 21,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 348,
+        "rank": 347,
         "music_id": 45,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 349,
+        "rank": 348,
         "music_id": 558,
         "difficulty": "append",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 350,
+        "rank": 349,
         "music_id": 551,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 351,
+        "rank": 350,
         "music_id": 159,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 352,
+        "rank": 351,
         "music_id": 626,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 353,
+        "rank": 352,
         "music_id": 267,
         "difficulty": "append",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 354,
+        "rank": 353,
         "music_id": 86,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 355,
+        "rank": 354,
         "music_id": 177,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 356,
+        "rank": 355,
         "music_id": 222,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 357,
+        "rank": 356,
         "music_id": 573,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 358,
+        "rank": 357,
         "music_id": 589,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 359,
+        "rank": 358,
         "music_id": 27,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 360,
+        "rank": 359,
         "music_id": 734,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 361,
+        "rank": 360,
         "music_id": 749,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 362,
+        "rank": 361,
         "music_id": 757,
         "difficulty": "expert",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 363,
+        "rank": 362,
         "music_id": 87,
         "difficulty": "master",
         "value": 7725,
         "pspi": 1046.7
       },
       {
-        "rank": 364,
+        "rank": 363,
         "music_id": 105,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 365,
+        "rank": 364,
         "music_id": 430,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 366,
+        "rank": 365,
         "music_id": 165,
         "difficulty": "expert",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 367,
+        "rank": 366,
         "music_id": 494,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 368,
+        "rank": 367,
         "music_id": 316,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 369,
+        "rank": 368,
         "music_id": 348,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 370,
+        "rank": 369,
         "music_id": 710,
         "difficulty": "expert",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 371,
+        "rank": 370,
         "music_id": 43,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 372,
+        "rank": 371,
         "music_id": 464,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 373,
+        "rank": 372,
         "music_id": 476,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 374,
+        "rank": 373,
         "music_id": 632,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 375,
+        "rank": 374,
         "music_id": 639,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 376,
+        "rank": 375,
         "music_id": 651,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 377,
+        "rank": 376,
         "music_id": 746,
         "difficulty": "append",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 378,
+        "rank": 377,
         "music_id": 294,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 379,
+        "rank": 378,
         "music_id": 274,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 380,
+        "rank": 379,
         "music_id": 516,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 381,
+        "rank": 380,
         "music_id": 702,
         "difficulty": "master",
         "value": 7710,
         "pspi": 1044.7
       },
       {
-        "rank": 382,
+        "rank": 381,
         "music_id": 562,
         "difficulty": "expert",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 383,
+        "rank": 382,
         "music_id": 1,
         "difficulty": "append",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 384,
+        "rank": 383,
         "music_id": 345,
         "difficulty": "master",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 385,
+        "rank": 384,
         "music_id": 636,
         "difficulty": "master",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 386,
+        "rank": 385,
         "music_id": 236,
         "difficulty": "master",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 387,
+        "rank": 386,
         "music_id": 481,
         "difficulty": "master",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 388,
+        "rank": 387,
         "music_id": 555,
         "difficulty": "expert",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 389,
+        "rank": 388,
         "music_id": 571,
         "difficulty": "master",
         "value": 7695,
         "pspi": 1042.7
       },
       {
-        "rank": 390,
+        "rank": 389,
         "music_id": 708,
         "difficulty": "master",
+        "value": 7695,
+        "pspi": 1042.7
+      },
+      {
+        "rank": 390,
+        "music_id": 759,
+        "difficulty": "expert",
         "value": 7695,
         "pspi": 1042.7
       },
@@ -31552,539 +31552,539 @@
       },
       {
         "rank": 324,
-        "music_id": 759,
-        "difficulty": "master",
-        "value": 9045,
-        "pspi": 1082.6
-      },
-      {
-        "rank": 325,
         "music_id": 159,
         "difficulty": "master",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 326,
+        "rank": 325,
         "music_id": 626,
         "difficulty": "master",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 327,
+        "rank": 326,
         "music_id": 677,
         "difficulty": "master",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 328,
+        "rank": 327,
         "music_id": 102,
         "difficulty": "expert",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 329,
+        "rank": 328,
         "music_id": 165,
         "difficulty": "expert",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 330,
+        "rank": 329,
         "music_id": 469,
         "difficulty": "master",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 331,
+        "rank": 330,
         "music_id": 494,
         "difficulty": "master",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 332,
+        "rank": 331,
         "music_id": 228,
         "difficulty": "expert",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 333,
+        "rank": 332,
         "music_id": 595,
         "difficulty": "master",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 334,
+        "rank": 333,
         "music_id": 615,
         "difficulty": "master",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 335,
+        "rank": 334,
         "music_id": 746,
         "difficulty": "append",
         "value": 9045,
         "pspi": 1082.6
       },
       {
-        "rank": 336,
+        "rank": 335,
         "music_id": 542,
         "difficulty": "expert",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 337,
+        "rank": 336,
         "music_id": 50,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 338,
+        "rank": 337,
         "music_id": 612,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 339,
+        "rank": 338,
         "music_id": 86,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 340,
+        "rank": 339,
         "music_id": 177,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 341,
+        "rank": 340,
         "music_id": 222,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 342,
+        "rank": 341,
         "music_id": 305,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 343,
+        "rank": 342,
         "music_id": 573,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 344,
+        "rank": 343,
         "music_id": 589,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 345,
+        "rank": 344,
         "music_id": 734,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 346,
+        "rank": 345,
         "music_id": 749,
         "difficulty": "master",
         "value": 9030,
         "pspi": 1080.8
       },
       {
-        "rank": 347,
+        "rank": 346,
         "music_id": 562,
         "difficulty": "append",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 348,
+        "rank": 347,
         "music_id": 477,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 349,
+        "rank": 348,
         "music_id": 520,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 350,
+        "rank": 349,
         "music_id": 548,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 351,
+        "rank": 350,
         "music_id": 597,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 352,
+        "rank": 351,
         "music_id": 1,
         "difficulty": "append",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 353,
+        "rank": 352,
         "music_id": 3,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 354,
+        "rank": 353,
         "music_id": 179,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 355,
+        "rank": 354,
         "music_id": 553,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 356,
+        "rank": 355,
         "music_id": 557,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 357,
+        "rank": 356,
         "music_id": 244,
         "difficulty": "append",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 358,
+        "rank": 357,
         "music_id": 182,
         "difficulty": "append",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 359,
+        "rank": 358,
         "music_id": 69,
         "difficulty": "append",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 360,
+        "rank": 359,
         "music_id": 236,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 361,
+        "rank": 360,
         "music_id": 473,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 362,
+        "rank": 361,
         "music_id": 555,
         "difficulty": "expert",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 363,
+        "rank": 362,
         "music_id": 660,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 364,
+        "rank": 363,
         "music_id": 450,
         "difficulty": "append",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 365,
+        "rank": 364,
         "music_id": 44,
         "difficulty": "append",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 366,
+        "rank": 365,
         "music_id": 110,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 367,
+        "rank": 366,
         "music_id": 592,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 368,
+        "rank": 367,
         "music_id": 414,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 369,
+        "rank": 368,
         "music_id": 724,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 370,
+        "rank": 369,
         "music_id": 485,
         "difficulty": "master",
         "value": 9015,
         "pspi": 1079.0
       },
       {
-        "rank": 371,
+        "rank": 370,
         "music_id": 45,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 372,
+        "rank": 371,
         "music_id": 509,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 373,
+        "rank": 372,
         "music_id": 430,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 374,
+        "rank": 373,
         "music_id": 700,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 375,
+        "rank": 374,
         "music_id": 440,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 376,
+        "rank": 375,
         "music_id": 483,
         "difficulty": "expert",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 377,
+        "rank": 376,
         "music_id": 603,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 378,
+        "rank": 377,
         "music_id": 93,
         "difficulty": "append",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 379,
+        "rank": 378,
         "music_id": 727,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 380,
+        "rank": 379,
         "music_id": 316,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 381,
+        "rank": 380,
         "music_id": 348,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 382,
+        "rank": 381,
         "music_id": 492,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 383,
+        "rank": 382,
         "music_id": 682,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 384,
+        "rank": 383,
         "music_id": 710,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 385,
+        "rank": 384,
         "music_id": 43,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 386,
+        "rank": 385,
         "music_id": 639,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 387,
+        "rank": 386,
         "music_id": 651,
         "difficulty": "master",
         "value": 9000,
         "pspi": 1077.2
       },
       {
-        "rank": 388,
+        "rank": 387,
         "music_id": 374,
         "difficulty": "master",
         "value": 8985,
         "pspi": 1075.4
       },
       {
-        "rank": 389,
+        "rank": 388,
         "music_id": 105,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 390,
+        "rank": 389,
         "music_id": 522,
         "difficulty": "append",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 391,
+        "rank": 390,
         "music_id": 314,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 392,
+        "rank": 391,
         "music_id": 544,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 393,
+        "rank": 392,
         "music_id": 656,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 394,
+        "rank": 393,
         "music_id": 424,
         "difficulty": "append",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 395,
+        "rank": 394,
         "music_id": 345,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 396,
+        "rank": 395,
         "music_id": 636,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 397,
+        "rank": 396,
         "music_id": 196,
         "difficulty": "append",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 398,
+        "rank": 397,
         "music_id": 549,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 399,
+        "rank": 398,
         "music_id": 481,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
       },
       {
-        "rank": 400,
+        "rank": 399,
         "music_id": 571,
+        "difficulty": "master",
+        "value": 8970,
+        "pspi": 1073.6
+      },
+      {
+        "rank": 400,
+        "music_id": 759,
         "difficulty": "master",
         "value": 8970,
         "pspi": 1073.6
@@ -36013,610 +36013,610 @@
       },
       {
         "rank": 264,
-        "music_id": 759,
-        "difficulty": "expert",
-        "value": 10245,
-        "pspi": 1080.7
-      },
-      {
-        "rank": 265,
         "music_id": 291,
         "difficulty": "append",
         "value": 10245,
         "pspi": 1080.7
       },
       {
-        "rank": 266,
+        "rank": 265,
         "music_id": 160,
         "difficulty": "append",
         "value": 10245,
         "pspi": 1080.7
       },
       {
-        "rank": 267,
+        "rank": 266,
         "music_id": 3,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 268,
+        "rank": 267,
         "music_id": 64,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 269,
+        "rank": 268,
         "music_id": 158,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 270,
+        "rank": 269,
         "music_id": 288,
         "difficulty": "expert",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 271,
+        "rank": 270,
         "music_id": 314,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 272,
+        "rank": 271,
         "music_id": 388,
         "difficulty": "append",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 273,
+        "rank": 272,
         "music_id": 397,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 274,
+        "rank": 273,
         "music_id": 398,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 275,
+        "rank": 274,
         "music_id": 426,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 276,
+        "rank": 275,
         "music_id": 457,
         "difficulty": "expert",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 277,
+        "rank": 276,
         "music_id": 533,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 278,
+        "rank": 277,
         "music_id": 544,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 279,
+        "rank": 278,
         "music_id": 620,
         "difficulty": "expert",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 280,
+        "rank": 279,
         "music_id": 623,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 281,
+        "rank": 280,
         "music_id": 624,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 282,
+        "rank": 281,
         "music_id": 656,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 283,
+        "rank": 282,
         "music_id": 658,
         "difficulty": "master",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 284,
+        "rank": 283,
         "music_id": 698,
         "difficulty": "expert",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 285,
+        "rank": 284,
         "music_id": 188,
         "difficulty": "append",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 286,
+        "rank": 285,
         "music_id": 89,
         "difficulty": "append",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 287,
+        "rank": 286,
         "music_id": 211,
         "difficulty": "append",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 288,
+        "rank": 287,
         "music_id": 424,
         "difficulty": "append",
         "value": 10230,
         "pspi": 1079.1
       },
       {
-        "rank": 289,
+        "rank": 288,
         "music_id": 159,
         "difficulty": "master",
         "value": 10215,
         "pspi": 1077.5
       },
       {
-        "rank": 290,
+        "rank": 289,
         "music_id": 200,
         "difficulty": "master",
         "value": 10215,
         "pspi": 1077.5
       },
       {
-        "rank": 291,
+        "rank": 290,
         "music_id": 269,
         "difficulty": "master",
         "value": 10215,
         "pspi": 1077.5
       },
       {
-        "rank": 292,
+        "rank": 291,
         "music_id": 312,
         "difficulty": "master",
         "value": 10215,
         "pspi": 1077.5
       },
       {
-        "rank": 293,
+        "rank": 292,
         "music_id": 392,
         "difficulty": "master",
         "value": 10215,
         "pspi": 1077.5
       },
       {
-        "rank": 294,
+        "rank": 293,
         "music_id": 700,
         "difficulty": "master",
         "value": 10215,
         "pspi": 1077.5
       },
       {
-        "rank": 295,
+        "rank": 294,
         "music_id": 11,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 296,
+        "rank": 295,
         "music_id": 46,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 297,
+        "rank": 296,
         "music_id": 83,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 298,
+        "rank": 297,
         "music_id": 113,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 299,
+        "rank": 298,
         "music_id": 179,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 300,
+        "rank": 299,
         "music_id": 214,
         "difficulty": "expert",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 301,
+        "rank": 300,
         "music_id": 255,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 302,
+        "rank": 301,
         "music_id": 266,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 303,
+        "rank": 302,
         "music_id": 309,
         "difficulty": "expert",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 304,
+        "rank": 303,
         "music_id": 345,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 305,
+        "rank": 304,
         "music_id": 350,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 306,
+        "rank": 305,
         "music_id": 362,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 307,
+        "rank": 306,
         "music_id": 404,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 308,
+        "rank": 307,
         "music_id": 451,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 309,
+        "rank": 308,
         "music_id": 503,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 310,
+        "rank": 309,
         "music_id": 553,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 311,
+        "rank": 310,
         "music_id": 557,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 312,
+        "rank": 311,
         "music_id": 591,
         "difficulty": "expert",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 313,
+        "rank": 312,
         "music_id": 636,
         "difficulty": "master",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 314,
+        "rank": 313,
         "music_id": 127,
         "difficulty": "append",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 315,
+        "rank": 314,
         "music_id": 244,
         "difficulty": "append",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 316,
+        "rank": 315,
         "music_id": 182,
         "difficulty": "append",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 317,
+        "rank": 316,
         "music_id": 69,
         "difficulty": "append",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 318,
+        "rank": 317,
         "music_id": 644,
         "difficulty": "append",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 319,
+        "rank": 318,
         "music_id": 196,
         "difficulty": "append",
         "value": 10200,
         "pspi": 1075.9
       },
       {
-        "rank": 320,
+        "rank": 319,
         "music_id": 225,
         "difficulty": "master",
         "value": 10185,
         "pspi": 1074.4
       },
       {
-        "rank": 321,
+        "rank": 320,
         "music_id": 374,
         "difficulty": "master",
         "value": 10185,
         "pspi": 1074.4
       },
       {
-        "rank": 322,
+        "rank": 321,
         "music_id": 393,
         "difficulty": "master",
         "value": 10185,
         "pspi": 1074.4
       },
       {
-        "rank": 323,
+        "rank": 322,
         "music_id": 537,
         "difficulty": "master",
         "value": 10185,
         "pspi": 1074.4
       },
       {
-        "rank": 324,
+        "rank": 323,
         "music_id": 596,
         "difficulty": "master",
         "value": 10185,
         "pspi": 1074.4
       },
       {
-        "rank": 325,
+        "rank": 324,
         "music_id": 618,
         "difficulty": "master",
         "value": 10185,
         "pspi": 1074.4
       },
       {
-        "rank": 326,
+        "rank": 325,
         "music_id": 94,
         "difficulty": "append",
         "value": 10185,
         "pspi": 1074.4
       },
       {
-        "rank": 327,
+        "rank": 326,
         "music_id": 108,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 328,
+        "rank": 327,
         "music_id": 143,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 329,
+        "rank": 328,
         "music_id": 433,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 330,
+        "rank": 329,
         "music_id": 440,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 331,
+        "rank": 330,
         "music_id": 523,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 332,
+        "rank": 331,
         "music_id": 542,
         "difficulty": "expert",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 333,
+        "rank": 332,
         "music_id": 549,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 334,
+        "rank": 333,
         "music_id": 626,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 335,
+        "rank": 334,
         "music_id": 634,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 336,
+        "rank": 335,
         "music_id": 643,
         "difficulty": "expert",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 337,
+        "rank": 336,
         "music_id": 663,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 338,
+        "rank": 337,
         "music_id": 677,
         "difficulty": "master",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 339,
+        "rank": 338,
         "music_id": 687,
         "difficulty": "expert",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 340,
+        "rank": 339,
         "music_id": 267,
         "difficulty": "append",
         "value": 10170,
         "pspi": 1072.8
       },
       {
-        "rank": 341,
+        "rank": 340,
         "music_id": 102,
         "difficulty": "expert",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 342,
+        "rank": 341,
         "music_id": 236,
         "difficulty": "master",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 343,
+        "rank": 342,
         "music_id": 386,
         "difficulty": "hard",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 344,
+        "rank": 343,
         "music_id": 473,
         "difficulty": "hard",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 345,
+        "rank": 344,
         "music_id": 481,
         "difficulty": "master",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 346,
+        "rank": 345,
         "music_id": 555,
         "difficulty": "expert",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 347,
+        "rank": 346,
         "music_id": 571,
         "difficulty": "master",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 348,
+        "rank": 347,
         "music_id": 660,
         "difficulty": "master",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 349,
+        "rank": 348,
         "music_id": 703,
         "difficulty": "master",
         "value": 10155,
         "pspi": 1071.2
       },
       {
-        "rank": 350,
+        "rank": 349,
         "music_id": 708,
         "difficulty": "master",
+        "value": 10155,
+        "pspi": 1071.2
+      },
+      {
+        "rank": 350,
+        "music_id": 759,
+        "difficulty": "expert",
         "value": 10155,
         "pspi": 1071.2
       },
@@ -41405,20 +41405,20 @@
       },
       {
         "rank": 393,
-        "music_id": 759,
-        "difficulty": "expert",
-        "value": 20.7
-      },
-      {
-        "rank": 394,
         "music_id": 537,
         "difficulty": "master",
         "value": 20.7
       },
       {
-        "rank": 395,
+        "rank": 394,
         "music_id": 596,
         "difficulty": "master",
+        "value": 20.7
+      },
+      {
+        "rank": 395,
+        "music_id": 759,
+        "difficulty": "expert",
         "value": 20.7
       },
       {
