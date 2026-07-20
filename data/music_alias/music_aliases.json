@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-19T02:16:19Z",
+  "generated_at": "2026-07-20T02:37:20Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17175,6 +17175,21 @@
         "tks7",
         "司7"
       ]
+    },
+    {
+      "music_id": 790,
+      "title": "ピッコーン！！",
+      "aliases": []
+    },
+    {
+      "music_id": 791,
+      "title": "シティライツ",
+      "aliases": []
+    },
+    {
+      "music_id": 792,
+      "title": "アストロノーツ",
+      "aliases": []
     }
   ]
 }
