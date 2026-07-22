@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21T02:15:14Z",
+  "generated_at": "2026-07-22T02:13:40Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
