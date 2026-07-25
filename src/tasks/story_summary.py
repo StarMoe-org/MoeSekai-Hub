@@ -15,7 +15,7 @@ from src.common.io import read_json, write_json
 
 _DEFAULT_OUTPUT_DIR = Path("story/detail")
 _JSON_BLOCK_PATTERN = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
-_MASTER_BASE_URL = "https://sekaimaster.exmeaning.com/master"
+_MASTER_BASE_URL = "https://metadata.exmeaning.com/jp/master"
 
 _TALK_ACTION = 6
 _SPECIAL_EFFECT_ACTION = 1

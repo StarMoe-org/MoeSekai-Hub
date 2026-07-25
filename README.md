@@ -10,9 +10,6 @@
 5. PJSK BGM / MySekai BGM 时长索引
 6. PJSK 活动剧情摘要（AI生成的中文翻译与总结）
 
-**已停止维护**：
-- PJSK 剧情原始 asset（brotli 压缩）- 代码保留但不再自动更新
-
 ## 目录结构
 
 - `src/cli.py`：统一命令入口
@@ -135,7 +132,4 @@ uv run python scripts/convert_mangas_to_webp.py --keep-png # 仅生成 WebP，�
 - `https://storage.pjsk.moe/sekai-jp-assets/`（BGM MP3 头部读取）
 - `https://docs.google.com/spreadsheets/d/1B8tX9VL2PcSJKyuHFVd2UT_8kYlY4ZdwHwg9MfWOPug/export?format=csv&gid=1855810409`
 - `https://docs.google.com/spreadsheets/d/1Yv3GXnCIgEIbHL72EuZ-d5q_l-auPgddWi4Efa14jq0/export?format=csv&gid=182216`
-- `https://sekaimaster.exmeaning.com/master/`（游戏主数据）
-- `https://storage.exmeaning.com/sekai-jp-assets/`（剧情JSON数据）
-- `https://storage.sekai.best/`（sekai.best asset CDN，已停止使用）
-- `https://sekai-assets-bdf29c81.seiunx.net/`（haruki asset CDN，已停止使用）
+- `https://metadata.exmeaning.com/jp/master`（游戏主数据）
