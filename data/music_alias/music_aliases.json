@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25T02:15:37Z",
+  "generated_at": "2026-07-26T02:27:03Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -8251,7 +8251,9 @@
         "开幕雷击",
         "怕拉縮魯塞打",
         "打个交先",
+        "桃3",
         "汽水",
+        "泳装箱活",
         "海灘",
         "爱莉3",
         "爱莉莉莉",
@@ -13148,6 +13150,7 @@
         "我们背对背拥抱",
         "抱",
         "抱抱",
+        "抱抱你",
         "拥抱",
         "维尔汀",
         "花束2.0",
@@ -13694,7 +13697,8 @@
         "ヤスオP",
         "人形电脑天使心",
         "我的天",
-        "液冷涂料我的天"
+        "液冷涂料我的天",
+        "电子天使"
       ]
     },
     {
@@ -14132,6 +14136,7 @@
       "aliases": [
         "akt5",
         "fuel",
+        "kaito超绝鸭子叫",
         "唐老鸭",
         "嘎嘎嘎",
         "彰5",
@@ -15153,6 +15158,7 @@
       "title": "イレヴンス",
       "aliases": [
         "11th",
+        "11点",
         "airi6",
         "eleventh",
         "桃6",
@@ -15335,6 +15341,7 @@
         "荆棘",
         "莲浜专线",
         "诡化之花",
+        "诡异之花",
         "诡花",
         "赛马",
         "+野花香世界计划版",
@@ -16664,6 +16671,7 @@
         "airi7",
         "Colorful Foundation",
         "多彩粉底",
+        "彩色粉底",
         "桃7"
       ]
     },
@@ -17160,12 +17168,17 @@
     {
       "music_id": 758,
       "title": "ラプス",
-      "aliases": []
+      "aliases": [
+        "lapse"
+      ]
     },
     {
       "music_id": 759,
       "title": "ハナタバ",
-      "aliases": []
+      "aliases": [
+        "八十夕八",
+        "花束"
+      ]
     },
     {
       "music_id": 760,
@@ -17184,7 +17197,10 @@
     {
       "music_id": 791,
       "title": "シティライツ",
-      "aliases": []
+      "aliases": [
+        "city lights",
+        "citylights"
+      ]
     },
     {
       "music_id": 792,
