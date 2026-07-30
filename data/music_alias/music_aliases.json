@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-29T02:12:54Z",
+  "generated_at": "2026-07-30T02:02:14Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17187,6 +17187,14 @@
         "all in one",
         "tks7",
         "司7"
+      ]
+    },
+    {
+      "music_id": 765,
+      "title": "レム",
+      "aliases": [
+        "rem",
+        "雷姆"
       ]
     },
     {
