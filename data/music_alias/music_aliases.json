@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31T02:27:35Z",
+  "generated_at": "2026-08-01T02:28:46Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -5354,6 +5354,7 @@
         "노심융해",
         "iroha",
         "lxrj",
+        "meltdown",
         "rinの尖叫",
         "rin神话",
         "ry",
@@ -17194,7 +17195,15 @@
       "title": "レム",
       "aliases": [
         "rem",
+        "蕾姆",
         "雷姆"
+      ]
+    },
+    {
+      "music_id": 789,
+      "title": "天秤、指先で触れて",
+      "aliases": [
+        "ick7"
       ]
     },
     {
@@ -17213,6 +17222,16 @@
     {
       "music_id": 792,
       "title": "アストロノーツ",
+      "aliases": []
+    },
+    {
+      "music_id": 794,
+      "title": "デロスサントス",
+      "aliases": []
+    },
+    {
+      "music_id": 795,
+      "title": "一億年恋してる",
       "aliases": []
     }
   ]
