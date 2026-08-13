@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T01:31:14Z",
+  "generated_at": "2026-08-13T01:41:11Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17072,7 +17072,8 @@
       "music_id": 741,
       "title": "アイ・メイカー！",
       "aliases": [
-        "i marker"
+        "i marker",
+        "meiko46亿周年"
       ]
     },
     {
@@ -17137,12 +17138,16 @@
     {
       "music_id": 750,
       "title": "ロスタイムメモリー",
-      "aliases": []
+      "aliases": [
+        "回忆补时"
+      ]
     },
     {
       "music_id": 751,
       "title": "アディショナルメモリー",
-      "aliases": []
+      "aliases": [
+        "回忆追加"
+      ]
     },
     {
       "music_id": 754,
@@ -17188,7 +17193,8 @@
       "title": "ハナタバ",
       "aliases": [
         "八十夕八",
-        "花束"
+        "花束",
+        "花束3"
       ]
     },
     {
@@ -17242,7 +17248,11 @@
     {
       "music_id": 794,
       "title": "デロスサントス",
-      "aliases": []
+      "aliases": [
+        "多米尼加",
+        "山本",
+        "德罗斯桑托斯"
+      ]
     },
     {
       "music_id": 795,
