@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T01:41:11Z",
+  "generated_at": "2026-08-14T01:31:29Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17011,6 +17011,11 @@
       "aliases": []
     },
     {
+      "music_id": 728,
+      "title": "スターダストレイン",
+      "aliases": []
+    },
+    {
       "music_id": 732,
       "title": "天藍のアイスヘヴン",
       "aliases": [
@@ -17148,6 +17153,16 @@
       "aliases": [
         "回忆追加"
       ]
+    },
+    {
+      "music_id": 752,
+      "title": "アヤノの幸福理論",
+      "aliases": []
+    },
+    {
+      "music_id": 753,
+      "title": "空想フォレスト",
+      "aliases": []
     },
     {
       "music_id": 754,
