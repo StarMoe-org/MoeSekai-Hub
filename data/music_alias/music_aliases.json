@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T00:58:43Z",
+  "generated_at": "2026-08-20T01:00:52Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17013,7 +17013,11 @@
     {
       "music_id": 728,
       "title": "スターダストレイン",
-      "aliases": []
+      "aliases": [
+        "hrk7",
+        "stardust rain",
+        "星尘雨"
+      ]
     },
     {
       "music_id": 732,
@@ -17157,7 +17161,9 @@
     {
       "music_id": 752,
       "title": "アヤノの幸福理論",
-      "aliases": []
+      "aliases": [
+        "文乃的幸福理论"
+      ]
     },
     {
       "music_id": 753,
@@ -17224,7 +17230,9 @@
     {
       "music_id": 764,
       "title": "オツキミリサイタル",
-      "aliases": []
+      "aliases": [
+        "赏月独奏会"
+      ]
     },
     {
       "music_id": 765,
@@ -17272,7 +17280,10 @@
     {
       "music_id": 795,
       "title": "一億年恋してる",
-      "aliases": []
+      "aliases": [
+        "一亿年恋",
+        "亿年爱恋"
+      ]
     },
     {
       "music_id": 802,
