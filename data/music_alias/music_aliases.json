@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T01:00:52Z",
+  "generated_at": "2026-08-21T01:04:58Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17168,7 +17168,9 @@
     {
       "music_id": 753,
       "title": "空想フォレスト",
-      "aliases": []
+      "aliases": [
+        "空想森林"
+      ]
     },
     {
       "music_id": 754,
@@ -17238,6 +17240,7 @@
       "music_id": 765,
       "title": "レム",
       "aliases": [
+        "🪑",
         "rem",
         "蕾姆",
         "雷姆"
