@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-25T01:03:09Z",
+  "generated_at": "2026-08-26T01:04:34Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -16654,6 +16654,7 @@
       "music_id": 681,
       "title": "星に一番近い場所",
       "aliases": [
+        "hnm6",
         "离星星最近的地方"
       ]
     },
