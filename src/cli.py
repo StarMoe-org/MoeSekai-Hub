@@ -12,6 +12,7 @@ from src.tasks.bgm_duration import update_bgm_duration
 from src.tasks.event_bvid import update_event_bvid
 from src.tasks.manga import update_manga
 from src.tasks.music_alias import update_music_aliases
+from src.tasks.music_bpm import update_music_bpm
 from src.tasks.music_meta import update_music_meta
 from src.tasks.story_summary import update_story_summary
 
@@ -34,6 +35,36 @@ async def _run_story_summary(*, event_id: int | None = None, output_dir: str | N
     stats = await update_story_summary(event_id=event_id, output_dir=resolved_output_dir, force=force)
     _print_stats("update-story-summary", stats)
     return 0
+
+
+async def _run_music_bpm(ids: list[int] | None, force: bool) -> int:
+    stats = await update_music_bpm(ids=ids, force=force)
+    _print_stats("update-music-bpm", stats)
+    return 0
+
+
+def _parse_music_bpm_ids(text: str) -> list[int]:
+    """解析 --ids 参数：逗号分隔的 id 或范围，如 "1,10-20,35"。"""
+    ids: list[int] = []
+    for part in text.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            if "-" in part:
+                start_text, end_text = part.split("-", 1)
+                start, end = int(start_text), int(end_text)
+                if start <= 0 or end < start:
+                    raise ValueError
+                ids.extend(range(start, end + 1))
+            else:
+                value = int(part)
+                if value <= 0:
+                    raise ValueError
+                ids.append(value)
+        except ValueError:
+            raise argparse.ArgumentTypeError(f"invalid music id expression: {part!r}") from None
+    return sorted(set(ids))
 
 
 async def _run_all() -> int:
@@ -74,6 +105,21 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("update-music-alias")
     subparsers.add_parser("update-b30-csv")
     subparsers.add_parser("update-music-meta")
+    music_bpm_parser = subparsers.add_parser(
+        "update-music-bpm",
+        help="Fetch BPM for all songs (incremental by default); use --ids/--force to force re-fetch",
+    )
+    music_bpm_parser.add_argument(
+        "--ids",
+        type=_parse_music_bpm_ids,
+        default=None,
+        help="Force update specific music ids or ranges, e.g. 1,10-20,35",
+    )
+    music_bpm_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Re-fetch all songs, ignoring cached results",
+    )
     subparsers.add_parser("update-bgm-duration")
 
     summary_parser = subparsers.add_parser("update-story-summary")
@@ -109,6 +155,8 @@ def main() -> int:
         return asyncio.run(_run_single("update-b30-csv", update_b30_csv))
     if args.command == "update-music-meta":
         return asyncio.run(_run_single("update-music-meta", update_music_meta))
+    if args.command == "update-music-bpm":
+        return asyncio.run(_run_music_bpm(ids=args.ids, force=args.force))
     if args.command == "update-bgm-duration":
         return asyncio.run(_run_single("update-bgm-duration", update_bgm_duration))
     if args.command == "update-story-summary":
