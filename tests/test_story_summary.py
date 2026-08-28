@@ -47,27 +47,51 @@ def test_load_story_txt_and_count_dialogue_lines(tmp_path) -> None:
         encoding="utf-8",
     )
     (event_dir / "2.txt").write_text(
-        "仲间们为了准备演出而努力。\n"
-        "\n"
-        "2-1 終わり\n"
+        "2-1 结束\n"
         "\n"
         "(Character: 宵崎奏, 朝比奈真冬)\n"
         "\n"
         "奏: 新曲、どうしよう。\n",
         encoding="utf-8",
     )
+    (event_dir / "3.txt").write_text(
+        "日文简介。\n"
+        "\n"
+        "3-1 始まりの時\n"
+        "\n"
+        "(Character: 宵崎奏)\n"
+        "\n"
+        "奏: 新曲、どうしよう。\n",
+        encoding="utf-8",
+    )
 
     story_dir = event_dir.parents[2]
-    # 正文应从登场角色行之后开始（过滤简介、章节标题、角色列表）
-    raw_text = module._load_story_txt(story_dir, 2, 1)
-    assert raw_text == "（黑屏转场）\n一歌：走吧，大家。\n咲希：嗯，开心点！"
-    assert module._count_dialogue_lines(raw_text) == 2
-    assert module._load_story_txt(story_dir, 2, 2) == "奏: 新曲、どうしよう。"
+    # 第1话：正文从登场角色行之后开始，简介与章节标题取自 txt 原文
+    story_1 = module._load_story_txt(story_dir, 2, 1)
+    assert story_1.body == "（黑屏转场）\n一歌：走吧，大家。\n咲希：嗯，开心点！"
+    assert story_1.outline == "仲间们为了准备演出而努力。"
+    assert story_1.chapter_title == "开始"
+    assert module._count_dialogue_lines(story_1.body) == 2
+
+    # 第2话起：没有活动简介，仅章节标题
+    story_2 = module._load_story_txt(story_dir, 2, 2)
+    assert story_2.body == "奏: 新曲、どうしよう。"
+    assert story_2.outline is None
+    assert story_2.chapter_title == "结束"
+
+    # 日文 txt：同样提取（得到的是日文原文，与 master 一致，由 LLM 翻译）
+    story_3 = module._load_story_txt(story_dir, 2, 3)
+    assert story_3.body.startswith("奏:")
+    assert story_3.outline == "日文简介。"
+    assert story_3.chapter_title == "始まりの時"
 
 
-def test_strip_story_preamble_falls_back_to_full_text_when_no_marker() -> None:
+def test_parse_story_text_falls_back_to_full_text_when_no_marker() -> None:
     text = "活动的剧情简介。\n\n1-1 开始\n\n（没有角色标记行）\n一歌：走吧。\n"
-    assert module._strip_story_preamble(text) == text.strip()
+    story = module._parse_story_text(text)
+    assert story.body == text.strip()
+    assert story.outline is None
+    assert story.chapter_title is None
 
 
 def test_fetch_event_meta_prefers_latest_event_story(monkeypatch) -> None:

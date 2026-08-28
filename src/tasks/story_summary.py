@@ -19,6 +19,7 @@ _JSON_BLOCK_PATTERN = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
 _MASTER_BASE_URL = "https://metadata.exmeaning.com/jp/master"
 _APPEAR_CHARACTERS_LINE_PATTERN = re.compile(r"[（(]\s*(?:登场角色|Character)\s*[:：]")
 _DIALOGUE_LINE_PATTERN = re.compile(r"^[^（【([]+[:：]")
+_STORY_HEADER_PATTERN = re.compile(r"^\d+-\d+\s*(.+)$")
 
 _EVENT_OUTPUT_LEN_LIMIT = 1000
 _EVENT_TARGET_LEN_LONG = 200
@@ -101,6 +102,7 @@ _PROMPT_START_TEMPLATE = (
     "\n"
     "标题: {title}\n"
     "简介: {outline}\n"
+    "第1章标题: {chapter_title}\n"
     "第1章对话:\n"
     "```\n"
     "{raw_story}\n"
@@ -121,6 +123,7 @@ _PROMPT_EP_TEMPLATE = """接下来我将给你第{ep}章的对话，请你结合
 {prev_summary}
 ```
 
+第{ep}章标题: {chapter_title}
 以下是你需要总结的第{ep}章对话:
 ```
 {raw_story}
@@ -182,6 +185,15 @@ class ChapterContent:
     character_ids: tuple[int, ...]
     dialogue_line_count: int
     implemented: bool
+    outline: str | None = None
+    chapter_title: str | None = None
+
+
+@dataclass(frozen=True)
+class StoryText:
+    body: str
+    outline: str | None
+    chapter_title: str | None
 
 
 def _create_async_client(*, headers: dict[str, str] | None = None, timeout_seconds: float = 30.0) -> httpx.AsyncClient:
@@ -313,20 +325,42 @@ def _resolve_story_dir(story_dir: Path | None) -> Path:
     return _DEFAULT_STORY_DIR
 
 
-def _strip_story_preamble(text: str) -> str:
-    """丢弃登场角色行之前的元信息（活动简介、章节标题、角色列表），只保留正文。
+def _parse_story_text(text: str) -> StoryText:
+    """解析 txt：返回正文、活动简介与章节标题（均为 txt 中的原文，中/日文皆可能）。
 
-    txt 格式约定：首行为活动简介，随后是章节标题与登场角色行
-    （"（登场角色：…）"或"(Character: …)"），正文从该行之后开始。
+    txt 格式约定：首行可能为活动简介（仅第1话），随后是章节标题行
+    （"{eventId}-{ep} 标题"）与登场角色行（"（登场角色：…）"或"(Character: …)"），
+    正文从登场角色行之后开始。简介与章节标题取自 txt 原文：中文版 txt 提供的是
+    汉化结果（prompt 直接采用），日文版 txt 提供的是日文原文（与 master 一致，
+    由 LLM 翻译）。提取不到时返回 None，由调用方回退 master 元数据。
     """
     lines = text.splitlines()
-    for idx, line in enumerate(lines):
-        if _APPEAR_CHARACTERS_LINE_PATTERN.search(line):
-            return "\n".join(lines[idx + 1 :]).strip()
-    return text.strip()
+    marker_idx = next(
+        (idx for idx, line in enumerate(lines) if _APPEAR_CHARACTERS_LINE_PATTERN.search(line)),
+        None,
+    )
+    if marker_idx is None:
+        # 无法定位正文起点：完整保留全文，不作为提取简介/标题的依据
+        return StoryText(body=text.strip(), outline=None, chapter_title=None)
+
+    body = "\n".join(lines[marker_idx + 1 :]).strip()
+    preamble = [line.strip() for line in lines[:marker_idx] if line.strip()]
+
+    chapter_title: str | None = None
+    for line in reversed(preamble):
+        match = _STORY_HEADER_PATTERN.match(line)
+        if match is not None:
+            chapter_title = match.group(1).strip() or None
+            break
+
+    outline = preamble[0] if preamble else None
+    if outline is not None and _STORY_HEADER_PATTERN.match(outline):
+        outline = None  # 第2话起首行就是章节标题，没有活动简介
+
+    return StoryText(body=body, outline=outline, chapter_title=chapter_title)
 
 
-def _load_story_txt(story_dir: Path, event_id: int, chapter_no: int) -> str:
+def _load_story_txt(story_dir: Path, event_id: int, chapter_no: int) -> StoryText:
     txt_path = story_dir / "story" / "event" / str(event_id) / f"{chapter_no}.txt"
     if not txt_path.exists():
         raise StoryTextNotFoundError(
@@ -336,7 +370,7 @@ def _load_story_txt(story_dir: Path, event_id: int, chapter_no: int) -> str:
         text = txt_path.read_text(encoding="utf-8")
     except Exception as exc:
         raise StorySummaryError(f"Failed to read story txt from {txt_path}: {type(exc).__name__}: {exc}") from exc
-    return _strip_story_preamble(text)
+    return _parse_story_text(text)
 
 
 def _count_dialogue_lines(text: str) -> int:
@@ -346,14 +380,16 @@ def _count_dialogue_lines(text: str) -> int:
 def _build_chapter_contents(story_dir: Path, event_meta: EventMeta) -> tuple[ChapterContent, ...]:
     results: list[ChapterContent] = []
     for episode in event_meta.episodes:
-        raw_text = _load_story_txt(story_dir, event_meta.event_id, episode.chapter_no)
+        story_text = _load_story_txt(story_dir, event_meta.event_id, episode.chapter_no)
         results.append(
             ChapterContent(
                 meta=episode,
-                prompt_text=raw_text,
+                prompt_text=story_text.body,
                 character_ids=(),
-                dialogue_line_count=_count_dialogue_lines(raw_text),
-                implemented=bool(raw_text),
+                dialogue_line_count=_count_dialogue_lines(story_text.body),
+                implemented=bool(story_text.body),
+                outline=story_text.outline,
+                chapter_title=story_text.chapter_title,
             )
         )
     return tuple(results)
@@ -471,7 +507,8 @@ def _build_start_prompt(event_meta: EventMeta, chapter: ChapterContent, *, limit
             _PROMPT_HEAD,
             _PROMPT_START_TEMPLATE.format(
                 title=event_meta.title_jp,
-                outline=event_meta.outline_jp,
+                outline=chapter.outline or event_meta.outline_jp,
+                chapter_title=chapter.chapter_title or chapter.meta.title_jp,
                 raw_story=_truncate_for_prompt(chapter.prompt_text),
                 limit=limit,
             ),
@@ -485,6 +522,7 @@ def _build_chapter_prompt(chapter_no: int, chapter: ChapterContent, previous_sum
             _PROMPT_HEAD,
             _PROMPT_EP_TEMPLATE.format(
                 ep=chapter_no,
+                chapter_title=chapter.chapter_title or chapter.meta.title_jp,
                 raw_story=_truncate_for_prompt(chapter.prompt_text),
                 limit=limit,
                 prev_summary=_truncate_for_prompt(previous_summary),
