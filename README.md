@@ -8,7 +8,7 @@
 3. Haruki 音乐别名库（全量歌曲 ID）
 4. PJSK B30 JP/CN CSV 与合并表
 5. PJSK BGM / MySekai BGM 时长索引
-6. PJSK 活动剧情摘要（AI生成的中文翻译与总结）
+6. PJSK 活动剧情摘要（AI生成的中文总结）
 
 ## 目录结构
 
@@ -27,7 +27,7 @@
 - `data/pjskb30/cn_chart.csv`：B30 国服原表
 - `data/pjskb30/merged_chart.csv`：B30 合并表（不附加 `server` 字段）
 - `mangas/mangas.json`、`mangas/*.webp`：四格漫画历史数据与图片（WebP 格式，由 `src/tasks/manga.py` 下载时实时转码）
-- `story/detail/event_*.json`：活动剧情摘要（中文翻译与总结）
+- `story/detail/event_*.json`：活动剧情摘要（中文总结）
 - `guides/guides-index.json`：攻略文章索引
 - `guides/**/*.md`：攻略 Markdown 文件（按分类子目录组织）
 
@@ -60,8 +60,14 @@ uv run python -m src.cli update-story-summary
 # 生成指定活动摘要
 uv run python -m src.cli update-story-summary --event-id 123
 
+# 生成指定范围的活动摘要（逗号分隔 id 或范围）
+uv run python -m src.cli update-story-summary --event-ids 1,10-20,35
+
 # 强制重新生成
 uv run python -m src.cli update-story-summary --force
+
+# 指定 Moe-story 仓库位置（默认 ./Moe-story，亦可用 MOE_STORY_DIR 环境变量）
+uv run python -m src.cli update-story-summary --story-dir /path/to/Moe-story
 ```
 
 ### 漫画图片格式迁移
@@ -111,15 +117,15 @@ uv run python scripts/convert_mangas_to_webp.py --keep-png # 仅生成 WebP，�
   - `chapter_no`：章节编号
   - `title_jp`、`title_cn`：章节标题（日文/中文）
   - `summary_cn`：章节剧情总结（中文）
-  - `character_ids`：出场角色ID列表
+  - `character_ids`：出场角色ID列表（保留字段，当前恒为空）
   - `image_url`：章节封面图片URL
 
-数据来源：从 `https://storage.exmeaning.com/sekai-jp-assets/` 获取剧情JSON，通过LLM生成中文翻译与摘要。
+数据来源：剧情原文从 [StarMoe-org/Moe-story](https://github.com/StarMoe-org/Moe-story) 仓库的 `story/event/{eventId}/{chapter}.txt` 读取（正文从登场角色行之后开始，过滤简介/标题等元信息；本地路径由 `--story-dir` 指定或 `MOE_STORY_DIR` 环境变量设置，默认 `Moe-story/`），元数据（活动/章节的日文标题与简介）从 `metadata.exmeaning.com/jp/master` 获取，通过 LLM 生成中文标题与剧情总结。Moe-story 仓库暂未收录的活动会跳过，待仓库更新后重试。
 
 ## GitHub Actions
 
 - `daily-update.yml`：每天 UTC `00:00`（北京时间 `08:00`），运行四类基础数据更新任务
-- `story-summary-update.yml`：每天 UTC `03:00`（北京时间 `11:00`），生成最新活动剧情摘要
+- `story-summary-update.yml`：每天 UTC `03:00`（北京时间 `11:00`），生成最新活动剧情摘要；支持手动触发（`workflow_dispatch`）时填写 `event_ids`（如 `1,10-20,35`，留空更新全部缺失）与 `force`（强制重新生成）
 
 ## 主要数据来源
 
@@ -132,4 +138,5 @@ uv run python scripts/convert_mangas_to_webp.py --keep-png # 仅生成 WebP，�
 - `https://storage.pjsk.moe/sekai-jp-assets/`（BGM MP3 头部读取）
 - `https://docs.google.com/spreadsheets/d/1B8tX9VL2PcSJKyuHFVd2UT_8kYlY4ZdwHwg9MfWOPug/export?format=csv&gid=1855810409`
 - `https://docs.google.com/spreadsheets/d/1Yv3GXnCIgEIbHL72EuZ-d5q_l-auPgddWi4Efa14jq0/export?format=csv&gid=182216`
-- `https://metadata.exmeaning.com/jp/master`（游戏主数据）
+- [StarMoe-org/Moe-story](https://github.com/StarMoe-org/Moe-story)（活动剧情原文 txt）
+- `https://metadata.exmeaning.com/jp/master`（活动/章节元数据）

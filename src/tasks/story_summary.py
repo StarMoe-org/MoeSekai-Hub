@@ -14,12 +14,12 @@ from src.common.http import build_headers, get_json, request_with_retry
 from src.common.io import read_json, write_json
 
 _DEFAULT_OUTPUT_DIR = Path("story/detail")
+_DEFAULT_STORY_DIR = Path("Moe-story")
 _JSON_BLOCK_PATTERN = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
 _MASTER_BASE_URL = "https://metadata.exmeaning.com/jp/master"
+_APPEAR_CHARACTERS_LINE_PATTERN = re.compile(r"[（(]\s*(?:登场角色|Character)\s*[:：]")
+_DIALOGUE_LINE_PATTERN = re.compile(r"^[^（【([]+[:：]")
 
-_TALK_ACTION = 6
-_SPECIAL_EFFECT_ACTION = 1
-_SPECIAL_EFFECT_TITLE = 8
 _EVENT_OUTPUT_LEN_LIMIT = 1000
 _EVENT_TARGET_LEN_LONG = 200
 _EVENT_TARGET_LEN_SHORT = 200
@@ -29,18 +29,19 @@ _EPISODE_IMAGE_URL_TEMPLATE = (
 )
 
 _SUMMARY_SYSTEM_PROMPT = (
-    "你是日文游戏剧情翻译与总结助手。"
+    "你是 Project Sekai（世界计划）游戏剧情总结助手：以简体中文输出活动标题、简介与章节标题"
+    "（原文为日文时翻译，为中文时直接保留），并为每个章节及整体剧情生成流畅的中文总结。"
     "请严格按照用户要求输出 JSON，不要输出 JSON 以外的任何解释。"
 )
 
-_PROMPT_HEAD = """给定日文的游戏剧情标题、简介、各个章节的标题以及对话，请你：
-1. 将剧情标题、简介、各个章节的标题翻译到**简体中文**
-2. 生成每章节对话的中文总结，需要包含该章节中的所有信息，并确保总结准确反映该章节内容。不需要分点，而是用一段文字流畅地总结
+_PROMPT_HEAD = """给定游戏剧情的标题、简介、各个章节的标题以及对话原文（原文可能是日文，也可能是中文），请你：
+1. 输出剧情标题、简介、各个章节标题的**简体中文**版本；若原文已是中文则直接保留
+2. 为每一章节的对话生成中文总结，需要包含该章节中的所有信息，并确保总结准确反映该章节内容。不需要分点，而是用一段文字流畅地总结
 
 游戏背景设定供参考：
 游戏中存在一个现实世界和虚拟世界「世界」，游戏的主人公团体（5个团体，每个团有4个角色）各有一个「世界」，他们能够通过电子设备上神秘出现的「Untitled」歌曲往返现实世界和「世界」。在「世界」中，原本在现实世界的虚拟歌手（比如初音未来）变为了真实的存在，能够与主人公团体互动。「世界」反映的是主人的强烈的心愿，而虚拟歌手们会帮助主人公团体一步步达成他们的心愿。游戏的故事围绕着主人公团体于虚拟歌手在现实与「世界」之间的故事展开。
 
-以下译名表供你使用，为了保持翻译的流畅性，你可以进行适当调整（例如省略姓名间的空格，加上称谓等）
+以下译名表供你使用，为了保证中文表达的准确与流畅，你可以进行适当调整（例如省略姓名间的空格，加上称谓等）
 组合: Virtual Singer(虚拟歌手)
 - 初音 ミク(はつね みく): 初音 未来
 - 鏡音 リン(かがみね りん): 镜音 铃
@@ -85,61 +86,67 @@ _PROMPT_HEAD = """给定日文的游戏剧情标题、简介、各个章节的�
 - 暁山 瑞希(あかつきやま みずき): 暁山 瑞希
 """.strip()
 
-_PROMPT_START_TEMPLATE = """接下来我将给你活动的总标题、简介，以及第1章的对话，请你进行翻译
-记住：在保证信息完整的情况下尽量简洁，字数不超过{limit}字
-章节标题请翻译原始日文标题本身，不要自行补成“第1话”“第2章”这类编号标题。
-本次输出格式如下（只需要输出花括号及以内的内容）：
-{{
-    "title": "翻译过的剧情标题",
-    "outline": "翻译过的简介",
-    "ep_1_title": "翻译过的第1章标题",
-    "ep_1_summary": "翻译过的第1章对话总结"
-}}
+_PROMPT_START_TEMPLATE = (
+    "接下来我将给你活动的总标题、简介，以及第1章的对话，请你结合对话内容输出标题与简介的中文版本，"
+    "并生成第1章的剧情总结\n"
+    "记住：在保证信息完整的情况下尽量简洁，字数不超过{limit}字\n"
+    "章节标题请直接输出其中文版本（原文为日文则翻译、为中文则保留），不要自行补成“第1话”“第2章”这类编号标题。\n"
+    "本次输出格式如下（只需要输出花括号及以内的内容）：\n"
+    "{{\n"
+    '    "title": "活动标题（简体中文）",\n'
+    '    "outline": "活动简介（简体中文）",\n'
+    '    "ep_1_title": "第1章标题（简体中文）",\n'
+    '    "ep_1_summary": "第1章对话总结"\n'
+    "}}\n"
+    "\n"
+    "标题: {title}\n"
+    "简介: {outline}\n"
+    "第1章对话:\n"
+    "```\n"
+    "{raw_story}\n"
+    "```"
+).strip()
 
-标题: {title}
-简介: {outline}
-第1章对话:
-```
-{raw_story}
-```
-""".strip()
-
-_PROMPT_EP_TEMPLATE = """接下来我将给你第{ep}章的对话，请你结合之前已经翻译过的内容进行翻译
+_PROMPT_EP_TEMPLATE = """接下来我将给你第{ep}章的对话，请你结合之前已经输出的内容，输出本章标题的中文版本并生成本章剧情总结
 记住：在保证信息完整的情况下尽量简洁，字数不超过{limit}字
-章节标题请翻译原始日文标题本身，不要自行补成“第{ep}话”“第{ep}章”这类编号标题。
+章节标题请直接输出其中文版本（原文为日文则翻译、为中文则保留），不要自行补成“第{ep}话”“第{ep}章”这类编号标题。
 本次输出格式如下（只需要输出花括号及以内的内容，只需要输出第{ep}章的结果！）：
 {{
-    "ep_{ep}_title": "翻译过的第{ep}章标题",
-    "ep_{ep}_summary": "翻译过的第{ep}章对话总结"
+    "ep_{ep}_title": "第{ep}章标题（简体中文）",
+    "ep_{ep}_summary": "第{ep}章对话总结"
 }}
 
-以下是之前已经翻译过的内容，你需要保持翻译的一致性和连贯性：
+以下是之前已经输出的内容，你需要保持标题译法与叙事风格的一致性和连贯性：
 ```
 {prev_summary}
 ```
 
-以下是你需要翻译的第{ep}章对话:
+以下是你需要总结的第{ep}章对话:
 ```
 {raw_story}
 ```
 """.strip()
 
-_PROMPT_END_TEMPLATE = """请你根据已有的翻译的内容生成一段流畅的总体剧情概要，确保概要反应了整个剧情的核心内容和主要事件
+_PROMPT_END_TEMPLATE = """请你根据已有内容生成一段流畅的总体剧情概要，确保概要反应了整个剧情的核心内容和主要事件
 在保证信息完整的情况下尽量简洁，字数不超过{limit}字
-以下是之前已经翻译过的内容：
+以下是之前已经输出的内容：
 ```
 {prev_summary}
 ```
 
 本次输出格式如下（只需要输出花括号及以内的内容）：
 {{
-    "summary": "翻译过的总体剧情概要"
+    "summary": "总体剧情概要"
 }}
 """.strip()
 
 
 class StorySummaryError(RuntimeError):
     """Raised when the story summary pipeline cannot produce a valid result."""
+
+
+class StoryTextNotFoundError(StorySummaryError):
+    """Raised when the story txt is missing from the Moe-story repo (expected, skippable)."""
 
 
 @dataclass(frozen=True)
@@ -169,17 +176,11 @@ class EventMeta:
 
 
 @dataclass(frozen=True)
-class StorySnippet:
-    names: tuple[str, ...] | None
-    text: str
-
-
-@dataclass(frozen=True)
 class ChapterContent:
     meta: EpisodeMeta
     prompt_text: str
     character_ids: tuple[int, ...]
-    snippet_count: int
+    dialogue_line_count: int
     implemented: bool
 
 
@@ -202,7 +203,7 @@ async def _fetch_master_json(file_name: str) -> Any:
         try:
             return await get_json(client, url)
         except Exception as exc:
-            raise StorySummaryError(f"Failed to fetch master {file_name}: {type(exc).__name__}: {exc}")
+            raise StorySummaryError(f"Failed to fetch master {file_name}: {type(exc).__name__}: {exc}") from exc
 
 
 def _build_event_meta(event_row: dict[str, Any], event_story_row: dict[str, Any]) -> EventMeta:
@@ -303,152 +304,58 @@ async def _fetch_event_meta(event_id: int | None = None) -> EventMeta:
     return metas[0]
 
 
-async def _fetch_character2d_map() -> dict[int, int]:
-    payload = await _fetch_master_json("character2ds")
-    if not isinstance(payload, list):
-        raise StorySummaryError("Unexpected character2ds payload shape")
-
-    result: dict[int, int] = {}
-    for row in payload:
-        if not isinstance(row, dict):
-            continue
-        character_2d_id = row.get("id")
-        character_id = row.get("characterId")
-        if isinstance(character_2d_id, int) and isinstance(character_id, int):
-            result[character_2d_id] = character_id
-    return result
+def _resolve_story_dir(story_dir: Path | None) -> Path:
+    if story_dir is not None:
+        return story_dir
+    env_value = os.environ.get("MOE_STORY_DIR", "").strip()
+    if env_value:
+        return Path(env_value)
+    return _DEFAULT_STORY_DIR
 
 
-def _scenario_asset_url(event_meta: EventMeta, episode: EpisodeMeta) -> str:
-    return f"https://storage.exmeaning.com/sekai-jp-assets/event_story/{event_meta.assetbundle_name}/scenario/{episode.scenario_id}.json"
+def _strip_story_preamble(text: str) -> str:
+    """丢弃登场角色行之前的元信息（活动简介、章节标题、角色列表），只保留正文。
+
+    txt 格式约定：首行为活动简介，随后是章节标题与登场角色行
+    （"（登场角色：…）"或"(Character: …)"），正文从该行之后开始。
+    """
+    lines = text.splitlines()
+    for idx, line in enumerate(lines):
+        if _APPEAR_CHARACTERS_LINE_PATTERN.search(line):
+            return "\n".join(lines[idx + 1 :]).strip()
+    return text.strip()
 
 
-async def _load_story_payload(client: httpx.AsyncClient, url: str) -> dict[str, Any]:
+def _load_story_txt(story_dir: Path, event_id: int, chapter_no: int) -> str:
+    txt_path = story_dir / "story" / "event" / str(event_id) / f"{chapter_no}.txt"
+    if not txt_path.exists():
+        raise StoryTextNotFoundError(
+            f"Missing story txt (event not crawled in Moe-story repo yet): {txt_path}"
+        )
     try:
-        response = await request_with_retry(client, "GET", url)
-        data = response.json()
+        text = txt_path.read_text(encoding="utf-8")
     except Exception as exc:
-        raise StorySummaryError(f"Failed to fetch story asset from {url}: {type(exc).__name__}: {exc}")
-    if not isinstance(data, dict):
-        raise StorySummaryError(f"Unexpected story asset payload shape: {url}")
-    return data
+        raise StorySummaryError(f"Failed to read story txt from {txt_path}: {type(exc).__name__}: {exc}") from exc
+    return _strip_story_preamble(text)
 
 
-def _strip_text(value: str) -> str:
-    return value.replace("\r\n", "\n").strip()
+def _count_dialogue_lines(text: str) -> int:
+    return sum(1 for line in text.splitlines() if _DIALOGUE_LINE_PATTERN.match(line))
 
 
-def _split_display_names(value: str) -> tuple[str, ...] | None:
-    names = tuple(part.strip() for part in value.split("・") if part.strip())
-    return names or None
-
-
-def _extract_story_snippets(payload: dict[str, Any]) -> tuple[StorySnippet, ...]:
-    snippets = payload.get("Snippets")
-    talks = payload.get("TalkData")
-    special_effects = payload.get("SpecialEffectData")
-    if not isinstance(snippets, list):
-        return ()
-
-    ordered_rows = sorted((item for item in snippets if isinstance(item, dict)), key=lambda item: int(item.get("Index", 0)))
-    result: list[StorySnippet] = []
-    for row in ordered_rows:
-        action = row.get("Action")
-        ref = row.get("ReferenceIndex")
-        if not isinstance(ref, int) or ref < 0:
-            continue
-
-        if action == _TALK_ACTION and isinstance(talks, list) and ref < len(talks) and isinstance(talks[ref], dict):
-            talk = talks[ref]
-            body = talk.get("Body")
-            if not isinstance(body, str):
-                continue
-            body_text = _strip_text(body)
-            if not body_text:
-                continue
-            speaker = talk.get("WindowDisplayName")
-            names = _split_display_names(speaker) if isinstance(speaker, str) else None
-            result.append(StorySnippet(names=names, text=body_text))
-            continue
-
-        if action == _SPECIAL_EFFECT_ACTION and isinstance(special_effects, list) and ref < len(special_effects):
-            effect = special_effects[ref]
-            if not isinstance(effect, dict) or effect.get("EffectType") != _SPECIAL_EFFECT_TITLE:
-                continue
-            text = effect.get("StringVal")
-            if not isinstance(text, str):
-                continue
-            effect_text = _strip_text(text)
-            if effect_text:
-                result.append(StorySnippet(names=None, text=effect_text))
-
-    return tuple(result)
-
-
-def _extract_character_ids(payload: dict[str, Any], character2d_map: dict[int, int]) -> tuple[int, ...]:
-    appear_characters = payload.get("AppearCharacters")
-    talks = payload.get("TalkData")
-
-    result: list[int] = []
-    seen: set[int] = set()
-
-    def add_character(character_2d_id: Any) -> None:
-        if not isinstance(character_2d_id, int):
-            return
-        character_id = character2d_map.get(character_2d_id)
-        if character_id is None or character_id in seen:
-            return
-        seen.add(character_id)
-        result.append(character_id)
-
-    if isinstance(appear_characters, list):
-        for row in appear_characters:
-            if isinstance(row, dict):
-                add_character(row.get("Character2dId"))
-
-    if result:
-        return tuple(result)
-
-    if isinstance(talks, list):
-        for talk in talks:
-            if not isinstance(talk, dict):
-                continue
-            talk_characters = talk.get("TalkCharacters")
-            if not isinstance(talk_characters, list):
-                continue
-            for row in talk_characters:
-                if isinstance(row, dict):
-                    add_character(row.get("Character2dId"))
-
-    return tuple(result)
-
-
-def _build_prompt_story_text(chapter_no: int, chapter_title: str, snippets: tuple[StorySnippet, ...]) -> str:
-    parts = [f"【EP{chapter_no}: {chapter_title}】"]
-    for snippet in snippets:
-        if snippet.names:
-            parts.append(f"---\n{' & '.join(snippet.names)}:\n{snippet.text}")
-        else:
-            parts.append(f"---\n({snippet.text})")
-    return "\n".join(parts) + "\n"
-
-
-async def _build_chapter_contents(event_meta: EventMeta, character2d_map: dict[int, int]) -> tuple[ChapterContent, ...]:
+def _build_chapter_contents(story_dir: Path, event_meta: EventMeta) -> tuple[ChapterContent, ...]:
     results: list[ChapterContent] = []
-    async with _create_async_client(timeout_seconds=30.0) as client:
-        for episode in event_meta.episodes:
-            url = _scenario_asset_url(event_meta, episode)
-            payload = await _load_story_payload(client, url)
-            story_snippets = _extract_story_snippets(payload)
-            results.append(
-                ChapterContent(
-                    meta=episode,
-                    prompt_text=_build_prompt_story_text(episode.chapter_no, episode.title_jp, story_snippets) if story_snippets else "",
-                    character_ids=_extract_character_ids(payload, character2d_map),
-                    snippet_count=len(story_snippets),
-                    implemented=bool(story_snippets),
-                )
+    for episode in event_meta.episodes:
+        raw_text = _load_story_txt(story_dir, event_meta.event_id, episode.chapter_no)
+        results.append(
+            ChapterContent(
+                meta=episode,
+                prompt_text=raw_text,
+                character_ids=(),
+                dialogue_line_count=_count_dialogue_lines(raw_text),
+                implemented=bool(raw_text),
             )
+        )
     return tuple(results)
 
 
@@ -736,10 +643,10 @@ async def _generate_event_summary_file(
     event_meta: EventMeta,
     *,
     output_dir: Path,
-    character2d_map: dict[int, int],
+    story_dir: Path,
     llm_config: LLMConfig,
 ) -> tuple[int, int]:
-    chapter_contents = await _build_chapter_contents(event_meta, character2d_map)
+    chapter_contents = _build_chapter_contents(story_dir, event_meta)
     title_cn, outline_cn, summary_cn, chapter_rows = await _generate_summary_rows(
         llm_config,
         event_meta,
@@ -758,45 +665,111 @@ async def _generate_event_summary_file(
     output_path = _output_path(output_dir, event_meta.event_id)
     write_json(output_path, payload)
     _append_step_summary(output_path, payload)
-    return len(chapter_rows), sum(chapter.snippet_count for chapter in chapter_contents)
+    return len(chapter_rows), sum(chapter.dialogue_line_count for chapter in chapter_contents)
 
 
 async def update_story_summary(
     *,
     event_id: int | None = None,
+    event_ids: tuple[int, ...] | None = None,
     output_dir: Path = _DEFAULT_OUTPUT_DIR,
     force: bool = False,
     llm_config: LLMConfig | None = None,
+    story_dir: Path | None = None,
 ) -> dict[str, int]:
-    event_metas = await _fetch_event_metas(event_id)
-
     if event_id is not None:
-        event_meta = event_metas[0]
-        output_path = _output_path(output_dir, event_meta.event_id)
-        if _should_skip_event(output_path, len(event_meta.episodes), force=force):
+        event_ids = (event_id,)
+
+    if event_ids is not None:
+        if len(event_ids) == 1:
+            event_meta = (await _fetch_event_metas(event_ids[0]))[0]
+            output_path = _output_path(output_dir, event_meta.event_id)
+            if _should_skip_event(output_path, len(event_meta.episodes), force=force):
+                return {
+                    "event_id": event_meta.event_id,
+                    "chapters_total": len(event_meta.episodes),
+                    "dialogue_lines_total": 0,
+                    "generated_files": 0,
+                    "skipped_existing": 1,
+                }
+
+            resolved_llm_config = _resolve_llm_config(llm_config)
+            resolved_story_dir = _resolve_story_dir(story_dir)
+            try:
+                chapters_total, dialogue_lines_total = await _generate_event_summary_file(
+                    event_meta,
+                    output_dir=output_dir,
+                    story_dir=resolved_story_dir,
+                    llm_config=resolved_llm_config,
+                )
+            except StoryTextNotFoundError as exc:
+                print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
+                return {
+                    "event_id": event_meta.event_id,
+                    "chapters_total": 0,
+                    "dialogue_lines_total": 0,
+                    "generated_files": 0,
+                    "skipped_existing": 0,
+                }
             return {
                 "event_id": event_meta.event_id,
-                "chapters_total": len(event_meta.episodes),
-                "dialogue_lines_total": 0,
-                "generated_files": 0,
-                "skipped_existing": 1,
+                "chapters_total": chapters_total,
+                "dialogue_lines_total": dialogue_lines_total,
+                "generated_files": 1,
+                "skipped_existing": 0,
             }
 
         resolved_llm_config = _resolve_llm_config(llm_config)
-        character2d_map = await _fetch_character2d_map()
-        chapters_total, dialogue_lines_total = await _generate_event_summary_file(
-            event_meta,
-            output_dir=output_dir,
-            character2d_map=character2d_map,
-            llm_config=resolved_llm_config,
-        )
+        resolved_story_dir = _resolve_story_dir(story_dir)
+
+        generated_events = 0
+        failed_events = 0
+        skipped_existing = 0
+        skipped_missing = 0
+        chapters_total = 0
+        dialogue_lines_total = 0
+        for target_event_id in event_ids:
+            try:
+                event_meta = (await _fetch_event_metas(target_event_id))[0]
+            except StorySummaryError as exc:
+                failed_events += 1
+                print(f"[story-summary] skip event_id={target_event_id}: {type(exc).__name__}: {exc}")
+                continue
+            output_path = _output_path(output_dir, event_meta.event_id)
+            if _should_skip_event(output_path, len(event_meta.episodes), force=force):
+                skipped_existing += 1
+                continue
+            try:
+                event_chapters_total, event_dialogue_lines_total = await _generate_event_summary_file(
+                    event_meta,
+                    output_dir=output_dir,
+                    story_dir=resolved_story_dir,
+                    llm_config=resolved_llm_config,
+                )
+            except StoryTextNotFoundError as exc:
+                skipped_missing += 1
+                print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
+                continue
+            except Exception as exc:
+                failed_events += 1
+                print(f"[story-summary] skip event_id={event_meta.event_id}: {type(exc).__name__}: {exc}")
+                continue
+            generated_events += 1
+            chapters_total += event_chapters_total
+            dialogue_lines_total += event_dialogue_lines_total
+
         return {
-            "event_id": event_meta.event_id,
+            "events_total": len(event_ids),
+            "generated_events": generated_events,
             "chapters_total": chapters_total,
             "dialogue_lines_total": dialogue_lines_total,
-            "generated_files": 1,
-            "skipped_existing": 0,
+            "generated_files": generated_events,
+            "failed_events": failed_events,
+            "skipped_existing": skipped_existing,
+            "skipped_missing": skipped_missing,
         }
+
+    event_metas = await _fetch_event_metas(None)
 
     pending_event_metas: list[EventMeta] = []
     skipped_existing = 0
@@ -816,13 +789,15 @@ async def update_story_summary(
             "generated_files": 0,
             "failed_events": 0,
             "skipped_existing": skipped_existing,
+            "skipped_missing": 0,
         }
 
     resolved_llm_config = _resolve_llm_config(llm_config)
-    character2d_map = await _fetch_character2d_map()
+    resolved_story_dir = _resolve_story_dir(story_dir)
 
     generated_events = 0
     failed_events = 0
+    skipped_missing = 0
     chapters_total = 0
     dialogue_lines_total = 0
     for event_meta in pending_event_metas:
@@ -830,9 +805,13 @@ async def update_story_summary(
             event_chapters_total, event_dialogue_lines_total = await _generate_event_summary_file(
                 event_meta,
                 output_dir=output_dir,
-                character2d_map=character2d_map,
+                story_dir=resolved_story_dir,
                 llm_config=resolved_llm_config,
             )
+        except StoryTextNotFoundError as exc:
+            skipped_missing += 1
+            print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
+            continue
         except Exception as exc:
             failed_events += 1
             print(f"[story-summary] skip event_id={event_meta.event_id}: {type(exc).__name__}: {exc}")
@@ -849,4 +828,5 @@ async def update_story_summary(
         "generated_files": generated_events,
         "failed_events": failed_events,
         "skipped_existing": skipped_existing,
+        "skipped_missing": skipped_missing,
     }

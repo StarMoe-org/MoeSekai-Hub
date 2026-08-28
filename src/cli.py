@@ -30,9 +30,23 @@ async def _run_single(task_name: str, task: TaskFunc) -> int:
     return 0
 
 
-async def _run_story_summary(*, event_id: int | None = None, output_dir: str | None = None, force: bool = False) -> int:
+async def _run_story_summary(
+    *,
+    event_id: int | None = None,
+    event_ids: list[int] | None = None,
+    output_dir: str | None = None,
+    force: bool = False,
+    story_dir: str | None = None,
+) -> int:
     resolved_output_dir = Path(output_dir) if output_dir is not None else Path("story/detail")
-    stats = await update_story_summary(event_id=event_id, output_dir=resolved_output_dir, force=force)
+    resolved_story_dir = Path(story_dir) if story_dir is not None else None
+    stats = await update_story_summary(
+        event_id=event_id,
+        event_ids=tuple(event_ids) if event_ids else None,
+        output_dir=resolved_output_dir,
+        force=force,
+        story_dir=resolved_story_dir,
+    )
     _print_stats("update-story-summary", stats)
     return 0
 
@@ -43,8 +57,8 @@ async def _run_music_bpm(ids: list[int] | None, force: bool) -> int:
     return 0
 
 
-def _parse_music_bpm_ids(text: str) -> list[int]:
-    """解析 --ids 参数：逗号分隔的 id 或范围，如 "1,10-20,35"。"""
+def _parse_id_expression(text: str, *, label: str) -> list[int]:
+    """解析逗号分隔的 id 或范围表达式，如 "1,10-20,35"。"""
     ids: list[int] = []
     for part in text.split(","):
         part = part.strip()
@@ -63,8 +77,18 @@ def _parse_music_bpm_ids(text: str) -> list[int]:
                     raise ValueError
                 ids.append(value)
         except ValueError:
-            raise argparse.ArgumentTypeError(f"invalid music id expression: {part!r}") from None
+            raise argparse.ArgumentTypeError(f"invalid {label} expression: {part!r}") from None
     return sorted(set(ids))
+
+
+def _parse_music_bpm_ids(text: str) -> list[int]:
+    """解析 --ids 参数：逗号分隔的 id 或范围，如 "1,10-20,35"。"""
+    return _parse_id_expression(text, label="music id")
+
+
+def _parse_event_ids(text: str) -> list[int]:
+    """解析 --event-ids 参数：逗号分隔的活动 id 或范围，如 "1,10-20,35"。"""
+    return _parse_id_expression(text, label="event id")
 
 
 async def _run_all() -> int:
@@ -125,6 +149,12 @@ def build_parser() -> argparse.ArgumentParser:
     summary_parser = subparsers.add_parser("update-story-summary")
     summary_parser.add_argument("--event-id", type=int, default=None, help="Generate summary for a specific event ID")
     summary_parser.add_argument(
+        "--event-ids",
+        type=_parse_event_ids,
+        default=None,
+        help="Generate summary for specific event IDs or ranges, e.g. 1,10-20,35",
+    )
+    summary_parser.add_argument(
         "--output-dir",
         type=str,
         default=None,
@@ -135,6 +165,12 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         default=False,
         help="Regenerate summary even if the output file already exists",
+    )
+    summary_parser.add_argument(
+        "--story-dir",
+        type=str,
+        default=None,
+        help="Path to the Moe-story repository clone (default: ./Moe-story, or $MOE_STORY_DIR)",
     )
 
     subparsers.add_parser("run-all")
@@ -160,7 +196,15 @@ def main() -> int:
     if args.command == "update-bgm-duration":
         return asyncio.run(_run_single("update-bgm-duration", update_bgm_duration))
     if args.command == "update-story-summary":
-        return asyncio.run(_run_story_summary(event_id=args.event_id, output_dir=args.output_dir, force=args.force))
+        return asyncio.run(
+            _run_story_summary(
+                event_id=args.event_id,
+                event_ids=args.event_ids,
+                output_dir=args.output_dir,
+                force=args.force,
+                story_dir=args.story_dir,
+            )
+        )
     if args.command == "run-all":
         return asyncio.run(_run_all())
 

@@ -1,13 +1,8 @@
 import asyncio
 import json
-from pathlib import Path
 
 from src.tasks import story_summary as module
-from src.tasks.story_summary import ChapterContent, EpisodeMeta, EventMeta, LLMConfig, StorySnippet
-
-
-async def _fake_character2d_map() -> dict[int, int]:
-    return {}
+from src.tasks.story_summary import ChapterContent, EpisodeMeta, EventMeta, LLMConfig
 
 
 async def _fake_generate_summary_rows(*args, **kwargs):  # noqa: ANN002, ANN003
@@ -36,44 +31,43 @@ async def _fake_generate_summary_rows(*args, **kwargs):  # noqa: ANN002, ANN003
     )
 
 
-def test_extract_story_snippets_and_character_ids() -> None:
-    payload = {
-        "Snippets": [
-            {"Index": 0, "Action": 1, "ReferenceIndex": 0},
-            {"Index": 1, "Action": 6, "ReferenceIndex": 0},
-            {"Index": 2, "Action": 6, "ReferenceIndex": 1},
-        ],
-        "SpecialEffectData": [{"EffectType": 8, "StringVal": "屋顶", "StringValSub": "", "Duration": 0.0, "IntVal": 0}],
-        "TalkData": [
-            {
-                "WindowDisplayName": "奏",
-                "Body": " ……新曲、どうしよう。 ",
-                "TalkCharacters": [{"Character2dId": 294}],
-            },
-            {
-                "WindowDisplayName": "瑞希・真冬",
-                "Body": "一緒に考えようよ。",
-                "TalkCharacters": [{"Character2dId": 297}],
-            },
-        ],
-        "AppearCharacters": [{"Character2dId": 297}, {"Character2dId": 294}, {"Character2dId": 297}],
-    }
-
-    snippets = module._extract_story_snippets(payload)
-    assert snippets == (
-        StorySnippet(names=None, text="屋顶"),
-        StorySnippet(names=("奏",), text="……新曲、どうしよう。"),
-        StorySnippet(names=("瑞希", "真冬"), text="一緒に考えようよ。"),
+def test_load_story_txt_and_count_dialogue_lines(tmp_path) -> None:
+    event_dir = tmp_path / "Moe-story" / "story" / "event" / "2"
+    event_dir.mkdir(parents=True)
+    (event_dir / "1.txt").write_text(
+        "仲间们为了准备演出而努力。\n"
+        "\n"
+        "1-1 开始\n"
+        "\n"
+        "（登场角色：星乃一歌、天马咲希、初音未来）\n"
+        "\n"
+        "（黑屏转场）\n"
+        "一歌：走吧，大家。\n"
+        "咲希：嗯，开心点！\n",
+        encoding="utf-8",
     )
-    assert module._build_prompt_story_text(1, "はじまり", snippets) == (
-        "【EP1: はじまり】\n"
-        "---\n(屋顶)\n"
-        "---\n奏:\n……新曲、どうしよう。\n"
-        "---\n瑞希 & 真冬:\n一緒に考えようよ。\n"
+    (event_dir / "2.txt").write_text(
+        "仲间们为了准备演出而努力。\n"
+        "\n"
+        "2-1 終わり\n"
+        "\n"
+        "(Character: 宵崎奏, 朝比奈真冬)\n"
+        "\n"
+        "奏: 新曲、どうしよう。\n",
+        encoding="utf-8",
     )
 
-    character_ids = module._extract_character_ids(payload, {294: 17, 297: 20})
-    assert character_ids == (20, 17)
+    story_dir = event_dir.parents[2]
+    # 正文应从登场角色行之后开始（过滤简介、章节标题、角色列表）
+    raw_text = module._load_story_txt(story_dir, 2, 1)
+    assert raw_text == "（黑屏转场）\n一歌：走吧，大家。\n咲希：嗯，开心点！"
+    assert module._count_dialogue_lines(raw_text) == 2
+    assert module._load_story_txt(story_dir, 2, 2) == "奏: 新曲、どうしよう。"
+
+
+def test_strip_story_preamble_falls_back_to_full_text_when_no_marker() -> None:
+    text = "活动的剧情简介。\n\n1-1 开始\n\n（没有角色标记行）\n一歌：走吧。\n"
+    assert module._strip_story_preamble(text) == text.strip()
 
 
 def test_fetch_event_meta_prefers_latest_event_story(monkeypatch) -> None:
@@ -109,6 +103,31 @@ def test_fetch_event_meta_prefers_latest_event_story(monkeypatch) -> None:
 
 def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> None:
     output_dir = tmp_path / "story" / "detail"
+    story_dir = tmp_path / "Moe-story"
+    event_dir = story_dir / "story" / "event" / "2"
+    event_dir.mkdir(parents=True)
+    (event_dir / "1.txt").write_text(
+        "仲间们为了准备演出而努力。\n"
+        "\n"
+        "1-1 はじまり\n"
+        "\n"
+        "（登场角色：星乃一歌、天马咲希）\n"
+        "\n"
+        "Live House\n"
+        "一歌：行こう、みんな。\n"
+        "咲希：うん、楽しもう！\n",
+        encoding="utf-8",
+    )
+    (event_dir / "2.txt").write_text(
+        "仲间们为了准备演出而努力。\n"
+        "\n"
+        "2-1 おわり\n"
+        "\n"
+        "（登场角色：天马咲希）\n"
+        "\n"
+        "咲希：また次も頑張ろうね。\n",
+        encoding="utf-8",
+    )
 
     async def fake_fetch_master_json(file_name: str, *, lang: str = "jp", srcs=None):  # noqa: ANN001
         if file_name == "events":
@@ -125,53 +144,7 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
                     ],
                 }
             ]
-        if file_name == "character2ds":
-            return [
-                {"id": 101, "characterId": 1},
-                {"id": 102, "characterId": 2},
-            ]
         raise AssertionError(file_name)
-
-    async def fake_load_story_payload(client, url: str):  # noqa: ANN001
-        if "event_002_01.json" in url:
-            return {
-                "Snippets": [
-                    {"Index": 0, "Action": 1, "ReferenceIndex": 0},
-                    {"Index": 1, "Action": 6, "ReferenceIndex": 0},
-                    {"Index": 2, "Action": 6, "ReferenceIndex": 1},
-                ],
-                "SpecialEffectData": [{"EffectType": 8, "StringVal": "Live House", "StringValSub": "", "Duration": 0.0, "IntVal": 0}],
-                "TalkData": [
-                    {
-                        "WindowDisplayName": "一歌",
-                        "Body": "行こう、みんな。",
-                        "TalkCharacters": [{"Character2dId": 101}],
-                    },
-                    {
-                        "WindowDisplayName": "咲希",
-                        "Body": "うん、楽しもう!",
-                        "TalkCharacters": [{"Character2dId": 102}],
-                    },
-                ],
-                "AppearCharacters": [{"Character2dId": 101}, {"Character2dId": 102}],
-            }
-        if "event_002_02.json" in url:
-            return {
-                "Snippets": [
-                    {"Index": 0, "Action": 6, "ReferenceIndex": 0},
-                    {"Index": 1, "Action": 1, "ReferenceIndex": 0},
-                ],
-                "SpecialEffectData": [{"EffectType": 8, "StringVal": "屋上", "StringValSub": "", "Duration": 0.0, "IntVal": 0}],
-                "TalkData": [
-                    {
-                        "WindowDisplayName": "咲希",
-                        "Body": "また次も頑張ろうね。",
-                        "TalkCharacters": [{"Character2dId": 102}],
-                    }
-                ],
-                "AppearCharacters": [{"Character2dId": 102}, {"Character2dId": 101}],
-            }
-        raise AssertionError(url)
 
     responses = iter(
         [
@@ -198,13 +171,13 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
         return next(responses)
 
     monkeypatch.setattr(module, "_fetch_master_json", fake_fetch_master_json)
-    monkeypatch.setattr(module, "_load_story_payload", fake_load_story_payload)
     monkeypatch.setattr(module, "_chat_completion_json", fake_chat_completion_json)
 
     stats = asyncio.run(
         module.update_story_summary(
             event_id=2,
             output_dir=output_dir,
+            story_dir=story_dir,
             llm_config=LLMConfig(api_key="test-key"),
         )
     )
@@ -215,14 +188,15 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
     assert stats["event_id"] == 2
     assert stats["generated_files"] == 1
     assert stats["chapters_total"] == 2
+    assert stats["dialogue_lines_total"] == 3
     assert payload["title_jp"] == "Test Event"
     assert payload["title_cn"] == "测试活动"
     assert payload["outline_cn"] == "伙伴们为了演出而齐心协力。"
     assert payload["summary_cn"].startswith("为了迎接演出")
     assert "cover_image_url" not in payload
     assert len(payload["chapters"]) == 2
-    assert payload["chapters"][0]["character_ids"] == [1, 2]
-    assert payload["chapters"][1]["character_ids"] == [2, 1]
+    assert payload["chapters"][0]["character_ids"] == []
+    assert payload["chapters"][1]["character_ids"] == []
     assert payload["chapters"][0]["image_url"].endswith("/event_test_2026/event_test_2026_01.webp")
     assert payload["chapters"][1]["image_url"].endswith("/event_test_2026/event_test_2026_02.webp")
 
@@ -282,27 +256,26 @@ def test_update_story_summary_regenerates_when_existing_output_is_outdated(tmp_p
         ),
     )
 
-    async def fake_build_chapter_contents(event_meta, character2d_map):  # noqa: ANN001
+    def fake_build_chapter_contents(story_dir, event_meta):  # noqa: ANN001
         return (
             ChapterContent(
                 meta=EpisodeMeta(1, "はじまり", "event_002_01", "https://example.com/1.webp"),
                 prompt_text="---\n奏:\n开始吧\n",
                 character_ids=(1,),
-                snippet_count=1,
+                dialogue_line_count=1,
                 implemented=True,
             ),
             ChapterContent(
                 meta=EpisodeMeta(2, "おわり", "event_002_02", "https://example.com/2.webp"),
                 prompt_text="---\n瑞希:\n继续努力\n",
                 character_ids=(2,),
-                snippet_count=1,
+                dialogue_line_count=1,
                 implemented=True,
             ),
         )
 
     monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=(event_meta,)))
     monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
-    monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
     monkeypatch.setattr(module, "_build_chapter_contents", fake_build_chapter_contents)
     monkeypatch.setattr(module, "_generate_summary_rows", _fake_generate_summary_rows)
 
@@ -368,20 +341,19 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
             ],
         )
 
-    async def fake_build_chapter_contents(event_meta, character2d_map):  # noqa: ANN001
+    def fake_build_chapter_contents(story_dir, event_meta):  # noqa: ANN001
         return (
             ChapterContent(
                 meta=event_meta.episodes[0],
                 prompt_text="---\n奏:\n开始吧\n",
                 character_ids=(event_meta.event_id,),
-                snippet_count=1,
+                dialogue_line_count=1,
                 implemented=True,
             ),
         )
 
     monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=event_metas))
     monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
-    monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
     monkeypatch.setattr(module, "_build_chapter_contents", fake_build_chapter_contents)
     monkeypatch.setattr(module, "_generate_summary_rows", fake_generate_summary_rows)
 
@@ -396,6 +368,7 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
         "generated_files": 1,
         "failed_events": 0,
         "skipped_existing": 2,
+        "skipped_missing": 0,
     }
     assert payload["title_cn"] == "活动2"
     assert payload["chapters"][0]["title_cn"] == "章节2"
@@ -432,7 +405,6 @@ def test_update_story_summary_skips_failed_events_and_continues_scan(tmp_path, m
 
     monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=event_metas))
     monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
-    monkeypatch.setattr(module, "_fetch_character2d_map", _fake_character2d_map)
     monkeypatch.setattr(module, "_generate_event_summary_file", fake_generate_event_summary_file)
 
     stats = asyncio.run(module.update_story_summary(output_dir=output_dir))
@@ -445,5 +417,132 @@ def test_update_story_summary_skips_failed_events_and_continues_scan(tmp_path, m
         "generated_files": 1,
         "failed_events": 1,
         "skipped_existing": 0,
+        "skipped_missing": 0,
     }
     assert attempts == {1: 1, 2: 1}
+
+
+def test_update_story_summary_skips_when_story_txt_missing(tmp_path, monkeypatch, capsys) -> None:
+    output_dir = tmp_path / "story" / "detail"
+    story_dir = tmp_path / "empty-story"
+    story_dir.mkdir()
+
+    event_meta = EventMeta(
+        event_id=2,
+        title_jp="Test Event",
+        outline_jp="outline",
+        assetbundle_name="event_test_2026",
+        episodes=(EpisodeMeta(1, "はじまり", "event_002_01", "https://example.com/1.webp"),),
+    )
+
+    monkeypatch.setattr(module, "_fetch_event_metas", lambda event_id=None: asyncio.sleep(0, result=(event_meta,)))
+    monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
+
+    stats = asyncio.run(
+        module.update_story_summary(
+            event_id=2,
+            output_dir=output_dir,
+            story_dir=story_dir,
+            llm_config=LLMConfig(api_key="test-key"),
+        )
+    )
+
+    assert stats == {
+        "event_id": 2,
+        "chapters_total": 0,
+        "dialogue_lines_total": 0,
+        "generated_files": 0,
+        "skipped_existing": 0,
+    }
+    output = capsys.readouterr().out
+    assert "Missing story txt" in output
+    assert not (output_dir / "event_002.json").exists()
+
+
+def test_update_story_summary_specific_event_ids(tmp_path, monkeypatch) -> None:
+    output_dir = tmp_path / "story" / "detail"
+
+    event_meta_2 = EventMeta(
+        event_id=2,
+        title_jp="Test Event",
+        outline_jp="outline",
+        assetbundle_name="event_test_2026",
+        episodes=(EpisodeMeta(1, "ep1", "event_002_01", "https://example.com/2.webp"),),
+    )
+
+    async def fake_fetch_event_metas(event_id=None):  # noqa: ANN001
+        if event_id == 1:
+            raise module.StorySummaryError("no event story found")
+        return (event_meta_2,)
+
+    attempts: list[int] = []
+
+    async def fake_generate_event_summary_file(event_meta, **kwargs):  # noqa: ANN001
+        attempts.append(event_meta.event_id)
+        return (1, 2)
+
+    monkeypatch.setattr(module, "_fetch_event_metas", fake_fetch_event_metas)
+    monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
+    monkeypatch.setattr(module, "_generate_event_summary_file", fake_generate_event_summary_file)
+
+    stats = asyncio.run(
+        module.update_story_summary(
+            event_ids=(1, 2),
+            output_dir=output_dir,
+            llm_config=LLMConfig(api_key="test-key"),
+        )
+    )
+
+    assert stats == {
+        "events_total": 2,
+        "generated_events": 1,
+        "chapters_total": 1,
+        "dialogue_lines_total": 2,
+        "generated_files": 1,
+        "failed_events": 1,
+        "skipped_existing": 0,
+        "skipped_missing": 0,
+    }
+    assert attempts == [2]
+
+
+def test_update_story_summary_counts_missing_story_txts_separately(tmp_path, monkeypatch) -> None:
+    output_dir = tmp_path / "story" / "detail"
+
+    event_meta_2 = EventMeta(
+        event_id=2,
+        title_jp="Test Event",
+        outline_jp="outline",
+        assetbundle_name="event_test_2026",
+        episodes=(EpisodeMeta(1, "ep1", "event_002_01", "https://example.com/2.webp"),),
+    )
+
+    async def fake_fetch_event_metas(event_id=None):  # noqa: ANN001
+        return (event_meta_2,)
+
+    async def fake_generate_event_summary_file(event_meta, **kwargs):  # noqa: ANN001
+        raise module.StoryTextNotFoundError("Missing story txt (event not crawled in Moe-story repo yet)")
+
+    monkeypatch.setattr(module, "_fetch_event_metas", fake_fetch_event_metas)
+    monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
+    monkeypatch.setattr(module, "_generate_event_summary_file", fake_generate_event_summary_file)
+
+    stats = asyncio.run(
+        module.update_story_summary(
+            event_ids=(2, 3),
+            output_dir=output_dir,
+            llm_config=LLMConfig(api_key="test-key"),
+        )
+    )
+
+    assert stats == {
+        "events_total": 2,
+        "generated_events": 0,
+        "chapters_total": 0,
+        "dialogue_lines_total": 0,
+        "generated_files": 0,
+        "failed_events": 0,
+        "skipped_existing": 0,
+        "skipped_missing": 2,
+    }
+    assert not (output_dir / "event_002.json").exists()
