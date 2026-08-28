@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-27 07:03:34",
+  "generated_at": "2026-08-28 08:50:28",
   "songs": [
     {
       "music_id": 1,
@@ -11432,6 +11432,24 @@
       ]
     },
     {
+      "music_id": 550,
+      "title": "shake it!",
+      "source": "jp",
+      "bpm": 130.0,
+      "bpms": [
+        130.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 130.0,
+          "start_bar": 0.0,
+          "end_bar": 69.0,
+          "duration_sec": 127.38
+        }
+      ]
+    },
+    {
       "music_id": 551,
       "title": "ロストアンブレラ",
       "source": "jp",
@@ -16221,6 +16239,24 @@
       ]
     },
     {
+      "music_id": 788,
+      "title": "アンチサイノウ",
+      "source": "jp",
+      "bpm": 209.0,
+      "bpms": [
+        209.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 209.0,
+          "start_bar": 0.0,
+          "end_bar": 76.0,
+          "duration_sec": 87.27
+        }
+      ]
+    },
+    {
       "music_id": 789,
       "title": "天秤、指先で触れて",
       "source": "jp",
@@ -16826,6 +16862,24 @@
           "start_bar": 0.0,
           "end_bar": 92.0,
           "duration_sec": 118.71
+        }
+      ]
+    },
+    {
+      "music_id": 803,
+      "title": "空に免じて",
+      "source": "jp",
+      "bpm": 76.0,
+      "bpms": [
+        76.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 76.0,
+          "start_bar": 0.0,
+          "end_bar": 40.0,
+          "duration_sec": 126.32
         }
       ]
     },

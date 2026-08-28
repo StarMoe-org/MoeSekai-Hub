@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-27T07:02:58Z",
+  "generated_at": "2026-08-28T08:49:55Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -15354,6 +15354,11 @@
       ]
     },
     {
+      "music_id": 550,
+      "title": "shake it!",
+      "aliases": []
+    },
+    {
       "music_id": 551,
       "title": "ロストアンブレラ",
       "aliases": [
@@ -17248,6 +17253,13 @@
       ]
     },
     {
+      "music_id": 788,
+      "title": "アンチサイノウ",
+      "aliases": [
+        "反才能"
+      ]
+    },
+    {
       "music_id": 789,
       "title": "天秤、指先で触れて",
       "aliases": [
@@ -17292,6 +17304,13 @@
     {
       "music_id": 802,
       "title": "君に贈る未来",
+      "aliases": [
+        "赠予你的未来"
+      ]
+    },
+    {
+      "music_id": 803,
+      "title": "空に免じて",
       "aliases": []
     }
   ]
