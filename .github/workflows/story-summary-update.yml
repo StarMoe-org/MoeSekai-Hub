@@ -23,6 +23,12 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    env:
+      # Python 输出到管道时为块缓冲，不设置则运行中看不到实时日志
+      PYTHONUNBUFFERED: "1"
+      STORY_SUMMARY_API_KEY: ${{ secrets.STORY_SUMMARY_API_KEY }}
+      STORY_SUMMARY_BASE_URL: ${{ vars.STORY_SUMMARY_BASE_URL }}
+      STORY_SUMMARY_MODEL: ${{ vars.STORY_SUMMARY_MODEL }}
 
     steps:
       - name: Checkout
@@ -50,14 +56,15 @@ jobs:
           UV_INDEX_URL: https://pypi.org/simple
         run: uv sync
 
+      # 预检 LLM 可用性：API 故障时立即失败，避免批量生成白跑数十分钟
+      - name: Check LLM availability
+        run: uv run python -m src.cli check-story-llm
+
       # 步骤级超时：即使生成超时失败，job 仍会继续执行后面的提交步骤，
       # 已写入磁盘的部分结果不会丢失
       - name: Generate latest story summary
         timeout-minutes: 50
         env:
-          STORY_SUMMARY_API_KEY: ${{ secrets.STORY_SUMMARY_API_KEY }}
-          STORY_SUMMARY_BASE_URL: ${{ vars.STORY_SUMMARY_BASE_URL }}
-          STORY_SUMMARY_MODEL: ${{ vars.STORY_SUMMARY_MODEL }}
           INPUT_EVENT_IDS: ${{ inputs.event_ids }}
           INPUT_FORCE: ${{ inputs.force }}
         run: |

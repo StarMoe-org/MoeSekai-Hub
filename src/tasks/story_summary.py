@@ -10,7 +10,7 @@ from typing import Any
 
 import httpx
 
-from src.common.http import build_headers, get_json, request_with_retry
+from src.common.http import RetryConfig, build_headers, get_json, request_with_retry
 from src.common.io import read_json, write_json
 
 _DEFAULT_OUTPUT_DIR = Path("story/detail")
@@ -676,6 +676,43 @@ def _should_skip_event(output_path: Path, episode_count: int, *, force: bool) ->
     if force or not output_path.exists():
         return False
     return _existing_chapter_count(output_path) >= episode_count
+
+
+async def check_llm_available(llm_config: LLMConfig | None = None) -> str:
+    """探测 LLM API 可用性（最小 chat completion 请求）。
+
+    成功返回诊断信息字符串；不可用抛 StorySummaryError。
+    用于 CI 在批量生成前快速预检，避免 API 故障时白跑数十分钟。
+    """
+    resolved = _resolve_llm_config(llm_config)
+    payload = {
+        "model": resolved.model,
+        "temperature": 0.0,
+        "max_tokens": 5,
+        "messages": [{"role": "user", "content": "ping"}],
+    }
+    headers = {
+        "Authorization": f"Bearer {resolved.api_key}",
+        "Content-Type": "application/json",
+    }
+    try:
+        async with _create_async_client(headers=headers, timeout_seconds=30.0) as client:
+            response = await request_with_retry(
+                client,
+                "POST",
+                _chat_completions_url(resolved.base_url),
+                json=payload,
+                retry_config=RetryConfig(attempts=2, backoff_base_seconds=1.0),
+            )
+        data = response.json()
+        choices = data.get("choices") if isinstance(data, dict) else None
+        if not isinstance(choices, list) or not choices:
+            raise StorySummaryError("empty choices in LLM response")
+    except StorySummaryError:
+        raise
+    except Exception as exc:
+        raise StorySummaryError(f"LLM unavailable: {type(exc).__name__}: {exc}") from exc
+    return f"OK (base_url={resolved.base_url}, model={resolved.model})"
 
 
 async def _generate_event_summary_file(

@@ -2,6 +2,8 @@ import asyncio
 import json
 from pathlib import Path
 
+import pytest
+
 from src.tasks import story_summary as module
 from src.tasks.story_summary import ChapterContent, EpisodeMeta, EventMeta, LLMConfig
 
@@ -617,3 +619,25 @@ def test_run_event_batch_runs_concurrently(monkeypatch) -> None:
 
     assert peak_concurrency > 1
     assert stats == (6, 6, 6, 0, 0, 0)
+
+
+def test_check_llm_available(monkeypatch) -> None:
+    async def fake_request(client, method, url, **kwargs):  # noqa: ANN001
+        class FakeResponse:
+            def json(self):  # noqa: ANN201
+                return {"choices": [{"message": {"content": "pong"}}]}
+
+        return FakeResponse()
+
+    monkeypatch.setattr(module, "request_with_retry", fake_request)
+    message = asyncio.run(module.check_llm_available(LLMConfig(api_key="test-key")))
+    assert message.startswith("OK")
+
+
+def test_check_llm_available_fails_on_timeout(monkeypatch) -> None:
+    async def fake_request(client, method, url, **kwargs):  # noqa: ANN001
+        raise TimeoutError("read timeout")
+
+    monkeypatch.setattr(module, "request_with_retry", fake_request)
+    with pytest.raises(module.StorySummaryError, match="LLM unavailable"):
+        asyncio.run(module.check_llm_available(LLMConfig(api_key="test-key")))

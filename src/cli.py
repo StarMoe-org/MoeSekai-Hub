@@ -14,7 +14,7 @@ from src.tasks.manga import update_manga
 from src.tasks.music_alias import update_music_aliases
 from src.tasks.music_bpm import update_music_bpm
 from src.tasks.music_meta import update_music_meta
-from src.tasks.story_summary import update_story_summary
+from src.tasks.story_summary import StorySummaryError, check_llm_available, update_story_summary
 
 TaskFunc = Callable[[], Awaitable[dict[str, int]]]
 
@@ -48,6 +48,16 @@ async def _run_story_summary(
         story_dir=resolved_story_dir,
     )
     _print_stats("update-story-summary", stats)
+    return 0
+
+
+async def _run_check_story_llm() -> int:
+    try:
+        message = await check_llm_available()
+    except StorySummaryError as exc:
+        print(f"[check-story-llm] FAILED: {exc}", file=sys.stderr)
+        return 1
+    print(f"[check-story-llm] {message}")
     return 0
 
 
@@ -145,6 +155,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Re-fetch all songs, ignoring cached results",
     )
     subparsers.add_parser("update-bgm-duration")
+    subparsers.add_parser("check-story-llm", help="Probe LLM API availability before batch summary generation")
 
     summary_parser = subparsers.add_parser("update-story-summary")
     summary_parser.add_argument("--event-id", type=int, default=None, help="Generate summary for a specific event ID")
@@ -195,6 +206,8 @@ def main() -> int:
         return asyncio.run(_run_music_bpm(ids=args.ids, force=args.force))
     if args.command == "update-bgm-duration":
         return asyncio.run(_run_single("update-bgm-duration", update_bgm_duration))
+    if args.command == "check-story-llm":
+        return asyncio.run(_run_check_story_llm())
     if args.command == "update-story-summary":
         return asyncio.run(
             _run_story_summary(
