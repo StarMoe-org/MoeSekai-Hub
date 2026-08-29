@@ -15,6 +15,7 @@ from src.common.io import read_json, write_json
 
 _DEFAULT_OUTPUT_DIR = Path("story/detail")
 _DEFAULT_STORY_DIR = Path("Moe-story")
+_MAX_CONCURRENCY = 4
 _JSON_BLOCK_PATTERN = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
 _MASTER_BASE_URL = "https://metadata.exmeaning.com/jp/master"
 _APPEAR_CHARACTERS_LINE_PATTERN = re.compile(r"[（(]\s*(?:登场角色|Character)\s*[:：]")
@@ -706,6 +707,80 @@ async def _generate_event_summary_file(
     return len(chapter_rows), sum(chapter.dialogue_line_count for chapter in chapter_contents)
 
 
+async def _process_event_summary(
+    event_meta: EventMeta,
+    *,
+    output_dir: Path,
+    story_dir: Path,
+    llm_config: LLMConfig,
+    force: bool,
+) -> tuple[str, int, int]:
+    """处理单个活动：跳过检查 + 生成 + 异常分类。
+
+    每个活动完成即写入输出文件（_generate_event_summary_file 内部落盘），
+    不等待同批其他活动。返回 (status, chapters_total, dialogue_lines_total)，
+    status 为 generated / skipped_existing / missing / failed 之一。
+    """
+    output_path = _output_path(output_dir, event_meta.event_id)
+    if _should_skip_event(output_path, len(event_meta.episodes), force=force):
+        return "skipped_existing", 0, 0
+    try:
+        chapters_total, dialogue_lines_total = await _generate_event_summary_file(
+            event_meta,
+            output_dir=output_dir,
+            story_dir=story_dir,
+            llm_config=llm_config,
+        )
+        return "generated", chapters_total, dialogue_lines_total
+    except StoryTextNotFoundError as exc:
+        print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
+        return "missing", 0, 0
+    except Exception as exc:
+        print(f"[story-summary] skip event_id={event_meta.event_id}: {type(exc).__name__}: {exc}")
+        return "failed", 0, 0
+
+
+async def _run_event_batch(
+    event_metas: list[EventMeta],
+    *,
+    output_dir: Path,
+    story_dir: Path,
+    llm_config: LLMConfig,
+    force: bool,
+) -> tuple[int, int, int, int, int, int]:
+    """并发执行多个活动的生成（并发数 _MAX_CONCURRENCY）。
+
+    返回 (generated, chapters_total, dialogue_lines_total, failed, skipped_existing, skipped_missing)。
+    """
+    semaphore = asyncio.Semaphore(_MAX_CONCURRENCY)
+
+    async def run_one(event_meta: EventMeta) -> tuple[str, int, int]:
+        async with semaphore:
+            return await _process_event_summary(
+                event_meta,
+                output_dir=output_dir,
+                story_dir=story_dir,
+                llm_config=llm_config,
+                force=force,
+            )
+
+    results = await asyncio.gather(*(run_one(meta) for meta in event_metas))
+    generated = chapters_total = dialogue_lines_total = 0
+    failed = skipped_existing = skipped_missing = 0
+    for status, event_chapters_total, event_dialogue_lines_total in results:
+        if status == "generated":
+            generated += 1
+            chapters_total += event_chapters_total
+            dialogue_lines_total += event_dialogue_lines_total
+        elif status == "failed":
+            failed += 1
+        elif status == "skipped_existing":
+            skipped_existing += 1
+        else:
+            skipped_missing += 1
+    return generated, chapters_total, dialogue_lines_total, failed, skipped_existing, skipped_missing
+
+
 async def update_story_summary(
     *,
     event_id: int | None = None,
@@ -760,41 +835,26 @@ async def update_story_summary(
         resolved_llm_config = _resolve_llm_config(llm_config)
         resolved_story_dir = _resolve_story_dir(story_dir)
 
-        generated_events = 0
-        failed_events = 0
-        skipped_existing = 0
-        skipped_missing = 0
-        chapters_total = 0
-        dialogue_lines_total = 0
+        # 一次获取全量 master 元数据，按目标 id 筛选（避免每个 id 重复请求）
+        all_metas = await _fetch_event_metas(None)
+        meta_by_id = {meta.event_id: meta for meta in all_metas}
+        target_metas: list[EventMeta] = []
         for target_event_id in event_ids:
-            try:
-                event_meta = (await _fetch_event_metas(target_event_id))[0]
-            except StorySummaryError as exc:
-                failed_events += 1
-                print(f"[story-summary] skip event_id={target_event_id}: {type(exc).__name__}: {exc}")
+            target_meta = meta_by_id.get(target_event_id)
+            if target_meta is None:
+                print(f"[story-summary] skip event_id={target_event_id}: no event master row")
                 continue
-            output_path = _output_path(output_dir, event_meta.event_id)
-            if _should_skip_event(output_path, len(event_meta.episodes), force=force):
-                skipped_existing += 1
-                continue
-            try:
-                event_chapters_total, event_dialogue_lines_total = await _generate_event_summary_file(
-                    event_meta,
-                    output_dir=output_dir,
-                    story_dir=resolved_story_dir,
-                    llm_config=resolved_llm_config,
-                )
-            except StoryTextNotFoundError as exc:
-                skipped_missing += 1
-                print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
-                continue
-            except Exception as exc:
-                failed_events += 1
-                print(f"[story-summary] skip event_id={event_meta.event_id}: {type(exc).__name__}: {exc}")
-                continue
-            generated_events += 1
-            chapters_total += event_chapters_total
-            dialogue_lines_total += event_dialogue_lines_total
+            target_metas.append(target_meta)
+
+        generated_events, chapters_total, dialogue_lines_total, batch_failed, skipped_existing, skipped_missing = (
+            await _run_event_batch(
+                target_metas,
+                output_dir=output_dir,
+                story_dir=resolved_story_dir,
+                llm_config=resolved_llm_config,
+                force=force,
+            )
+        )
 
         return {
             "events_total": len(event_ids),
@@ -802,61 +862,25 @@ async def update_story_summary(
             "chapters_total": chapters_total,
             "dialogue_lines_total": dialogue_lines_total,
             "generated_files": generated_events,
-            "failed_events": failed_events,
+            "failed_events": batch_failed + (len(event_ids) - len(target_metas)),
             "skipped_existing": skipped_existing,
             "skipped_missing": skipped_missing,
         }
 
     event_metas = await _fetch_event_metas(None)
 
-    pending_event_metas: list[EventMeta] = []
-    skipped_existing = 0
-    for event_meta in event_metas:
-        output_path = _output_path(output_dir, event_meta.event_id)
-        if _should_skip_event(output_path, len(event_meta.episodes), force=force):
-            skipped_existing += 1
-            continue
-        pending_event_metas.append(event_meta)
-
-    if not pending_event_metas:
-        return {
-            "events_total": len(event_metas),
-            "generated_events": 0,
-            "chapters_total": 0,
-            "dialogue_lines_total": 0,
-            "generated_files": 0,
-            "failed_events": 0,
-            "skipped_existing": skipped_existing,
-            "skipped_missing": 0,
-        }
-
     resolved_llm_config = _resolve_llm_config(llm_config)
     resolved_story_dir = _resolve_story_dir(story_dir)
 
-    generated_events = 0
-    failed_events = 0
-    skipped_missing = 0
-    chapters_total = 0
-    dialogue_lines_total = 0
-    for event_meta in pending_event_metas:
-        try:
-            event_chapters_total, event_dialogue_lines_total = await _generate_event_summary_file(
-                event_meta,
-                output_dir=output_dir,
-                story_dir=resolved_story_dir,
-                llm_config=resolved_llm_config,
-            )
-        except StoryTextNotFoundError as exc:
-            skipped_missing += 1
-            print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
-            continue
-        except Exception as exc:
-            failed_events += 1
-            print(f"[story-summary] skip event_id={event_meta.event_id}: {type(exc).__name__}: {exc}")
-            continue
-        generated_events += 1
-        chapters_total += event_chapters_total
-        dialogue_lines_total += event_dialogue_lines_total
+    generated_events, chapters_total, dialogue_lines_total, failed_events, skipped_existing, skipped_missing = (
+        await _run_event_batch(
+            list(event_metas),
+            output_dir=output_dir,
+            story_dir=resolved_story_dir,
+            llm_config=resolved_llm_config,
+            force=force,
+        )
+    )
 
     return {
         "events_total": len(event_metas),

@@ -39,7 +39,9 @@ uv run python -m src.cli update-event-bvid
 uv run python -m src.cli update-manga
 uv run python -m src.cli update-music-alias
 uv run python -m src.cli update-b30-csv
+uv run python -m src.cli update-music-meta
 uv run python -m src.cli update-bgm-duration
+uv run python -m src.cli update-music-bpm
 uv run python -m src.cli run-all
 ```
 
@@ -120,12 +122,16 @@ uv run python scripts/convert_mangas_to_webp.py --keep-png # 仅生成 WebP，�
   - `character_ids`：出场角色ID列表（保留字段，当前恒为空）
   - `image_url`：章节封面图片URL
 
-数据来源：剧情原文从 [StarMoe-org/Moe-story](https://github.com/StarMoe-org/Moe-story) 仓库的 `story/event/{eventId}/{chapter}.txt` 读取（正文从登场角色行之后开始，过滤简介/标题等元信息；本地路径由 `--story-dir` 指定或 `MOE_STORY_DIR` 环境变量设置，默认 `Moe-story/`），元数据（活动/章节的日文标题与简介）从 `metadata.exmeaning.com/jp/master` 获取，通过 LLM 生成中文标题与剧情总结。Moe-story 仓库暂未收录的活动会跳过，待仓库更新后重试。
+数据来源：
+- 剧情原文：从 [StarMoe-org/Moe-story](https://github.com/StarMoe-org/Moe-story) 仓库的 `story/event/{eventId}/{chapter}.txt` 读取，正文从登场角色行之后开始（本地路径由 `--story-dir` 指定或 `MOE_STORY_DIR` 环境变量设置，默认 `Moe-story/`）
+- 活动简介与章节标题：优先从 txt 提取（中文版 txt 提供的标题/简介为官方汉化，LLM 直接采用；日文版 txt 提供原文），提取不到时回退 master 元数据
+- 活动标题（日文）与元数据：`metadata.exmeaning.com/jp/master`
+- Moe-story 未收录的活动会跳过（计入 `skipped_missing`，不算失败），待仓库更新后重试；多活动更新为并发执行（并发数 4）
 
 ## GitHub Actions
 
-- `daily-update.yml`：每天 UTC `00:00`（北京时间 `08:00`），运行四类基础数据更新任务
-- `story-summary-update.yml`：每天 UTC `03:00`（北京时间 `11:00`），生成最新活动剧情摘要；支持手动触发（`workflow_dispatch`）时填写 `event_ids`（如 `1,10-20,35`，留空更新全部缺失）与 `force`（强制重新生成）
+- `daily-update.yml`：每天 UTC `00:00`（北京时间 `08:00`），运行基础数据更新任务（活动B站链接、四格漫画、音乐别名、B30 合并表、音乐元数据、BGM 时长、音乐 BPM）
+- `story-summary-update.yml`：每天 UTC `03:00`（北京时间 `11:00`），生成最新活动剧情摘要；支持手动触发（`workflow_dispatch`）时填写 `event_ids`（如 `1,10-20,35`，留空更新全部缺失）与 `force`（强制重新生成）。生成步骤带步骤级超时，超时/失败后提交步骤仍会执行，已完成的活动结果照常提交
 
 ## 主要数据来源
 

@@ -22,7 +22,7 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: Checkout
@@ -50,7 +50,10 @@ jobs:
           UV_INDEX_URL: https://pypi.org/simple
         run: uv sync
 
+      # 步骤级超时：即使生成超时失败，job 仍会继续执行后面的提交步骤，
+      # 已写入磁盘的部分结果不会丢失
       - name: Generate latest story summary
+        timeout-minutes: 50
         env:
           STORY_SUMMARY_API_KEY: ${{ secrets.STORY_SUMMARY_API_KEY }}
           STORY_SUMMARY_BASE_URL: ${{ vars.STORY_SUMMARY_BASE_URL }}
@@ -68,6 +71,7 @@ jobs:
           uv run python -m src.cli update-story-summary $args
 
       - name: Commit and push if changed
+        if: always()  # 生成步骤超时/失败时也提交已完成的部分
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

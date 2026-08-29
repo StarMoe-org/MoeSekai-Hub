@@ -1,5 +1,6 @@
 import asyncio
 import json
+from pathlib import Path
 
 from src.tasks import story_summary as module
 from src.tasks.story_summary import ChapterContent, EpisodeMeta, EventMeta, LLMConfig
@@ -495,8 +496,7 @@ def test_update_story_summary_specific_event_ids(tmp_path, monkeypatch) -> None:
     )
 
     async def fake_fetch_event_metas(event_id=None):  # noqa: ANN001
-        if event_id == 1:
-            raise module.StorySummaryError("no event story found")
+        assert event_id is None  # 多 id 分支只拉一次全量 master
         return (event_meta_2,)
 
     attempts: list[int] = []
@@ -540,9 +540,16 @@ def test_update_story_summary_counts_missing_story_txts_separately(tmp_path, mon
         assetbundle_name="event_test_2026",
         episodes=(EpisodeMeta(1, "ep1", "event_002_01", "https://example.com/2.webp"),),
     )
+    event_meta_3 = EventMeta(
+        event_id=3,
+        title_jp="Test Event 3",
+        outline_jp="outline 3",
+        assetbundle_name="event_test_2026",
+        episodes=(EpisodeMeta(1, "ep1", "event_003_01", "https://example.com/3.webp"),),
+    )
 
     async def fake_fetch_event_metas(event_id=None):  # noqa: ANN001
-        return (event_meta_2,)
+        return (event_meta_2, event_meta_3)
 
     async def fake_generate_event_summary_file(event_meta, **kwargs):  # noqa: ANN001
         raise module.StoryTextNotFoundError("Missing story txt (event not crawled in Moe-story repo yet)")
@@ -570,3 +577,43 @@ def test_update_story_summary_counts_missing_story_txts_separately(tmp_path, mon
         "skipped_missing": 2,
     }
     assert not (output_dir / "event_002.json").exists()
+
+
+def test_run_event_batch_runs_concurrently(monkeypatch) -> None:
+    """验证多个事件并发执行（峰值并发数 > 1）。"""
+    peak_concurrency = 0
+    current_concurrency = 0
+
+    async def fake_generate_event_summary_file(event_meta, **kwargs):  # noqa: ANN001
+        nonlocal peak_concurrency, current_concurrency
+        current_concurrency += 1
+        peak_concurrency = max(peak_concurrency, current_concurrency)
+        await asyncio.sleep(0.05)
+        current_concurrency -= 1
+        return (1, 1)
+
+    monkeypatch.setattr(module, "_generate_event_summary_file", fake_generate_event_summary_file)
+
+    metas = [
+        EventMeta(
+            event_id=event_id,
+            title_jp=f"E{event_id}",
+            outline_jp="outline",
+            assetbundle_name="event_test",
+            episodes=(EpisodeMeta(1, "ep1", "ev_001", "https://example.com/x.webp"),),
+        )
+        for event_id in range(1, 7)
+    ]
+
+    stats = asyncio.run(
+        module._run_event_batch(
+            metas,
+            output_dir=Path("not-used"),
+            story_dir=Path("not-used"),
+            llm_config=LLMConfig(api_key="test-key"),
+            force=True,
+        )
+    )
+
+    assert peak_concurrency > 1
+    assert stats == (6, 6, 6, 0, 0, 0)
