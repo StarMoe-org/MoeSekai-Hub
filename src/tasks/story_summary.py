@@ -707,6 +707,11 @@ async def _generate_event_summary_file(
     return len(chapter_rows), sum(chapter.dialogue_line_count for chapter in chapter_contents)
 
 
+def _log_title(event_meta: EventMeta) -> str:
+    title = event_meta.title_jp
+    return title if len(title) <= 30 else title[:30] + "…"
+
+
 async def _process_event_summary(
     event_meta: EventMeta,
     *,
@@ -720,9 +725,12 @@ async def _process_event_summary(
     每个活动完成即写入输出文件（_generate_event_summary_file 内部落盘），
     不等待同批其他活动。返回 (status, chapters_total, dialogue_lines_total)，
     status 为 generated / skipped_existing / missing / failed 之一。
+    处理开始、成功与各类跳过均输出一行日志便于跟踪。
     """
+    print(f"[story-summary] start event_id={event_meta.event_id} ({_log_title(event_meta)})")
     output_path = _output_path(output_dir, event_meta.event_id)
     if _should_skip_event(output_path, len(event_meta.episodes), force=force):
+        print(f"[story-summary] skip event_id={event_meta.event_id} ({_log_title(event_meta)}): output exists and is up to date")
         return "skipped_existing", 0, 0
     try:
         chapters_total, dialogue_lines_total = await _generate_event_summary_file(
@@ -731,12 +739,16 @@ async def _process_event_summary(
             story_dir=story_dir,
             llm_config=llm_config,
         )
+        print(
+            f"[story-summary] done event_id={event_meta.event_id} ({_log_title(event_meta)}): "
+            f"chapters={chapters_total}, dialogue_lines={dialogue_lines_total}"
+        )
         return "generated", chapters_total, dialogue_lines_total
     except StoryTextNotFoundError as exc:
-        print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
+        print(f"[story-summary] skip event_id={event_meta.event_id} ({_log_title(event_meta)}): {exc}")
         return "missing", 0, 0
     except Exception as exc:
-        print(f"[story-summary] skip event_id={event_meta.event_id}: {type(exc).__name__}: {exc}")
+        print(f"[story-summary] fail event_id={event_meta.event_id} ({_log_title(event_meta)}): {type(exc).__name__}: {exc}")
         return "failed", 0, 0
 
 
@@ -798,6 +810,10 @@ async def update_story_summary(
             event_meta = (await _fetch_event_metas(event_ids[0]))[0]
             output_path = _output_path(output_dir, event_meta.event_id)
             if _should_skip_event(output_path, len(event_meta.episodes), force=force):
+                print(
+                    f"[story-summary] skip event_id={event_meta.event_id} ({_log_title(event_meta)}): "
+                    "output exists and is up to date"
+                )
                 return {
                     "event_id": event_meta.event_id,
                     "chapters_total": len(event_meta.episodes),
@@ -816,7 +832,7 @@ async def update_story_summary(
                     llm_config=resolved_llm_config,
                 )
             except StoryTextNotFoundError as exc:
-                print(f"[story-summary] skip event_id={event_meta.event_id}: {exc}")
+                print(f"[story-summary] skip event_id={event_meta.event_id} ({_log_title(event_meta)}): {exc}")
                 return {
                     "event_id": event_meta.event_id,
                     "chapters_total": 0,
@@ -824,6 +840,10 @@ async def update_story_summary(
                     "generated_files": 0,
                     "skipped_existing": 0,
                 }
+            print(
+                f"[story-summary] done event_id={event_meta.event_id} ({_log_title(event_meta)}): "
+                f"chapters={chapters_total}, dialogue_lines={dialogue_lines_total}"
+            )
             return {
                 "event_id": event_meta.event_id,
                 "chapters_total": chapters_total,
