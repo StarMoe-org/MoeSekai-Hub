@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-01T03:22:13Z",
+  "generated_at": "2026-09-02T02:38:52Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -15356,7 +15356,10 @@
     {
       "music_id": 550,
       "title": "shake it!",
-      "aliases": []
+      "aliases": [
+        "새끼",
+        "새끼！"
+      ]
     },
     {
       "music_id": 551,
