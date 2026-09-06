@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T02:43:52Z",
+  "generated_at": "2026-09-06T02:41:43Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17314,6 +17314,11 @@
     {
       "music_id": 803,
       "title": "空に免じて",
+      "aliases": []
+    },
+    {
+      "music_id": 804,
+      "title": "正解",
       "aliases": []
     }
   ]

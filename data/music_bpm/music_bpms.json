@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05 02:44:21",
+  "generated_at": "2026-09-06 02:42:12",
   "songs": [
     {
       "music_id": 1,
@@ -16880,6 +16880,24 @@
           "start_bar": 0.0,
           "end_bar": 40.0,
           "duration_sec": 126.32
+        }
+      ]
+    },
+    {
+      "music_id": 804,
+      "title": "正解",
+      "source": "jp",
+      "bpm": 155.0,
+      "bpms": [
+        155.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 155.0,
+          "start_bar": 0.0,
+          "end_bar": 77.0,
+          "duration_sec": 119.23
         }
       ]
     },
