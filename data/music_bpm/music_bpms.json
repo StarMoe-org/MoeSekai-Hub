@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14 03:09:13",
+  "generated_at": "2026-09-15 03:11:33",
   "songs": [
     {
       "music_id": 1,
@@ -16898,6 +16898,42 @@
           "start_bar": 0.0,
           "end_bar": 77.0,
           "duration_sec": 119.23
+        }
+      ]
+    },
+    {
+      "music_id": 809,
+      "title": "敗走",
+      "source": "jp",
+      "bpm": 76.0,
+      "bpms": [
+        76.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 76.0,
+          "start_bar": 0.0,
+          "end_bar": 35.0,
+          "duration_sec": 110.53
+        }
+      ]
+    },
+    {
+      "music_id": 811,
+      "title": "ヘレディティ",
+      "source": "jp",
+      "bpm": 135.0,
+      "bpms": [
+        135.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 135.0,
+          "start_bar": 0.0,
+          "end_bar": 69.0,
+          "duration_sec": 122.67
         }
       ]
     },
