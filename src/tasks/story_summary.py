@@ -14,7 +14,11 @@ from src.common.http import RetryConfig, build_headers, get_json, request_with_r
 from src.common.io import read_json, write_json
 
 _DEFAULT_OUTPUT_DIR = Path("story/detail")
-_DEFAULT_STORY_DIR = Path("Moe-story")
+_DEFAULT_STORY_DIR = Path("ProjectSekai-story")
+_STORY_LANGS = ("jp", "cn", "en", "tw")
+_STORY_LANG_DEFAULT = "jp"
+# 非 strict 模式下，指定语言缺失该话时依次尝试的回退语言
+_STORY_LANG_FALLBACKS = ("jp",)
 _MAX_CONCURRENCY = 4
 _JSON_BLOCK_PATTERN = re.compile(r"```(?:json)?\s*(\{.*?\})\s*```", re.DOTALL)
 _MASTER_BASE_URL = "https://metadata.exmeaning.com/jp/master"
@@ -150,7 +154,7 @@ class StorySummaryError(RuntimeError):
 
 
 class StoryTextNotFoundError(StorySummaryError):
-    """Raised when the story txt is missing from the Moe-story repo (expected, skippable)."""
+    """Raised when the story txt is missing from the upstream story repo (expected, skippable)."""
 
 
 @dataclass(frozen=True)
@@ -195,6 +199,26 @@ class StoryText:
     body: str
     outline: str | None
     chapter_title: str | None
+
+
+@dataclass(frozen=True)
+class StorySource:
+    """上游剧情仓库（ci-ke/ProjectSekai-story）的读取配置。
+
+    root: 仓库 clone 根目录，其下为 story_{lang}/event/...
+    lang: 首选语言（jp/cn/en/tw）
+    strict: True 时只读 lang；False 时该话缺失可回退 _STORY_LANG_FALLBACKS
+    """
+
+    root: Path
+    lang: str = _STORY_LANG_DEFAULT
+    strict: bool = False
+
+    def lang_candidates(self) -> tuple[str, ...]:
+        if self.strict:
+            return (self.lang,)
+        ordered = [self.lang, *(lang for lang in _STORY_LANG_FALLBACKS if lang != self.lang)]
+        return tuple(ordered)
 
 
 def _create_async_client(*, headers: dict[str, str] | None = None, timeout_seconds: float = 30.0) -> httpx.AsyncClient:
@@ -320,10 +344,33 @@ async def _fetch_event_meta(event_id: int | None = None) -> EventMeta:
 def _resolve_story_dir(story_dir: Path | None) -> Path:
     if story_dir is not None:
         return story_dir
-    env_value = os.environ.get("MOE_STORY_DIR", "").strip()
-    if env_value:
-        return Path(env_value)
+    for env_name in ("PJSK_STORY_DIR", "MOE_STORY_DIR"):
+        env_value = os.environ.get(env_name, "").strip()
+        if env_value:
+            return Path(env_value)
     return _DEFAULT_STORY_DIR
+
+
+def _resolve_story_lang(lang: str | None) -> str:
+    candidate = (lang or os.environ.get("PJSK_STORY_LANG", "")).strip().lower()
+    if not candidate:
+        return _STORY_LANG_DEFAULT
+    if candidate not in _STORY_LANGS:
+        raise StorySummaryError(f"Unsupported story lang: {candidate!r} (expected one of {', '.join(_STORY_LANGS)})")
+    return candidate
+
+
+def _resolve_story_source(
+    story_dir: Path | None,
+    *,
+    story_lang: str | None = None,
+    story_lang_strict: bool = False,
+) -> StorySource:
+    return StorySource(
+        root=_resolve_story_dir(story_dir),
+        lang=_resolve_story_lang(story_lang),
+        strict=story_lang_strict,
+    )
 
 
 def _parse_story_text(text: str) -> StoryText:
@@ -361,12 +408,40 @@ def _parse_story_text(text: str) -> StoryText:
     return StoryText(body=body, outline=outline, chapter_title=chapter_title)
 
 
-def _load_story_txt(story_dir: Path, event_id: int, chapter_no: int) -> StoryText:
-    txt_path = story_dir / "story" / "event" / str(event_id) / f"{chapter_no}.txt"
-    if not txt_path.exists():
+def _resolve_event_txt(story_root: Path, lang: str, event_id: int, chapter_no: int) -> Path | None:
+    """在上游 story_{lang}/event 下定位单话 txt；找不到返回 None。
+
+    上游布局：story_{lang}/event/{id:03d} {name} ({banner})/{id:03d}-{ep:02d} {title}.txt
+    目录按 id 前缀精确匹配首段（避免 002 误命中 020），文件用 glob 匹配 id-ep 前缀。
+    """
+    base = story_root / f"story_{lang}" / "event"
+    if not base.is_dir():
+        return None
+    prefix = f"{event_id:03d}"
+    event_dir = next(
+        (item for item in sorted(base.iterdir()) if item.is_dir() and item.name.split(" ")[0] == prefix),
+        None,
+    )
+    if event_dir is None:
+        return None
+    matches = sorted(event_dir.glob(f"{prefix}-{chapter_no:02d} *.txt"))
+    return matches[0] if matches else None
+
+
+def _load_story_txt(source: StorySource, event_id: int, chapter_no: int) -> StoryText:
+    langs = source.lang_candidates()
+    txt_path: Path | None = None
+    for lang in langs:
+        txt_path = _resolve_event_txt(source.root, lang, event_id, chapter_no)
+        if txt_path is not None:
+            break
+
+    if txt_path is None:
         raise StoryTextNotFoundError(
-            f"Missing story txt (event not crawled in Moe-story repo yet): {txt_path}"
+            f"Missing story txt for event_id={event_id} chapter={chapter_no} "
+            f"(tried lang={'/'.join(langs)} under {source.root}); event not crawled upstream yet"
         )
+
     try:
         text = txt_path.read_text(encoding="utf-8")
     except Exception as exc:
@@ -378,10 +453,10 @@ def _count_dialogue_lines(text: str) -> int:
     return sum(1 for line in text.splitlines() if _DIALOGUE_LINE_PATTERN.match(line))
 
 
-def _build_chapter_contents(story_dir: Path, event_meta: EventMeta) -> tuple[ChapterContent, ...]:
+def _build_chapter_contents(source: StorySource, event_meta: EventMeta) -> tuple[ChapterContent, ...]:
     results: list[ChapterContent] = []
     for episode in event_meta.episodes:
-        story_text = _load_story_txt(story_dir, event_meta.event_id, episode.chapter_no)
+        story_text = _load_story_txt(source, event_meta.event_id, episode.chapter_no)
         results.append(
             ChapterContent(
                 meta=episode,
@@ -719,10 +794,10 @@ async def _generate_event_summary_file(
     event_meta: EventMeta,
     *,
     output_dir: Path,
-    story_dir: Path,
+    source: StorySource,
     llm_config: LLMConfig,
 ) -> tuple[int, int]:
-    chapter_contents = _build_chapter_contents(story_dir, event_meta)
+    chapter_contents = _build_chapter_contents(source, event_meta)
     title_cn, outline_cn, summary_cn, chapter_rows = await _generate_summary_rows(
         llm_config,
         event_meta,
@@ -753,7 +828,7 @@ async def _process_event_summary(
     event_meta: EventMeta,
     *,
     output_dir: Path,
-    story_dir: Path,
+    source: StorySource,
     llm_config: LLMConfig,
     force: bool,
 ) -> tuple[str, int, int]:
@@ -773,7 +848,7 @@ async def _process_event_summary(
         chapters_total, dialogue_lines_total = await _generate_event_summary_file(
             event_meta,
             output_dir=output_dir,
-            story_dir=story_dir,
+            source=source,
             llm_config=llm_config,
         )
         print(
@@ -793,7 +868,7 @@ async def _run_event_batch(
     event_metas: list[EventMeta],
     *,
     output_dir: Path,
-    story_dir: Path,
+    source: StorySource,
     llm_config: LLMConfig,
     force: bool,
 ) -> tuple[int, int, int, int, int, int]:
@@ -808,7 +883,7 @@ async def _run_event_batch(
             return await _process_event_summary(
                 event_meta,
                 output_dir=output_dir,
-                story_dir=story_dir,
+                source=source,
                 llm_config=llm_config,
                 force=force,
             )
@@ -838,6 +913,8 @@ async def update_story_summary(
     force: bool = False,
     llm_config: LLMConfig | None = None,
     story_dir: Path | None = None,
+    story_lang: str | None = None,
+    story_lang_strict: bool = False,
 ) -> dict[str, int]:
     if event_id is not None:
         event_ids = (event_id,)
@@ -860,12 +937,14 @@ async def update_story_summary(
                 }
 
             resolved_llm_config = _resolve_llm_config(llm_config)
-            resolved_story_dir = _resolve_story_dir(story_dir)
+            resolved_source = _resolve_story_source(
+                story_dir, story_lang=story_lang, story_lang_strict=story_lang_strict
+            )
             try:
                 chapters_total, dialogue_lines_total = await _generate_event_summary_file(
                     event_meta,
                     output_dir=output_dir,
-                    story_dir=resolved_story_dir,
+                    source=resolved_source,
                     llm_config=resolved_llm_config,
                 )
             except StoryTextNotFoundError as exc:
@@ -890,7 +969,9 @@ async def update_story_summary(
             }
 
         resolved_llm_config = _resolve_llm_config(llm_config)
-        resolved_story_dir = _resolve_story_dir(story_dir)
+        resolved_source = _resolve_story_source(
+            story_dir, story_lang=story_lang, story_lang_strict=story_lang_strict
+        )
 
         # 一次获取全量 master 元数据，按目标 id 筛选（避免每个 id 重复请求）
         all_metas = await _fetch_event_metas(None)
@@ -907,7 +988,7 @@ async def update_story_summary(
             await _run_event_batch(
                 target_metas,
                 output_dir=output_dir,
-                story_dir=resolved_story_dir,
+                source=resolved_source,
                 llm_config=resolved_llm_config,
                 force=force,
             )
@@ -927,13 +1008,13 @@ async def update_story_summary(
     event_metas = await _fetch_event_metas(None)
 
     resolved_llm_config = _resolve_llm_config(llm_config)
-    resolved_story_dir = _resolve_story_dir(story_dir)
+    resolved_source = _resolve_story_source(story_dir, story_lang=story_lang, story_lang_strict=story_lang_strict)
 
     generated_events, chapters_total, dialogue_lines_total, failed_events, skipped_existing, skipped_missing = (
         await _run_event_batch(
             list(event_metas),
             output_dir=output_dir,
-            story_dir=resolved_story_dir,
+            source=resolved_source,
             llm_config=resolved_llm_config,
             force=force,
         )

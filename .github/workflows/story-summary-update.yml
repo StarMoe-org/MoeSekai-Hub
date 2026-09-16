@@ -15,6 +15,21 @@ on:
         required: false
         default: false
         type: boolean
+      story_lang:
+        description: "剧情原文语言（cn 仅覆盖较早活动，非严格模式下逐话回退 jp；en/tw 为实验性）"
+        required: false
+        default: "jp"
+        type: choice
+        options:
+          - jp
+          - cn
+          - en
+          - tw
+      story_lang_strict:
+        description: "严格模式：只读所选语言，缺失的活动直接跳过（不回退 jp）"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -36,12 +51,33 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Checkout Moe-story (JP story text resources)
+      # 上游 4 语言全量约 150MB，只稀疏拉取需要的 event 目录（jp 约 18MB）。
+      # 非严格模式下所选语言缺失的话会回退 jp，故一并拉取 story_jp/event。
+      - name: Resolve sparse-checkout paths
+        id: sparse
+        env:
+          STORY_LANG: ${{ inputs.story_lang || 'jp' }}
+          STORY_LANG_STRICT: ${{ inputs.story_lang_strict }}
+        run: |
+          paths="story_$STORY_LANG/event"
+          if [ "$STORY_LANG" != "jp" ] && [ "$STORY_LANG_STRICT" != "true" ]; then
+            paths="$paths
+          story_jp/event"
+          fi
+          {
+            echo "paths<<EOF"
+            echo "$paths"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Checkout upstream story text (ci-ke/ProjectSekai-story)
         uses: actions/checkout@v4
         with:
-          repository: StarMoe-org/Moe-story
-          path: Moe-story
+          repository: ci-ke/ProjectSekai-story
+          path: ProjectSekai-story
           fetch-depth: 1
+          sparse-checkout: ${{ steps.sparse.outputs.paths }}
+          sparse-checkout-cone-mode: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -67,13 +103,18 @@ jobs:
         env:
           INPUT_EVENT_IDS: ${{ inputs.event_ids }}
           INPUT_FORCE: ${{ inputs.force }}
+          INPUT_STORY_LANG: ${{ inputs.story_lang || 'jp' }}
+          INPUT_STORY_LANG_STRICT: ${{ inputs.story_lang_strict }}
         run: |
-          args=""
+          args="--story-dir ProjectSekai-story --story-lang $INPUT_STORY_LANG"
           if [ -n "$INPUT_EVENT_IDS" ]; then
             args="$args --event-ids $INPUT_EVENT_IDS"
           fi
           if [ "$INPUT_FORCE" = "true" ]; then
             args="$args --force"
+          fi
+          if [ "$INPUT_STORY_LANG_STRICT" = "true" ]; then
+            args="$args --story-lang-strict"
           fi
           uv run python -m src.cli update-story-summary $args
 

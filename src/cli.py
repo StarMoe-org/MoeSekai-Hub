@@ -37,6 +37,8 @@ async def _run_story_summary(
     output_dir: str | None = None,
     force: bool = False,
     story_dir: str | None = None,
+    story_lang: str | None = None,
+    story_lang_strict: bool = False,
 ) -> int:
     resolved_output_dir = Path(output_dir) if output_dir is not None else Path("story/detail")
     resolved_story_dir = Path(story_dir) if story_dir is not None else None
@@ -46,6 +48,8 @@ async def _run_story_summary(
         output_dir=resolved_output_dir,
         force=force,
         story_dir=resolved_story_dir,
+        story_lang=story_lang,
+        story_lang_strict=story_lang_strict,
     )
     _print_stats("update-story-summary", stats)
     return 0
@@ -181,7 +185,27 @@ def build_parser() -> argparse.ArgumentParser:
         "--story-dir",
         type=str,
         default=None,
-        help="Path to the Moe-story repository clone (default: ./Moe-story, or $MOE_STORY_DIR)",
+        help=(
+            "Path to the ci-ke/ProjectSekai-story clone containing story_{lang}/event "
+            "(default: ./ProjectSekai-story, or $PJSK_STORY_DIR)"
+        ),
+    )
+    summary_parser.add_argument(
+        "--story-lang",
+        type=str,
+        default=None,
+        choices=["jp", "cn", "en", "tw"],
+        help=(
+            "Preferred story text language (default: jp, or $PJSK_STORY_LANG). "
+            "cn covers only older events and falls back to jp per chapter; "
+            "en/tw are experimental (prompt is tuned for JP/CN text)"
+        ),
+    )
+    summary_parser.add_argument(
+        "--story-lang-strict",
+        action="store_true",
+        default=False,
+        help="Read only --story-lang; skip events missing in that language instead of falling back to jp",
     )
 
     subparsers.add_parser("run-all")
@@ -216,6 +240,8 @@ def main() -> int:
                 output_dir=args.output_dir,
                 force=args.force,
                 story_dir=args.story_dir,
+                story_lang=args.story_lang,
+                story_lang_strict=args.story_lang_strict,
             )
         )
     if args.command == "run-all":

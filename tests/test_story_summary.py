@@ -5,7 +5,28 @@ from pathlib import Path
 import pytest
 
 from src.tasks import story_summary as module
-from src.tasks.story_summary import ChapterContent, EpisodeMeta, EventMeta, LLMConfig
+from src.tasks.story_summary import ChapterContent, EpisodeMeta, EventMeta, LLMConfig, StorySource
+
+
+def _write_upstream_txt(
+    story_root: Path,
+    lang: str,
+    event_id: int,
+    chapter_no: int,
+    text: str,
+    *,
+    event_name: str = "Test Event",
+    chapter_title: str = "chapter",
+) -> Path:
+    """按上游布局写入单话 txt。
+
+    story_{lang}/event/{id:03d} {event_name}/{id:03d}-{ep:02d} {chapter_title}.txt
+    """
+    event_dir = story_root / f"story_{lang}" / "event" / f"{event_id:03d} {event_name}"
+    event_dir.mkdir(parents=True, exist_ok=True)
+    path = event_dir / f"{event_id:03d}-{chapter_no:02d} {chapter_title}.txt"
+    path.write_text(text, encoding="utf-8")
+    return path
 
 
 async def _fake_generate_summary_rows(*args, **kwargs):  # noqa: ANN002, ANN003
@@ -35,9 +56,12 @@ async def _fake_generate_summary_rows(*args, **kwargs):  # noqa: ANN002, ANN003
 
 
 def test_load_story_txt_and_count_dialogue_lines(tmp_path) -> None:
-    event_dir = tmp_path / "Moe-story" / "story" / "event" / "2"
-    event_dir.mkdir(parents=True)
-    (event_dir / "1.txt").write_text(
+    story_root = tmp_path / "ProjectSekai-story"
+    _write_upstream_txt(
+        story_root,
+        "jp",
+        2,
+        1,
         "仲间们为了准备演出而努力。\n"
         "\n"
         "1-1 开始\n"
@@ -47,17 +71,23 @@ def test_load_story_txt_and_count_dialogue_lines(tmp_path) -> None:
         "（黑屏转场）\n"
         "一歌：走吧，大家。\n"
         "咲希：嗯，开心点！\n",
-        encoding="utf-8",
     )
-    (event_dir / "2.txt").write_text(
+    _write_upstream_txt(
+        story_root,
+        "jp",
+        2,
+        2,
         "2-1 结束\n"
         "\n"
         "(Character: 宵崎奏, 朝比奈真冬)\n"
         "\n"
         "奏: 新曲、どうしよう。\n",
-        encoding="utf-8",
     )
-    (event_dir / "3.txt").write_text(
+    _write_upstream_txt(
+        story_root,
+        "jp",
+        2,
+        3,
         "日文简介。\n"
         "\n"
         "3-1 始まりの時\n"
@@ -65,28 +95,128 @@ def test_load_story_txt_and_count_dialogue_lines(tmp_path) -> None:
         "(Character: 宵崎奏)\n"
         "\n"
         "奏: 新曲、どうしよう。\n",
-        encoding="utf-8",
     )
 
-    story_dir = event_dir.parents[2]
+    source = StorySource(root=story_root)
     # 第1话：正文从登场角色行之后开始，简介与章节标题取自 txt 原文
-    story_1 = module._load_story_txt(story_dir, 2, 1)
+    story_1 = module._load_story_txt(source, 2, 1)
     assert story_1.body == "（黑屏转场）\n一歌：走吧，大家。\n咲希：嗯，开心点！"
     assert story_1.outline == "仲间们为了准备演出而努力。"
     assert story_1.chapter_title == "开始"
     assert module._count_dialogue_lines(story_1.body) == 2
 
     # 第2话起：没有活动简介，仅章节标题
-    story_2 = module._load_story_txt(story_dir, 2, 2)
+    story_2 = module._load_story_txt(source, 2, 2)
     assert story_2.body == "奏: 新曲、どうしよう。"
     assert story_2.outline is None
     assert story_2.chapter_title == "结束"
 
     # 日文 txt：同样提取（得到的是日文原文，与 master 一致，由 LLM 翻译）
-    story_3 = module._load_story_txt(story_dir, 2, 3)
+    story_3 = module._load_story_txt(source, 2, 3)
     assert story_3.body.startswith("奏:")
     assert story_3.outline == "日文简介。"
     assert story_3.chapter_title == "始まりの時"
+
+
+def _minimal_txt(marker_line: str, dialogue: str) -> str:
+    return f"简介。\n\n1-1 标题\n\n{marker_line}\n\n{dialogue}\n"
+
+
+def test_load_story_txt_prefers_requested_lang_then_falls_back_to_jp(tmp_path) -> None:
+    story_root = tmp_path / "ProjectSekai-story"
+    # 活动 2：cn 与 jp 都有 → cn 优先
+    _write_upstream_txt(story_root, "jp", 2, 1, _minimal_txt("(Character: 宵崎奏)", "奏: 日文台词。"))
+    _write_upstream_txt(story_root, "cn", 2, 1, _minimal_txt("（登场角色：宵崎奏）", "奏：中文台词。"))
+    # 活动 3：只有 jp（模拟 cn 未收录的新活动）
+    _write_upstream_txt(story_root, "jp", 3, 1, _minimal_txt("(Character: 東雲彰人)", "彰人: 只有日文。"))
+
+    cn_source = StorySource(root=story_root, lang="cn")
+    assert module._load_story_txt(cn_source, 2, 1).body == "奏：中文台词。"
+    # cn 缺失 → 非严格模式回退 jp
+    assert module._load_story_txt(cn_source, 3, 1).body == "彰人: 只有日文。"
+
+    # 默认 jp 时不会被 cn 影响
+    jp_source = StorySource(root=story_root, lang="jp")
+    assert module._load_story_txt(jp_source, 2, 1).body == "奏: 日文台词。"
+
+
+def test_load_story_txt_strict_mode_does_not_fall_back(tmp_path) -> None:
+    story_root = tmp_path / "ProjectSekai-story"
+    _write_upstream_txt(story_root, "jp", 3, 1, _minimal_txt("(Character: 東雲彰人)", "彰人: 只有日文。"))
+
+    strict_source = StorySource(root=story_root, lang="cn", strict=True)
+    with pytest.raises(module.StoryTextNotFoundError) as excinfo:
+        module._load_story_txt(strict_source, 3, 1)
+    # 报错信息应只提到 cn，不含回退语言
+    assert "lang=cn" in str(excinfo.value)
+
+    # 同一份数据在非严格模式下可以回退
+    assert module._load_story_txt(StorySource(root=story_root, lang="cn"), 3, 1).body == "彰人: 只有日文。"
+
+
+def test_resolve_event_txt_matches_id_prefix_exactly(tmp_path) -> None:
+    story_root = tmp_path / "ProjectSekai-story"
+    _write_upstream_txt(story_root, "jp", 2, 1, "x", event_name="Small Event")
+    _write_upstream_txt(story_root, "jp", 20, 1, "y", event_name="Big Event")
+
+    path_2 = module._resolve_event_txt(story_root, "jp", 2, 1)
+    path_20 = module._resolve_event_txt(story_root, "jp", 20, 1)
+    assert path_2 is not None and path_2.parent.name == "002 Small Event"
+    assert path_20 is not None and path_20.parent.name == "020 Big Event"
+
+    # 未收录的活动/话数返回 None
+    assert module._resolve_event_txt(story_root, "jp", 2, 9) is None
+    assert module._resolve_event_txt(story_root, "jp", 999, 1) is None
+    # 语言目录不存在也返回 None，而非抛错
+    assert module._resolve_event_txt(story_root, "cn", 2, 1) is None
+
+
+def test_resolve_event_txt_handles_two_digit_chapters(tmp_path) -> None:
+    story_root = tmp_path / "ProjectSekai-story"
+    # 上游话数为两位补零，10 话以上活动需正确匹配
+    _write_upstream_txt(story_root, "jp", 179, 1, "ep1", chapter_title="first")
+    _write_upstream_txt(story_root, "jp", 179, 10, "ep10", chapter_title="tenth")
+    _write_upstream_txt(story_root, "jp", 179, 15, "ep15", chapter_title="last")
+
+    source = StorySource(root=story_root)
+    assert module._load_story_txt(source, 179, 1).body == "ep1"
+    assert module._load_story_txt(source, 179, 10).body == "ep10"
+    assert module._load_story_txt(source, 179, 15).body == "ep15"
+
+
+def test_resolve_story_source_env_and_validation(tmp_path, monkeypatch) -> None:
+    monkeypatch.delenv("PJSK_STORY_DIR", raising=False)
+    monkeypatch.delenv("MOE_STORY_DIR", raising=False)
+    monkeypatch.delenv("PJSK_STORY_LANG", raising=False)
+
+    # 默认值
+    default_source = module._resolve_story_source(None)
+    assert default_source.root == Path("ProjectSekai-story")
+    assert default_source.lang == "jp"
+    assert default_source.strict is False
+    assert default_source.lang_candidates() == ("jp",)
+
+    # PJSK_STORY_DIR 与 PJSK_STORY_LANG
+    monkeypatch.setenv("PJSK_STORY_DIR", str(tmp_path / "from-env"))
+    monkeypatch.setenv("PJSK_STORY_LANG", "CN")
+    env_source = module._resolve_story_source(None)
+    assert env_source.root == tmp_path / "from-env"
+    assert env_source.lang == "cn"
+    assert env_source.lang_candidates() == ("cn", "jp")
+
+    # 显式参数优先于环境变量
+    explicit = module._resolve_story_source(tmp_path / "explicit", story_lang="jp", story_lang_strict=True)
+    assert explicit.root == tmp_path / "explicit"
+    assert explicit.lang == "jp"
+    assert explicit.lang_candidates() == ("jp",)
+
+    # 兼容旧的 MOE_STORY_DIR（优先级低于 PJSK_STORY_DIR）
+    monkeypatch.delenv("PJSK_STORY_DIR")
+    monkeypatch.setenv("MOE_STORY_DIR", str(tmp_path / "legacy"))
+    assert module._resolve_story_source(None).root == tmp_path / "legacy"
+
+    with pytest.raises(module.StorySummaryError):
+        module._resolve_story_source(None, story_lang="kr")
 
 
 def test_parse_story_text_falls_back_to_full_text_when_no_marker() -> None:
@@ -130,10 +260,12 @@ def test_fetch_event_meta_prefers_latest_event_story(monkeypatch) -> None:
 
 def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> None:
     output_dir = tmp_path / "story" / "detail"
-    story_dir = tmp_path / "Moe-story"
-    event_dir = story_dir / "story" / "event" / "2"
-    event_dir.mkdir(parents=True)
-    (event_dir / "1.txt").write_text(
+    story_dir = tmp_path / "ProjectSekai-story"
+    _write_upstream_txt(
+        story_dir,
+        "jp",
+        2,
+        1,
         "仲间们为了准备演出而努力。\n"
         "\n"
         "1-1 はじまり\n"
@@ -143,9 +275,12 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
         "Live House\n"
         "一歌：行こう、みんな。\n"
         "咲希：うん、楽しもう！\n",
-        encoding="utf-8",
     )
-    (event_dir / "2.txt").write_text(
+    _write_upstream_txt(
+        story_dir,
+        "jp",
+        2,
+        2,
         "仲间们为了准备演出而努力。\n"
         "\n"
         "2-1 おわり\n"
@@ -153,7 +288,6 @@ def test_update_story_summary_writes_expected_schema(tmp_path, monkeypatch) -> N
         "（登场角色：天马咲希）\n"
         "\n"
         "咲希：また次も頑張ろうね。\n",
-        encoding="utf-8",
     )
 
     async def fake_fetch_master_json(file_name: str, *, lang: str = "jp", srcs=None):  # noqa: ANN001
@@ -283,7 +417,7 @@ def test_update_story_summary_regenerates_when_existing_output_is_outdated(tmp_p
         ),
     )
 
-    def fake_build_chapter_contents(story_dir, event_meta):  # noqa: ANN001
+    def fake_build_chapter_contents(source, event_meta):  # noqa: ANN001
         return (
             ChapterContent(
                 meta=EpisodeMeta(1, "はじまり", "event_002_01", "https://example.com/1.webp"),
@@ -368,7 +502,7 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
             ],
         )
 
-    def fake_build_chapter_contents(story_dir, event_meta):  # noqa: ANN001
+    def fake_build_chapter_contents(source, event_meta):  # noqa: ANN001
         return (
             ChapterContent(
                 meta=event_meta.episodes[0],
@@ -554,7 +688,7 @@ def test_update_story_summary_counts_missing_story_txts_separately(tmp_path, mon
         return (event_meta_2, event_meta_3)
 
     async def fake_generate_event_summary_file(event_meta, **kwargs):  # noqa: ANN001
-        raise module.StoryTextNotFoundError("Missing story txt (event not crawled in Moe-story repo yet)")
+        raise module.StoryTextNotFoundError("Missing story txt for event_id=2 chapter=1 (tried lang=jp)")
 
     monkeypatch.setattr(module, "_fetch_event_metas", fake_fetch_event_metas)
     monkeypatch.setattr(module, "_resolve_llm_config", lambda llm_config: LLMConfig(api_key="test-key"))
@@ -611,7 +745,7 @@ def test_run_event_batch_runs_concurrently(monkeypatch) -> None:
         module._run_event_batch(
             metas,
             output_dir=Path("not-used"),
-            story_dir=Path("not-used"),
+            source=StorySource(root=Path("not-used")),
             llm_config=LLMConfig(api_key="test-key"),
             force=True,
         )
