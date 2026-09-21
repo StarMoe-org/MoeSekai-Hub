@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-20T03:09:23Z",
+  "generated_at": "2026-09-21T03:05:50Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -3974,6 +3974,7 @@
         "贵妃醉酒",
         "重开",
         "钢丝滚出sekai",
+        "长条扭腰",
         "阴间绿条2",
         "马妈",
         "马妈生的",
@@ -13548,6 +13549,7 @@
         "舞萌2",
         "舞萌飞升少女团百合咲",
         "萌萌飞跃天界团",
+        "贤者",
         "选手跳车"
       ]
     },
@@ -14084,6 +14086,7 @@
       "title": "ちがう!!!",
       "aliases": [
         "！！！3",
+        "chigau",
         "yoyoyo",
         "yoyoyo神代类",
         "ちがう",
@@ -14093,6 +14096,7 @@
         "不同的！！！",
         "不对",
         "不对哦",
+        "不对的",
         "又昔",
         "对，对吗？",
         "对的对的，哦！不对！",
@@ -15414,6 +15418,7 @@
         "es",
         "es联动",
         "Fusion",
+        "八个男人",
         "八个男人唱歌",
         "哔哔哔哔哔",
         "烤饿",
@@ -15428,6 +15433,7 @@
       "title": "サイハテ",
       "aliases": [
         "9993",
+        "斑马",
         "最果",
         "最果て",
         "最终之所",
@@ -16022,9 +16028,11 @@
       "title": "好き！雪！本気マジック",
       "aliases": [
         "14雪",
+        "sukiyuki",
         "卧槽下雪了牛逼啊",
         "卧槽！下雪了！牛逼啊！",
-        "喜欢！雪！真实的魔法"
+        "喜欢！雪！真实的魔法",
+        "雪色魔法"
       ]
     },
     {
@@ -16965,7 +16973,8 @@
       "title": "SHIAWASE FOR YOU!",
       "aliases": [
         "2026雪未来",
-        "26雪"
+        "26雪",
+        "sfy"
       ]
     },
     {
@@ -17314,12 +17323,19 @@
     {
       "music_id": 803,
       "title": "空に免じて",
-      "aliases": []
+      "aliases": [
+        "念及长空",
+        "看在天空的份上",
+        "空免",
+        "魔法未来2026"
+      ]
     },
     {
       "music_id": 804,
       "title": "正解",
-      "aliases": []
+      "aliases": [
+        "akt7"
+      ]
     },
     {
       "music_id": 809,
@@ -17329,7 +17345,11 @@
     {
       "music_id": 811,
       "title": "ヘレディティ",
-      "aliases": []
+      "aliases": [
+        "ne7",
+        "nene7",
+        "遗传"
+      ]
     }
   ]
 }
