@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T03:05:50Z",
+  "generated_at": "2026-09-22T03:06:25Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17338,6 +17338,11 @@
       ]
     },
     {
+      "music_id": 805,
+      "title": "きのせい",
+      "aliases": []
+    },
+    {
       "music_id": 809,
       "title": "敗走",
       "aliases": []
@@ -17350,6 +17355,11 @@
         "nene7",
         "遗传"
       ]
+    },
+    {
+      "music_id": 814,
+      "title": "こわれちゃった！！",
+      "aliases": []
     }
   ]
 }

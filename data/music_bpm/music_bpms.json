@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21 03:06:20",
+  "generated_at": "2026-09-22 03:06:44",
   "songs": [
     {
       "music_id": 1,
@@ -16848,6 +16848,30 @@
       ]
     },
     {
+      "music_id": 798,
+      "title": "When Enemies Collapse",
+      "source": "cn",
+      "prefix": "sekai-cn"
+    },
+    {
+      "music_id": 799,
+      "title": "The Encounter Code",
+      "source": "cn",
+      "prefix": "sekai-cn"
+    },
+    {
+      "music_id": 800,
+      "title": "Remnath",
+      "source": "cn",
+      "prefix": "sekai-cn"
+    },
+    {
+      "music_id": 801,
+      "title": "ln(guis·tics)",
+      "source": "cn",
+      "prefix": "sekai-cn"
+    },
+    {
       "music_id": 802,
       "title": "君に贈る未来",
       "source": "jp",
@@ -16902,6 +16926,24 @@
       ]
     },
     {
+      "music_id": 805,
+      "title": "きのせい",
+      "source": "jp",
+      "bpm": 105.0,
+      "bpms": [
+        105.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 105.0,
+          "start_bar": 0.0,
+          "end_bar": 43.0,
+          "duration_sec": 98.29
+        }
+      ]
+    },
+    {
       "music_id": 809,
       "title": "敗走",
       "source": "jp",
@@ -16934,6 +16976,101 @@
           "start_bar": 0.0,
           "end_bar": 69.0,
           "duration_sec": 122.67
+        }
+      ]
+    },
+    {
+      "music_id": 814,
+      "title": "こわれちゃった！！",
+      "source": "jp",
+      "bpm": 251.0,
+      "bpms": [
+        235.0,
+        241.0,
+        251.0,
+        256.0,
+        261.0,
+        270.0,
+        115.0,
+        125.0,
+        139.0,
+        139.0,
+        115.0,
+        251.0
+      ],
+      "bpm_count": 12,
+      "bpm_segments": [
+        {
+          "bpm": 235.0,
+          "start_bar": 0.0,
+          "end_bar": 35.0,
+          "duration_sec": 35.74
+        },
+        {
+          "bpm": 241.0,
+          "start_bar": 35.0,
+          "end_bar": 39.0,
+          "duration_sec": 3.98
+        },
+        {
+          "bpm": 251.0,
+          "start_bar": 39.0,
+          "end_bar": 41.0,
+          "duration_sec": 1.91
+        },
+        {
+          "bpm": 256.0,
+          "start_bar": 41.0,
+          "end_bar": 41.5,
+          "duration_sec": 0.47
+        },
+        {
+          "bpm": 261.0,
+          "start_bar": 41.5,
+          "end_bar": 42.0,
+          "duration_sec": 0.46
+        },
+        {
+          "bpm": 270.0,
+          "start_bar": 42.0,
+          "end_bar": 43.0,
+          "duration_sec": 0.89
+        },
+        {
+          "bpm": 115.0,
+          "start_bar": 43.0,
+          "end_bar": 44.0,
+          "duration_sec": 2.09
+        },
+        {
+          "bpm": 125.0,
+          "start_bar": 44.0,
+          "end_bar": 46.0,
+          "duration_sec": 3.84
+        },
+        {
+          "bpm": 139.0,
+          "start_bar": 46.0,
+          "end_bar": 49.0,
+          "duration_sec": 5.18
+        },
+        {
+          "bpm": 139.0,
+          "start_bar": 49.0,
+          "end_bar": 49.25,
+          "duration_sec": 0.43
+        },
+        {
+          "bpm": 115.0,
+          "start_bar": 49.25,
+          "end_bar": 56.0,
+          "duration_sec": 14.09
+        },
+        {
+          "bpm": 251.0,
+          "start_bar": 56.0,
+          "end_bar": 110.0,
+          "duration_sec": 51.63
         }
       ]
     },
@@ -17478,6 +17615,12 @@
           "duration_sec": 85.5
         }
       ]
+    },
+    {
+      "music_id": 11018,
+      "title": "絶景",
+      "source": "cn",
+      "prefix": "sekai-cn"
     }
   ]
 }
