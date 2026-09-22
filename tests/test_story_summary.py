@@ -184,6 +184,96 @@ def test_resolve_event_txt_handles_two_digit_chapters(tmp_path) -> None:
     assert module._load_story_txt(source, 179, 15).body == "ep15"
 
 
+def test_parse_event_dir_title() -> None:
+    # 标准形态：id + 标题 + banner 括号
+    assert module._parse_event_dir_title("005 此时此地再次启程！ (MMJ_桃井爱莉)") == "此时此地再次启程！"
+    # 标题自身含括号
+    assert module._parse_event_dir_title("100 標題(含括號) (Mix_WL)") == "標題(含括號)"
+    # 无 banner 括号
+    assert module._parse_event_dir_title("101 NoBanner") == "NoBanner"
+    # 标题为空或前缀非法
+    assert module._parse_event_dir_title("102 ") is None
+    assert module._parse_event_dir_title("abc bad prefix (x)") is None
+
+
+def test_resolve_prompt_title_uses_dir_title_for_non_jp_only(tmp_path) -> None:
+    story_root = tmp_path / "ProjectSekai-story"
+    _write_upstream_txt(story_root, "jp", 5, 1, "x", event_name="ここからRE：START！ (MMJ_桃井愛莉)")
+    _write_upstream_txt(story_root, "cn", 5, 1, "x", event_name="此时此地再次启程！ (MMJ_桃井爱莉)")
+
+    # jp 一律回退 master（目录名经过非法字符替换且不可逆）
+    assert module._resolve_prompt_title(StorySource(root=story_root, lang="jp"), 5) is None
+    # 非 jp 取所选语言的目录名标题
+    assert module._resolve_prompt_title(StorySource(root=story_root, lang="cn"), 5) == "此时此地再次启程！"
+    # 所选语言缺该活动目录时不跨语言回退（回退 jp 只会拿到日文，与 master 等价）
+    assert module._resolve_prompt_title(StorySource(root=story_root, lang="cn"), 9) is None
+    # 语言目录整体不存在也返回 None，而非抛错
+    assert module._resolve_prompt_title(StorySource(root=story_root, lang="tw"), 5) is None
+
+
+def test_build_start_prompt_prefers_event_title_over_master(tmp_path) -> None:
+    event_meta = EventMeta(
+        event_id=5,
+        title_jp="ここからRE:START！",
+        outline_jp="日文简介",
+        assetbundle_name="event_test",
+        episodes=(EpisodeMeta(1, "わたしもアイドルに！", "event_005_01", "https://example.com/1.webp"),),
+    )
+    chapter = ChapterContent(
+        meta=event_meta.episodes[0],
+        prompt_text="愛莉：がんばろう。",
+        character_ids=(),
+        dialogue_line_count=1,
+        implemented=True,
+        outline="中文简介",
+        chapter_title="我也要成为偶像！",
+    )
+
+    # 传入上游本地化标题时优先使用
+    prompt_cn = module._build_start_prompt(event_meta, chapter, limit=200, event_title="此时此地再次启程！")
+    assert "标题: 此时此地再次启程！" in prompt_cn
+    assert "ここからRE:START！" not in prompt_cn
+
+    # 未传入（jp 路径）时回退 master 日文标题
+    prompt_jp = module._build_start_prompt(event_meta, chapter, limit=200)
+    assert "标题: ここからRE:START！" in prompt_jp
+
+
+def test_generate_event_summary_file_passes_dir_title_for_non_jp(tmp_path, monkeypatch) -> None:
+    """非 jp 语言时，上游目录名标题应一路传到 prompt 构造。"""
+    story_root = tmp_path / "ProjectSekai-story"
+    text = _minimal_txt("（登场角色：桃井爱莉）", "爱莉：加油。")
+    _write_upstream_txt(story_root, "cn", 5, 1, text, event_name="此时此地再次启程！ (MMJ_桃井爱莉)")
+    _write_upstream_txt(story_root, "jp", 5, 1, text, event_name="ここからRE：START！ (MMJ_桃井愛莉)")
+
+    event_meta = EventMeta(
+        event_id=5,
+        title_jp="ここからRE:START！",
+        outline_jp="日文简介",
+        assetbundle_name="event_test",
+        episodes=(EpisodeMeta(1, "わたしもアイドルに！", "event_005_01", "https://example.com/1.webp"),),
+    )
+
+    seen: list[str | None] = []
+
+    async def fake_generate_summary_rows(llm_config, meta, contents, *, event_title=None):  # noqa: ANN001
+        seen.append(event_title)
+        return ("标题", "简介", "总结", [])
+
+    monkeypatch.setattr(module, "_generate_summary_rows", fake_generate_summary_rows)
+
+    for lang in ("cn", "jp"):
+        asyncio.run(
+            module._generate_event_summary_file(
+                event_meta,
+                output_dir=tmp_path / "out",
+                source=StorySource(root=story_root, lang=lang),
+                llm_config=LLMConfig(api_key="test-key"),
+            )
+        )
+    assert seen == ["此时此地再次启程！", None]
+
+
 def test_resolve_story_source_env_and_validation(tmp_path, monkeypatch) -> None:
     monkeypatch.delenv("PJSK_STORY_DIR", raising=False)
     monkeypatch.delenv("MOE_STORY_DIR", raising=False)
@@ -485,7 +575,7 @@ def test_update_story_summary_scans_all_history_and_fills_missing(tmp_path, monk
         ),
     )
 
-    async def fake_generate_summary_rows(llm_config, event_meta, chapter_contents):  # noqa: ANN001
+    async def fake_generate_summary_rows(llm_config, event_meta, chapter_contents, *, event_title=None):  # noqa: ANN001
         return (
             f"活动{event_meta.event_id}",
             f"概要{event_meta.event_id}",

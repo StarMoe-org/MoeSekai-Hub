@@ -25,6 +25,8 @@ _MASTER_BASE_URL = "https://metadata.exmeaning.com/jp/master"
 _APPEAR_CHARACTERS_LINE_PATTERN = re.compile(r"[（(]\s*(?:登场角色|Character)\s*[:：]")
 _DIALOGUE_LINE_PATTERN = re.compile(r"^[^（【([]+[:：]")
 _STORY_HEADER_PATTERN = re.compile(r"^\d+-\d+\s*(.+)$")
+# 上游活动目录名："{id:03d} {title} ({banner})"，尾部 banner 括号可选
+_EVENT_DIR_NAME_PATTERN = re.compile(r"^\d{3}\s+(?P<title>.*?)(?:\s+\([^()]*\))?$")
 
 _EVENT_OUTPUT_LEN_LIMIT = 1000
 _EVENT_TARGET_LEN_LONG = 200
@@ -408,22 +410,58 @@ def _parse_story_text(text: str) -> StoryText:
     return StoryText(body=body, outline=outline, chapter_title=chapter_title)
 
 
-def _resolve_event_txt(story_root: Path, lang: str, event_id: int, chapter_no: int) -> Path | None:
-    """在上游 story_{lang}/event 下定位单话 txt；找不到返回 None。
+def _resolve_event_dir(story_root: Path, lang: str, event_id: int) -> Path | None:
+    """在上游 story_{lang}/event 下定位活动目录；找不到返回 None。
 
-    上游布局：story_{lang}/event/{id:03d} {name} ({banner})/{id:03d}-{ep:02d} {title}.txt
-    目录按 id 前缀精确匹配首段（避免 002 误命中 020），文件用 glob 匹配 id-ep 前缀。
+    目录按 id 前缀精确匹配首段（避免 002 误命中 020）。
     """
     base = story_root / f"story_{lang}" / "event"
     if not base.is_dir():
         return None
     prefix = f"{event_id:03d}"
-    event_dir = next(
+    return next(
         (item for item in sorted(base.iterdir()) if item.is_dir() and item.name.split(" ")[0] == prefix),
         None,
     )
+
+
+def _parse_event_dir_title(dir_name: str) -> str | None:
+    """从上游活动目录名提取活动标题；解析失败返回 None。
+
+    目录名形如 "{id:03d} {title} ({banner})"，尾部 banner 括号可选。
+    """
+    match = _EVENT_DIR_NAME_PATTERN.match(dir_name)
+    if match is None:
+        return None
+    return (match.group("title") or "").strip() or None
+
+
+def _resolve_prompt_title(source: StorySource, event_id: int) -> str | None:
+    """取所选语言的活动标题（来自上游目录名）；不适用时返回 None，由调用方回退 master。
+
+    仅对非 jp 语言生效：master 的 name 恒为日文，只有上游目录名带有对应语言的标题。
+    jp 一律回退 master：目录名经过文件系统非法字符替换（': ' 与 ':' 都写作 '：'、
+    '/' 写作 '／' 等）且不可逆，master 原文更精确。
+    不跨语言回退——所选语言缺该活动目录时回退 jp 只会拿到日文标题，与 master 等价。
+    """
+    if source.lang == _STORY_LANG_DEFAULT:
+        return None
+    event_dir = _resolve_event_dir(source.root, source.lang, event_id)
     if event_dir is None:
         return None
+    return _parse_event_dir_title(event_dir.name)
+
+
+def _resolve_event_txt(story_root: Path, lang: str, event_id: int, chapter_no: int) -> Path | None:
+    """在上游 story_{lang}/event 下定位单话 txt；找不到返回 None。
+
+    上游布局：story_{lang}/event/{id:03d} {name} ({banner})/{id:03d}-{ep:02d} {title}.txt
+    文件用 glob 匹配 id-ep 前缀。
+    """
+    event_dir = _resolve_event_dir(story_root, lang, event_id)
+    if event_dir is None:
+        return None
+    prefix = f"{event_id:03d}"
     matches = sorted(event_dir.glob(f"{prefix}-{chapter_no:02d} *.txt"))
     return matches[0] if matches else None
 
@@ -577,12 +615,22 @@ def _target_length(total_implemented_chapters: int) -> int:
     return _EVENT_TARGET_LEN_LONG
 
 
-def _build_start_prompt(event_meta: EventMeta, chapter: ChapterContent, *, limit: int) -> str:
+def _build_start_prompt(
+    event_meta: EventMeta,
+    chapter: ChapterContent,
+    *,
+    limit: int,
+    event_title: str | None = None,
+) -> str:
+    """构造首话 prompt。
+
+    event_title 为所选语言的活动标题（来自上游目录名），None 时回退 master 日文标题。
+    """
     return "\n\n".join(
         [
             _PROMPT_HEAD,
             _PROMPT_START_TEMPLATE.format(
-                title=event_meta.title_jp,
+                title=event_title or event_meta.title_jp,
                 outline=chapter.outline or event_meta.outline_jp,
                 chapter_title=chapter.chapter_title or chapter.meta.title_jp,
                 raw_story=_truncate_for_prompt(chapter.prompt_text),
@@ -620,6 +668,8 @@ async def _generate_summary_rows(
     llm_config: LLMConfig,
     event_meta: EventMeta,
     chapter_contents: tuple[ChapterContent, ...],
+    *,
+    event_title: str | None = None,
 ) -> tuple[str, str, str, list[dict[str, Any]]]:
     implemented_chapters = [chapter for chapter in chapter_contents if chapter.implemented]
     if not implemented_chapters:
@@ -631,7 +681,12 @@ async def _generate_summary_rows(
     start_payload = await _chat_completion_json(
         llm_config,
         system_prompt=_SUMMARY_SYSTEM_PROMPT,
-        user_prompt=_build_start_prompt(event_meta, implemented_chapters[0], limit=limit),
+        user_prompt=_build_start_prompt(
+            event_meta,
+            implemented_chapters[0],
+            limit=limit,
+            event_title=event_title,
+        ),
     )
 
     title_cn_generated = _require_text_field(start_payload, "title")
@@ -802,6 +857,7 @@ async def _generate_event_summary_file(
         llm_config,
         event_meta,
         chapter_contents,
+        event_title=_resolve_prompt_title(source, event_meta.event_id),
     )
 
     payload = {
