@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25 03:12:15",
+  "generated_at": "2026-09-26 03:16:16",
   "songs": [
     {
       "music_id": 1,
@@ -16940,6 +16940,24 @@
           "start_bar": 0.0,
           "end_bar": 43.0,
           "duration_sec": 98.29
+        }
+      ]
+    },
+    {
+      "music_id": 807,
+      "title": "Giddy!",
+      "source": "en",
+      "bpm": 175.0,
+      "bpms": [
+        175.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 175.0,
+          "start_bar": 0.0,
+          "end_bar": 66.0,
+          "duration_sec": 90.51
         }
       ]
     },
