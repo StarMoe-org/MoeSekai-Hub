@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29 03:58:29",
+  "generated_at": "2026-09-30 03:45:57",
   "songs": [
     {
       "music_id": 1,
@@ -15335,8 +15335,38 @@
     {
       "music_id": 729,
       "title": "LEMON MELON COOKIE",
-      "source": "kr",
-      "prefix": "sekai-kr"
+      "source": "jp",
+      "bpm": 180.0,
+      "bpms": [
+        180.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 180.0,
+          "start_bar": 0.0,
+          "end_bar": 90.0,
+          "duration_sec": 120.0
+        }
+      ]
+    },
+    {
+      "music_id": 730,
+      "title": "エメラルド",
+      "source": "jp",
+      "bpm": 146.0,
+      "bpms": [
+        146.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 146.0,
+          "start_bar": 0.0,
+          "end_bar": 71.0,
+          "duration_sec": 116.71
+        }
+      ]
     },
     {
       "music_id": 732,
@@ -16205,6 +16235,85 @@
           "start_bar": 0.0,
           "end_bar": 33.0,
           "duration_sec": 93.18
+        }
+      ]
+    },
+    {
+      "music_id": 766,
+      "title": "アブノーマリティ･ダンシンガール",
+      "source": "jp",
+      "bpm": 220.0,
+      "bpms": [
+        220.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 220.0,
+          "start_bar": 0.0,
+          "end_bar": 115.0,
+          "duration_sec": 125.45
+        }
+      ]
+    },
+    {
+      "music_id": 774,
+      "title": "ラビットホール",
+      "source": "jp",
+      "bpm": 173.0,
+      "bpms": [
+        130.0,
+        173.0
+      ],
+      "bpm_count": 2,
+      "bpm_segments": [
+        {
+          "bpm": 130.0,
+          "start_bar": 0.0,
+          "end_bar": 1.0,
+          "duration_sec": 1.85
+        },
+        {
+          "bpm": 173.0,
+          "start_bar": 1.0,
+          "end_bar": 89.0,
+          "duration_sec": 122.08
+        }
+      ]
+    },
+    {
+      "music_id": 775,
+      "title": "ドゥーマー",
+      "source": "jp",
+      "bpm": 131.0,
+      "bpms": [
+        131.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 131.0,
+          "start_bar": 0.0,
+          "end_bar": 65.0,
+          "duration_sec": 119.08
+        }
+      ]
+    },
+    {
+      "music_id": 784,
+      "title": "オブソミート",
+      "source": "jp",
+      "bpm": 158.0,
+      "bpms": [
+        158.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 158.0,
+          "start_bar": 0.0,
+          "end_bar": 80.0,
+          "duration_sec": 121.52
         }
       ]
     },
