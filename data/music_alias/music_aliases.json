@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T03:45:28Z",
+  "generated_at": "2026-10-01T03:52:14Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -16280,6 +16280,7 @@
       "title": "ありのままのストーリーを",
       "aliases": [
         "mnr6",
+        "编织最纯粹的故事",
         "这本色出演的故事"
       ]
     },
@@ -17282,7 +17283,11 @@
     {
       "music_id": 774,
       "title": "ラビットホール",
-      "aliases": []
+      "aliases": [
+        "兔子洞",
+        "操操。！洞",
+        "西八洞"
+      ]
     },
     {
       "music_id": 775,
