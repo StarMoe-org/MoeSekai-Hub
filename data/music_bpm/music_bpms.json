@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05 03:48:38",
+  "generated_at": "2026-10-06 04:37:13",
   "songs": [
     {
       "music_id": 1,
@@ -15369,6 +15369,24 @@
       ]
     },
     {
+      "music_id": 731,
+      "title": "アルティメットセンパイ",
+      "source": "jp",
+      "bpm": 145.0,
+      "bpms": [
+        145.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 145.0,
+          "start_bar": 0.0,
+          "end_bar": 79.0,
+          "duration_sec": 130.76
+        }
+      ]
+    },
+    {
       "music_id": 732,
       "title": "天藍のアイスヘヴン",
       "source": "jp",
@@ -16203,6 +16221,24 @@
       ]
     },
     {
+      "music_id": 763,
+      "title": "ハイドレンジア",
+      "source": "jp",
+      "bpm": 134.0,
+      "bpms": [
+        134.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 134.0,
+          "start_bar": 0.0,
+          "end_bar": 71.0,
+          "duration_sec": 127.16
+        }
+      ]
+    },
+    {
       "music_id": 764,
       "title": "オツキミリサイタル",
       "source": "jp",
@@ -16257,6 +16293,42 @@
       ]
     },
     {
+      "music_id": 767,
+      "title": "デーモンロード",
+      "source": "jp",
+      "bpm": 172.0,
+      "bpms": [
+        172.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 172.0,
+          "start_bar": 0.0,
+          "end_bar": 87.0,
+          "duration_sec": 121.4
+        }
+      ]
+    },
+    {
+      "music_id": 773,
+      "title": "ダーリン",
+      "source": "jp",
+      "bpm": 174.0,
+      "bpms": [
+        174.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 174.0,
+          "start_bar": 0.0,
+          "end_bar": 92.0,
+          "duration_sec": 126.9
+        }
+      ]
+    },
+    {
       "music_id": 774,
       "title": "ラビットホール",
       "source": "jp",
@@ -16296,6 +16368,24 @@
           "start_bar": 0.0,
           "end_bar": 65.0,
           "duration_sec": 119.08
+        }
+      ]
+    },
+    {
+      "music_id": 776,
+      "title": "推定ラブソング",
+      "source": "jp",
+      "bpm": 127.0,
+      "bpms": [
+        127.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 127.0,
+          "start_bar": 0.0,
+          "end_bar": 62.0,
+          "duration_sec": 117.17
         }
       ]
     },
@@ -17109,6 +17199,24 @@
           "start_bar": 0.0,
           "end_bar": 69.0,
           "duration_sec": 122.67
+        }
+      ]
+    },
+    {
+      "music_id": 813,
+      "title": "at",
+      "source": "jp",
+      "bpm": 164.0,
+      "bpms": [
+        164.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 164.0,
+          "start_bar": 0.0,
+          "end_bar": 103.0,
+          "duration_sec": 150.73
         }
       ]
     },

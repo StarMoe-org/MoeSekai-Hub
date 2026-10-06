@@ -1635,7 +1635,7 @@ Twilight Light,トワイライトライト,26.8,26+,619,Master,384,
 ,,,,,,,
 Obsolete Meat,オブソミート,26.4,26,1055,Expert,784,
 Rabbit Hole,ラビットホール,27.4,27,1000,Expert,774,
-,,,,,,,
+Suitei Love Song,推定ラブソング,26.4,26,941,Expert,,776
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
@@ -1648,30 +1648,38 @@ kinosei,きのせい,27.3,27,646,Master,805,
 Emerald,エメラルド　,31.3,APD 30,1191,Append,730,
 Emerald,エメラルド　,29.3,29,930,Master,730,
 Obsolete Meat,オブソミート,30.3,30,1177,Master,784,
-Abnormality Dancin' Girl,アブノーマリティ･ダンシンガール,32.4,32,1431,Master,766,oct 2
-Abnormality Dancin' Girl,アブノーマリティ･ダンシンガール,29.0,29,1179,Expert,766,
-Rabbit Hole,ラビットホール,31.3,31,1206,Master,774,oct 3
-LEMON MELON COOKIE,LEMON MELON COOKIE,,29,1109,Master,729,oct 4
-Doomer,ドゥーマー,,28,935,Master,775,oct 5
-Demon Lord,デーモンロード,,,,Master,,oct 6
-Suitei Love Song,推定ラブソング,,,,Master,,oct 7
-Ultimate Senpai,アルティメットセンパイ,,,,Master,,oct 8
-Darling,ダーリン,,,,Master,,oct 9
-Hydrangea ,ハイドレンジア,,,,Master,,oct 10
-at,at,,36,,Append,,oct 11
-at,at,,33,,Master,,
-at,at,,31,,Expert,,
+Abnormality Dancin' Girl,アブノーマリティ･ダンシンガール,32.4,32,1431,Master,766,
+Abnormality Dancin' Girl,アブノーマリティ･ダンシンガール,29.1,29,1179,Expert,766,
+Rabbit Hole,ラビットホール,31.3,31,1206,Master,774,
+LEMON MELON COOKIE,LEMON MELON COOKIE,29.2,29,1109,Master,729,
+Doomer,ドゥーマー,28.2,28,935,Master,775,
+Demon Lord,デーモンロード,,29,1079,Master,767,oct 6
+Suitei Love Song,推定ラブソング,,30,1012,Master,776,oct 7
+Ultimate Senpai,アルティメットセンパイ,,29,1136,Master,731,oct 8
+Darling,ダーリン,,30,1231,Master,773,oct 9
+Hydrangea ,ハイドレンジア,,28,1020,Master,763,oct 10
+at,at,,36,2095,Append,813,oct 11
+at,at,,33,1544,Master,813,
+at,at,,29,1256,Expert,813,
 Leonii comm,,,,,Master,,oct 12
 Palette,Palette,,,,Master,,oct 16
 Baka Tsuushin,バカ通信,,,,Master,,oct 19
 Discotheque Blue,ディスコティックブルー,,,,Master,,oct 26
-Psi,プシ,,34,,Append,,
-Psi,プシ,,,,Master,,
 ULTIM@TE☆BE∀M!!,ULTIM@TE☆BE∀M!!,,38,,Append,,
 ULTIM@TE☆BE∀M!!,ULTIM@TE☆BE∀M!!,,35,,Master,,
 ULTIM@TE☆BE∀M!!,ULTIM@TE☆BE∀M!!,,32,,Expert,,
-,,,,,,,
-,,,,,,,
+Psi,プシ,,34,,Append,,
+Psi,プシ,,,,Master,,
+Regulus (REMIX),レグルス（REMIX）,,APD 35,,Append,,
+Regulus (REMIX),レグルス（REMIX）,,,,Master,,
+KILLER (REMIX),キラー（REMIX）,,APD 35,,Append,,
+KILLER (REMIX),キラー（REMIX）,,,,Master,,
+RAD DOGS (REMIX),RAD DOGS（REMIX）,,APD 35,,Append,,
+RAD DOGS (REMIX),RAD DOGS（REMIX）,,,,Master,,
+Glory Steady Go! (REMIX),Glory Steady Go!（REMIX）,,APD 36,,Append,,
+Glory Steady Go! (REMIX),Glory Steady Go!（REMIX）,,,,Master,,
+Bake no Hana (REMIX),化けの花（REMIX）,,APD 36,,Append,,
+Bake no Hana (REMIX),化けの花（REMIX）,,,,Master,,
 ,,,,,,,
 ,,,,,,,REGIONAL EXCLUSIVES
 ,,,,,,,
@@ -1793,8 +1801,8 @@ Mag1c,,24.0,24,,Expert,11016,
 Great View,絶景,25.0,25,858,Expert,11018,
 The Encounter Code,,28.1,28,1108,Expert,799,
 ln(guis·tics),,28.4,28,951,Expert,801,
-When Enemies Collapse,,27.2,27,824,Expert,,798
-Remnath,,27.6,27+,1039,Expert,,800
+When Enemies Collapse,,27.2,27,824,Expert,798,
+Remnath,,27.6,27+,1039,Expert,800,
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
@@ -1990,10 +1998,10 @@ Otsukimi Recital,オツキミサイダル,25.0,25,972,Expert,764,
 Kuusou Forest,空想フォレスト,25.0,25,917,Expert,753,
 Heredity,ヘレディティ,25.0,25,760,Expert,811,
 Emerald,エメラルド　,25.0,25,709,Expert,730,
-LEMON MELON COOKIE,LEMON MELON COOKIE,25.0,25,996,Expert,,729
-,,,,,,,
-,,,,,,,
-,,,,,,,
+LEMON MELON COOKIE,LEMON MELON COOKIE,25.0,25,996,Expert,729,
+Demon Lord,デーモンロード,25.0,25,956,Expert,,767
+Ultimate Senpai,アルティメットセンパイ,25.0,25,858,Expert,,731
+Darling,ダーリン,25.0,25,983,Expert,,773
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
@@ -2291,7 +2299,8 @@ Tabi ni Kaeru,旅に帰る,23.0,23,670,Expert,742,
 Pikkoon!!,ピッコーン！！,23.0,23,572,Expert,790,
 Haisou,敗走,23.0,23,479,Expert,809,
 Giddy!,,23.0,23,723,Expert,807,
-Doomer,ドゥーマー,23.0,23,779,Expert,,775
+Doomer,ドゥーマー,23.0,23,779,Expert,775,
+Hydrangea ,ハイドレンジア,23.0,23,866,Expert,,763
 ,,,,,,,
 Don't Fight The Music,Don't Fight The Music,23.0,23,1175,Hard,,hard not supported
 the EmpErroR,the EmpErroR,23.0,23,894,Hard,,hard not supported

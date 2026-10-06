@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T03:48:22Z",
+  "generated_at": "2026-10-06T04:36:40Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17049,6 +17049,11 @@
       "aliases": []
     },
     {
+      "music_id": 731,
+      "title": "アルティメットセンパイ",
+      "aliases": []
+    },
+    {
       "music_id": 732,
       "title": "天藍のアイスヘヴン",
       "aliases": [
@@ -17259,6 +17264,11 @@
       ]
     },
     {
+      "music_id": 763,
+      "title": "ハイドレンジア",
+      "aliases": []
+    },
+    {
       "music_id": 764,
       "title": "オツキミリサイタル",
       "aliases": [
@@ -17281,6 +17291,16 @@
       "aliases": []
     },
     {
+      "music_id": 767,
+      "title": "デーモンロード",
+      "aliases": []
+    },
+    {
+      "music_id": 773,
+      "title": "ダーリン",
+      "aliases": []
+    },
+    {
       "music_id": 774,
       "title": "ラビットホール",
       "aliases": [
@@ -17292,6 +17312,11 @@
     {
       "music_id": 775,
       "title": "ドゥーマー",
+      "aliases": []
+    },
+    {
+      "music_id": 776,
+      "title": "推定ラブソング",
       "aliases": []
     },
     {
@@ -17390,6 +17415,11 @@
         "nene7",
         "遗传"
       ]
+    },
+    {
+      "music_id": 813,
+      "title": "at",
+      "aliases": []
     },
     {
       "music_id": 814,
