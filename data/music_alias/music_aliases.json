@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T04:14:55Z",
+  "generated_at": "2026-10-09T04:20:28Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -4294,6 +4294,7 @@
         "kimi ga suki datte",
         "你真的是31吗？？？",
         "告白地球",
+        "地告",
         "地球告白",
         "地球最后告白",
         "地球最后的告白",
@@ -9168,6 +9169,7 @@
         "nogumi",
         "with a one two",
         "一位先生",
+        "数着123",
         "數到三",
         "最棒的抒情曲！！！",
         "琪露诺的完美算术教室",
@@ -14821,6 +14823,7 @@
       "music_id": 510,
       "title": "失敗作少女",
       "aliases": [
+        "大剪刀女士",
         "失败",
         "失败作",
         "失败作少女",
@@ -16403,6 +16406,7 @@
         "再见天国再临地狱",
         "司6",
         "天国地狱",
+        "天天天国地狱国",
         "永别天国再临地狱",
         "永别天国再坠地狱"
       ]
@@ -16834,6 +16838,7 @@
       "title": "魔法少女とチョコレゐト",
       "aliases": [
         "魔法少女",
+        "魔法少女与巧克力",
         "魔法少女巧克力"
       ]
     },
@@ -17046,12 +17051,17 @@
     {
       "music_id": 730,
       "title": "エメラルド",
-      "aliases": []
+      "aliases": [
+        "六周年",
+        "绿宝石"
+      ]
     },
     {
       "music_id": 731,
       "title": "アルティメットセンパイ",
-      "aliases": []
+      "aliases": [
+        "终极前辈"
+      ]
     },
     {
       "music_id": 732,
@@ -17288,7 +17298,9 @@
     {
       "music_id": 766,
       "title": "アブノーマリティ･ダンシンガール",
-      "aliases": []
+      "aliases": [
+        "异常跳舞的女孩"
+      ]
     },
     {
       "music_id": 767,
@@ -17405,7 +17417,9 @@
     {
       "music_id": 809,
       "title": "敗走",
-      "aliases": []
+      "aliases": [
+        "败走"
+      ]
     },
     {
       "music_id": 811,
@@ -17413,6 +17427,7 @@
       "aliases": [
         "ne7",
         "nene7",
+        "宁7",
         "遗传"
       ]
     },
