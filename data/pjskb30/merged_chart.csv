@@ -1653,10 +1653,10 @@ Abnormality Dancin' Girl,アブノーマリティ･ダンシンガール,29.1,2
 Rabbit Hole,ラビットホール,31.3,31,1206,Master,774,
 LEMON MELON COOKIE,LEMON MELON COOKIE,29.2,29,1109,Master,729,
 Doomer,ドゥーマー,28.2,28,935,Master,775,
-Demon Lord,デーモンロード,,29,1079,Master,767,oct 6
-Suitei Love Song,推定ラブソング,,30,1012,Master,776,oct 7
-Ultimate Senpai,アルティメットセンパイ,,29,1136,Master,731,oct 8
-Darling,ダーリン,,30,1231,Master,773,oct 9
+Demon Lord,デーモンロード,29.2,29,1079,Master,767,oct 6
+Suitei Love Song,推定ラブソング,30.4,30,1012,Master,776,oct 7
+Ultimate Senpai,アルティメットセンパイ,29.3,29,1136,Master,731,oct 8
+Darling,ダーリン,30.1,30,1231,Master,773,oct 9
 Hydrangea ,ハイドレンジア,,28,1020,Master,763,oct 10
 at,at,,36,2095,Append,813,oct 11
 at,at,,33,1544,Master,813,
@@ -1719,13 +1719,13 @@ Secret Puppetry II,비밀 인형극 II,29.7,29+,1007,Master,10006,
 Carpe Diem!,,28.3,28,779,Master,10007,
 Nail: in Disguise ,둔갑,29.6,29+,957,Master,10008,
 Umbrella ,우산,27.6,27,988,Master,10009,
-Shimiyuku,시미유쿠,28.3,28,940,Master,10010,
+Shimiyuku,시미유쿠,28.2,28,940,Master,10010,
 ,,,,,,,
 yiyang,一样,30.4,30,789,Master,11008,
 Pick Me Up,,28.3,28,874,Master,11001,
 My Stage With You,,29.4,29,854,Master,11002,
 Step Foward,踏步、出发,26.7,26+,583,Master,11003,
-First Storm,初岚,31.5,31,1414,Master,11004,
+chulan,初岚,31.3,31,1414,Master,11004,
 We Leave The World Together,,29.2,29,670,Master,11005,
 Girl in the Mirror,镜中少女,27.7,27+,871,Master,11006,
 Dream Color Planet,梦色星球,30.2,30,1045,Master,11007,
@@ -1738,10 +1738,10 @@ Obesity = Fattening Frustration Song ,ヒマン=ヒダイ焦燥曲 (肥肥焦躁
 MAI MAI MAI,まいまいまい (买买买),29.4,29,813,Master,11015,
 Mag1c,,29.7,29+,1008,Master,11016,
 Si Shi Fenghua,絶景 (四时风华),30.4,30,929,Master,11018,
-The Encounter Code,,32.4,32,1538,Master,799,
-ln(guis·tics),,33.5,33,1393,Master,801,
+The Encounter Code,,32.3,32,1538,Master,799,
+ln(guis·tics),,33.4,33,1393,Master,801,
 Remnath,,33.2,33,1230,Master,800,
-When Enemies Collapse,,,32,999,Master,798,
+When Enemies Collapse,,32.5,32,999,Master,798,
 ,,,,,,,
 ,,,,,,,
 sweety glitch,,25.0,25,894,Expert,371,
@@ -1785,7 +1785,7 @@ Shimiyuku,시미유쿠,23.0,23,737,Expert,10010,
 Pick Me Up,,23.0,23,,Expert,11001,
 My Stage With You,,25.4,25,,Expert,11002,
 Step Foward,踏步、出发,21.1,21,,Expert,11003,
-First Storm,初岚,27.9,27+,,Expert,11004,
+chulan,初岚,27.9,27+,,Expert,11004,
 We Leave The World Together,,22.2,22,,Expert,11005,
 Girl in the Mirror,镜中少女,22.6,22+,,Expert,11006,
 Dream Color Planet,梦色星球,25.0,25,,Expert,11007,
@@ -1999,9 +1999,9 @@ Kuusou Forest,空想フォレスト,25.0,25,917,Expert,753,
 Heredity,ヘレディティ,25.0,25,760,Expert,811,
 Emerald,エメラルド　,25.0,25,709,Expert,730,
 LEMON MELON COOKIE,LEMON MELON COOKIE,25.0,25,996,Expert,729,
-Demon Lord,デーモンロード,25.0,25,956,Expert,,767
-Ultimate Senpai,アルティメットセンパイ,25.0,25,858,Expert,,731
-Darling,ダーリン,25.0,25,983,Expert,,773
+Demon Lord,デーモンロード,25.0,25,956,Expert,767,
+Ultimate Senpai,アルティメットセンパイ,25.0,25,858,Expert,731,
+Darling,ダーリン,25.0,25,983,Expert,773,
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
@@ -2300,7 +2300,7 @@ Pikkoon!!,ピッコーン！！,23.0,23,572,Expert,790,
 Haisou,敗走,23.0,23,479,Expert,809,
 Giddy!,,23.0,23,723,Expert,807,
 Doomer,ドゥーマー,23.0,23,779,Expert,775,
-Hydrangea ,ハイドレンジア,23.0,23,866,Expert,,763
+Hydrangea ,ハイドレンジア,23.0,23,866,Expert,763,
 ,,,,,,,
 Don't Fight The Music,Don't Fight The Music,23.0,23,1175,Hard,,hard not supported
 the EmpErroR,the EmpErroR,23.0,23,894,Hard,,hard not supported
