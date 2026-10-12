@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-11 03:41:52",
+  "generated_at": "2026-10-12 04:05:29",
   "songs": [
     {
       "music_id": 1,
@@ -16954,6 +16954,12 @@
       ]
     },
     {
+      "music_id": 793,
+      "title": "バカ通信",
+      "source": "jp",
+      "prefix": "sekai-jp"
+    },
+    {
       "music_id": 794,
       "title": "デロスサントス",
       "source": "jp",
@@ -17251,6 +17257,12 @@
       ]
     },
     {
+      "music_id": 812,
+      "title": "星、ときどき光",
+      "source": "jp",
+      "prefix": "sekai-jp"
+    },
+    {
       "music_id": 813,
       "title": "at",
       "source": "jp",
@@ -17362,6 +17374,12 @@
           "duration_sec": 51.63
         }
       ]
+    },
+    {
+      "music_id": 824,
+      "title": "Palette",
+      "source": "jp",
+      "prefix": "sekai-jp"
     },
     {
       "music_id": 10001,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-11T03:41:21Z",
+  "generated_at": "2026-10-12T04:04:55Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17369,6 +17369,11 @@
       "aliases": []
     },
     {
+      "music_id": 793,
+      "title": "バカ通信",
+      "aliases": []
+    },
+    {
       "music_id": 794,
       "title": "デロスサントス",
       "aliases": [
@@ -17432,6 +17437,11 @@
       ]
     },
     {
+      "music_id": 812,
+      "title": "星、ときどき光",
+      "aliases": []
+    },
+    {
       "music_id": 813,
       "title": "at",
       "aliases": []
@@ -17439,6 +17449,11 @@
     {
       "music_id": 814,
       "title": "こわれちゃった！！",
+      "aliases": []
+    },
+    {
+      "music_id": 824,
+      "title": "Palette",
       "aliases": []
     }
   ]
