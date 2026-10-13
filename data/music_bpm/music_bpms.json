@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12 04:05:29",
+  "generated_at": "2026-10-13 05:14:42",
   "songs": [
     {
       "music_id": 1,
@@ -16957,7 +16957,19 @@
       "music_id": 793,
       "title": "バカ通信",
       "source": "jp",
-      "prefix": "sekai-jp"
+      "bpm": 240.0,
+      "bpms": [
+        240.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 240.0,
+          "start_bar": 0.0,
+          "end_bar": 114.0,
+          "duration_sec": 114.0
+        }
+      ]
     },
     {
       "music_id": 794,
@@ -17260,7 +17272,19 @@
       "music_id": 812,
       "title": "星、ときどき光",
       "source": "jp",
-      "prefix": "sekai-jp"
+      "bpm": 160.0,
+      "bpms": [
+        160.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 160.0,
+          "start_bar": 0.0,
+          "end_bar": 76.0,
+          "duration_sec": 114.0
+        }
+      ]
     },
     {
       "music_id": 813,
@@ -17379,7 +17403,19 @@
       "music_id": 824,
       "title": "Palette",
       "source": "jp",
-      "prefix": "sekai-jp"
+      "bpm": 180.0,
+      "bpms": [
+        180.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 180.0,
+          "start_bar": 0.0,
+          "end_bar": 83.0,
+          "duration_sec": 110.67
+        }
+      ]
     },
     {
       "music_id": 10001,
