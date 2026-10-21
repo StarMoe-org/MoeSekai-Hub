@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T03:11:46Z",
+  "generated_at": "2026-10-21T03:06:14Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -9170,6 +9170,7 @@
         "with a one two",
         "一位先生",
         "数着123",
+        "数着一二三",
         "數到三",
         "最棒的抒情曲！！！",
         "琪露诺的完美算术教室",
@@ -16301,7 +16302,8 @@
       "music_id": 637,
       "title": "笑えたらえーやん！",
       "aliases": [
-        "60sec"
+        "60sec",
+        "笑口常开好运来"
       ]
     },
     {
@@ -16557,7 +16559,9 @@
     {
       "music_id": 666,
       "title": "少女A",
-      "aliases": []
+      "aliases": [
+        "武器a"
+      ]
     },
     {
       "music_id": 667,
@@ -17040,6 +17044,7 @@
       "aliases": [
         "hrk7",
         "stardust rain",
+        "三字经",
         "星尘雨"
       ]
     },
@@ -17052,14 +17057,18 @@
       "music_id": 730,
       "title": "エメラルド",
       "aliases": [
+        "emerald",
         "六周年",
-        "绿宝石"
+        "祖母绿",
+        "绿宝石",
+        "翡翠"
       ]
     },
     {
       "music_id": 731,
       "title": "アルティメットセンパイ",
       "aliases": [
+        "究极前辈",
         "终极前辈"
       ]
     },
@@ -17299,6 +17308,7 @@
       "music_id": 766,
       "title": "アブノーマリティ･ダンシンガール",
       "aliases": [
+        "异常跳舞女孩",
         "异常跳舞的女孩"
       ]
     },
@@ -17310,7 +17320,11 @@
     {
       "music_id": 773,
       "title": "ダーリン",
-      "aliases": []
+      "aliases": [
+        "darling",
+        "maretu5",
+        "马热土五箱"
+      ]
     },
     {
       "music_id": 774,
@@ -17340,6 +17354,7 @@
       "music_id": 788,
       "title": "アンチサイノウ",
       "aliases": [
+        "反天赋论",
         "反才能"
       ]
     },
@@ -17371,7 +17386,9 @@
     {
       "music_id": 793,
       "title": "バカ通信",
-      "aliases": []
+      "aliases": [
+        "笨蛋通信"
+      ]
     },
     {
       "music_id": 794,
@@ -17439,7 +17456,9 @@
     {
       "music_id": 812,
       "title": "星、ときどき光",
-      "aliases": []
+      "aliases": [
+        "hnm7"
+      ]
     },
     {
       "music_id": 813,
@@ -17449,7 +17468,9 @@
     {
       "music_id": 814,
       "title": "こわれちゃった！！",
-      "aliases": []
+      "aliases": [
+        "坏掉了"
+      ]
     },
     {
       "music_id": 824,
