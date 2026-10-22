@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T03:06:14Z",
+  "generated_at": "2026-10-22T03:04:56Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -2817,6 +2817,7 @@
         "洗碗",
         "茶具",
         "青春灰",
+        "餐具",
         "커틀러리"
       ]
     },
@@ -16497,6 +16498,7 @@
         "szk6",
         "假若你的天空淆然雨落",
         "如果你的天空在哭泣",
+        "当你的天空突然下起了大雨",
         "雫6"
       ]
     },
