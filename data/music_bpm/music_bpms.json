@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23 03:09:45",
+  "generated_at": "2026-10-24 03:05:22",
   "songs": [
     {
       "music_id": 1,
@@ -16404,6 +16404,24 @@
           "start_bar": 0.0,
           "end_bar": 80.0,
           "duration_sec": 121.52
+        }
+      ]
+    },
+    {
+      "music_id": 785,
+      "title": "Machine Love",
+      "source": "en",
+      "bpm": 175.0,
+      "bpms": [
+        175.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 175.0,
+          "start_bar": 0.0,
+          "end_bar": 86.0,
+          "duration_sec": 117.94
         }
       ]
     },
