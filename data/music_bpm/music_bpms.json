@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-25 02:59:43",
+  "generated_at": "2026-10-26 02:58:27",
   "songs": [
     {
       "music_id": 1,
@@ -17432,6 +17432,24 @@
           "start_bar": 0.0,
           "end_bar": 83.0,
           "duration_sec": 110.67
+        }
+      ]
+    },
+    {
+      "music_id": 825,
+      "title": "ディスコティックブルー",
+      "source": "jp",
+      "bpm": 130.0,
+      "bpms": [
+        130.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 130.0,
+          "start_bar": 0.0,
+          "end_bar": 65.0,
+          "duration_sec": 120.0
         }
       ]
     },

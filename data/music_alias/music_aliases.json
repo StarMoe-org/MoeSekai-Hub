@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-25T02:59:16Z",
+  "generated_at": "2026-10-26T02:57:52Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17477,6 +17477,11 @@
     {
       "music_id": 824,
       "title": "Palette",
+      "aliases": []
+    },
+    {
+      "music_id": 825,
+      "title": "ディスコティックブルー",
       "aliases": []
     }
   ]
