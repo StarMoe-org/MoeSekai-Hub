@@ -1,0 +1,21 @@
+# Same as what Zeabur's static builder generated: serve the repo as files on :8080.
+:8080 {
+	root * /usr/share/caddy
+
+	@unsafePath {
+		path /.git/* /node_modules/* /vendor/* /.venv/*
+	}
+	respond @unsafePath 404
+
+	header Access-Control-Allow-Origin "*"
+	header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+	header Access-Control-Allow-Headers "Content-Type, Authorization"
+	header Access-Control-Max-Age "3600"
+
+	file_server
+	try_files {path} {path}.html {path}/index.html 404.html index.html
+
+	log {
+		output stderr
+	}
+}
