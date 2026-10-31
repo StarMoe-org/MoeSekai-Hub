@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30 04:08:43",
+  "generated_at": "2026-10-31 03:52:55",
   "songs": [
     {
       "music_id": 1,
@@ -16390,6 +16390,87 @@
       ]
     },
     {
+      "music_id": 783,
+      "title": "ULTIM@TE☆BE∀M!!",
+      "source": "jp",
+      "bpm": 240.0,
+      "bpms": [
+        240.0,
+        237.0,
+        229.0,
+        215.0,
+        196.0,
+        171.0,
+        140.0,
+        100.0,
+        120.0,
+        240.0
+      ],
+      "bpm_count": 10,
+      "bpm_segments": [
+        {
+          "bpm": 240.0,
+          "start_bar": 0.0,
+          "end_bar": 68.25,
+          "duration_sec": 68.25
+        },
+        {
+          "bpm": 237.0,
+          "start_bar": 68.25,
+          "end_bar": 68.5,
+          "duration_sec": 0.25
+        },
+        {
+          "bpm": 229.0,
+          "start_bar": 68.5,
+          "end_bar": 68.75,
+          "duration_sec": 0.26
+        },
+        {
+          "bpm": 215.0,
+          "start_bar": 68.75,
+          "end_bar": 69.0,
+          "duration_sec": 0.28
+        },
+        {
+          "bpm": 196.0,
+          "start_bar": 69.0,
+          "end_bar": 69.25,
+          "duration_sec": 0.31
+        },
+        {
+          "bpm": 171.0,
+          "start_bar": 69.25,
+          "end_bar": 69.5,
+          "duration_sec": 0.35
+        },
+        {
+          "bpm": 140.0,
+          "start_bar": 69.5,
+          "end_bar": 69.75,
+          "duration_sec": 0.43
+        },
+        {
+          "bpm": 100.0,
+          "start_bar": 69.75,
+          "end_bar": 70.75,
+          "duration_sec": 2.4
+        },
+        {
+          "bpm": 120.0,
+          "start_bar": 70.75,
+          "end_bar": 80.25,
+          "duration_sec": 19.0
+        },
+        {
+          "bpm": 240.0,
+          "start_bar": 80.25,
+          "end_bar": 111.0,
+          "duration_sec": 30.75
+        }
+      ]
+    },
+    {
       "music_id": 784,
       "title": "オブソミート",
       "source": "jp",
@@ -17449,6 +17530,24 @@
           "bpm": 130.0,
           "start_bar": 0.0,
           "end_bar": 65.0,
+          "duration_sec": 120.0
+        }
+      ]
+    },
+    {
+      "music_id": 828,
+      "title": "プレデター",
+      "source": "jp",
+      "bpm": 104.0,
+      "bpms": [
+        104.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 104.0,
+          "start_bar": 0.0,
+          "end_bar": 52.0,
           "duration_sec": 120.0
         }
       ]

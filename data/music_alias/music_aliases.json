@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T04:08:34Z",
+  "generated_at": "2026-10-31T03:52:43Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17348,6 +17348,11 @@
       "aliases": []
     },
     {
+      "music_id": 783,
+      "title": "ULTIM@TE☆BE∀M!!",
+      "aliases": []
+    },
+    {
       "music_id": 784,
       "title": "オブソミート",
       "aliases": []
@@ -17482,6 +17487,11 @@
     {
       "music_id": 825,
       "title": "ディスコティックブルー",
+      "aliases": []
+    },
+    {
+      "music_id": 828,
+      "title": "プレデター",
       "aliases": []
     }
   ]
