@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T03:52:43Z",
+  "generated_at": "2026-11-01T04:01:47Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -16116,6 +16116,7 @@
       "music_id": 621,
       "title": "東京サマーセッション",
       "aliases": [
+        "东京4",
         "东京夏日相会"
       ]
     },
