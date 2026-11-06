@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05 04:54:26",
+  "generated_at": "2026-11-06 04:54:52",
   "songs": [
     {
       "music_id": 1,
@@ -16203,6 +16203,24 @@
       ]
     },
     {
+      "music_id": 761,
+      "title": "星を探して♭♭",
+      "source": "jp",
+      "bpm": 80.0,
+      "bpms": [
+        80.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 80.0,
+          "start_bar": 0.0,
+          "end_bar": 41.0,
+          "duration_sec": 123.0
+        }
+      ]
+    },
+    {
       "music_id": 762,
       "title": "Cheerleader (feat. Hatsune Miku)",
       "source": "en",
@@ -16386,6 +16404,24 @@
           "start_bar": 0.0,
           "end_bar": 62.0,
           "duration_sec": 117.17
+        }
+      ]
+    },
+    {
+      "music_id": 782,
+      "title": "プシ",
+      "source": "jp",
+      "bpm": 174.0,
+      "bpms": [
+        174.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 174.0,
+          "start_bar": 0.0,
+          "end_bar": 93.0,
+          "duration_sec": 128.28
         }
       ]
     },

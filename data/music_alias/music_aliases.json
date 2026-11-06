@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T04:54:18Z",
+  "generated_at": "2026-11-06T04:54:38Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17286,6 +17286,11 @@
       ]
     },
     {
+      "music_id": 761,
+      "title": "星を探して♭♭",
+      "aliases": []
+    },
+    {
       "music_id": 763,
       "title": "ハイドレンジア",
       "aliases": []
@@ -17346,6 +17351,11 @@
     {
       "music_id": 776,
       "title": "推定ラブソング",
+      "aliases": []
+    },
+    {
+      "music_id": 782,
+      "title": "プシ",
       "aliases": []
     },
     {

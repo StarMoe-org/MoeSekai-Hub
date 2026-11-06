@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T04:52:34Z",
+  "generated_at": "2026-11-06T04:52:20Z",
   "source": {
     "wiki_page": "https://mzh.moegirl.org.cn/%E4%B8%96%E7%95%8C%E8%AE%A1%E5%88%92_%E5%BD%A9%E8%89%B2%E8%88%9E%E5%8F%B0_feat._%E5%88%9D%E9%9F%B3%E6%9C%AA%E6%9D%A5/%E5%8E%86%E5%8F%B2%E6%B4%BB%E5%8A%A8",
     "events_api": "https://database.pjsekai.moe/events.json"
@@ -1562,6 +1562,13 @@
     {
       "event_id": 223,
       "event_name": "いつかの君へ、旋律を",
+      "bilibili_url": null,
+      "bvid": null,
+      "match_status": "unmatched"
+    },
+    {
+      "event_id": 224,
+      "event_name": "第3回チアフルカーニバルイベントテストイベント",
       "bilibili_url": null,
       "bvid": null,
       "match_status": "unmatched"
