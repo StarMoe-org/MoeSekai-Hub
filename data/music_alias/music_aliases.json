@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T04:54:38Z",
+  "generated_at": "2026-11-07T04:24:58Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17356,12 +17356,16 @@
     {
       "music_id": 782,
       "title": "プシ",
-      "aliases": []
+      "aliases": [
+        "Psi"
+      ]
     },
     {
       "music_id": 783,
       "title": "ULTIM@TE☆BE∀M!!",
-      "aliases": []
+      "aliases": [
+        "究极光束"
+      ]
     },
     {
       "music_id": 784,
