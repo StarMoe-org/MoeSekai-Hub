@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-08T04:07:16Z",
+  "generated_at": "2026-11-09T04:23:23Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17357,7 +17357,10 @@
       "music_id": 782,
       "title": "プシ",
       "aliases": [
-        "Psi"
+        "Psi",
+        "pushi",
+        "ψ",
+        "普西"
       ]
     },
     {
