@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-09T04:23:23Z",
+  "generated_at": "2026-11-10T05:47:12Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17288,12 +17288,21 @@
     {
       "music_id": 761,
       "title": "星を探して♭♭",
-      "aliases": []
+      "aliases": [
+        "knd7",
+        "奏7",
+        "星探",
+        "走7"
+      ]
     },
     {
       "music_id": 763,
       "title": "ハイドレンジア",
-      "aliases": []
+      "aliases": [
+        "Hydrangea",
+        "绣球",
+        "绣球花"
+      ]
     },
     {
       "music_id": 764,
