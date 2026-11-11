@@ -1639,7 +1639,8 @@ Suitei Love Song,推定ラブソング,26.4,26,941,Expert,776,
 Palette,Palette,26.4,26,978,Expert,824,
 Baka Tsuushin,バカ通信,27.5,27,1176,Expert,793,
 Psi,プシ,27.5,27,1064,Expert,782,
-Hoshi o Sagashite♭♭ ,星を探して♭♭ ,22.3,22,583,Expert,,761
+Hoshi o Sagashite♭♭ ,星を探して♭♭ ,22.3,22,583,Expert,761,
+Slowlight,スロウライト,26.2,26,887,Expert,,826
 ,,,,,,,
 ,,,,,,,
 ,,,,,,,
@@ -1679,10 +1680,10 @@ ULTIM@TE☆BE∀M!!,ULTIM@TE☆BE∀M!!,32.0,32,1579,Expert,783,
 Predator,プレデター,30.3,30,1029,Master,828,
 Psi,プシ,34.6,APD 34,1714,Append,782,
 Psi,プシ,31.4,31,1442,Master,782,
-Hoshi o Sagashite♭♭ ,星を探して♭♭ ,27.1,27,748,Master,761,8th
-Hated by Life,命に嫌われている,,,,Append,22,11th
-Slowlight,スロウライト,,,,Master,,16th
-Shizu7,,,,,Master,,18th
+Hoshi o Sagashite♭♭ ,星を探して♭♭ ,27.1,27,748,Master,761,
+Hated by Life,命に嫌われている,,31,1516,Append,22,
+No More Fiction,ノーモアフィクション,,30,1104,Master,810,
+Slowlight,スロウライト,,29,1075,Master,826,
 Regulus (REMIX),レグルス（REMIX）,,APD 35,,Append,,20th
 Regulus (REMIX),レグルス（REMIX）,,,,Master,,
 Jigsaw Puzzle,ジグソーパズル,,,,Master,,23th
@@ -2220,6 +2221,7 @@ De Los Santos,デロスサントス,24.0,24,963,Expert,794,
 Stardust Rain,スターダストレイン,24.0,24,671,Expert,728,
 Kimi ni Okuru Mirai,君に贈る未来,24.0,24,974,Expert,802,
 Discotheque Blue,ディスコティックブルー,24.0,24,765,Expert,825,
+No More Fiction,ノーモアフィクション,24.0,24,857,Expert,,810
 ,,,,,,,
 Nekuratune Circus,ネクラチューンサーカス,24.0,24,1032,Hard,,hard not supported
 Joou,嬢王,24.0,24,994,Hard,,hard not supported

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10T05:47:12Z",
+  "generated_at": "2026-11-11T04:27:43Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17478,6 +17478,11 @@
       ]
     },
     {
+      "music_id": 810,
+      "title": "ノーモアフィクション",
+      "aliases": []
+    },
+    {
       "music_id": 811,
       "title": "ヘレディティ",
       "aliases": [
@@ -17514,6 +17519,11 @@
     {
       "music_id": 825,
       "title": "ディスコティックブルー",
+      "aliases": []
+    },
+    {
+      "music_id": 826,
+      "title": "スロウライト",
       "aliases": []
     },
     {

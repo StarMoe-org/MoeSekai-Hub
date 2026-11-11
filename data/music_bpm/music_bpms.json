@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10 05:47:21",
+  "generated_at": "2026-11-11 04:27:54",
   "songs": [
     {
       "music_id": 1,
@@ -17386,6 +17386,24 @@
       ]
     },
     {
+      "music_id": 810,
+      "title": "ノーモアフィクション",
+      "source": "jp",
+      "bpm": 168.0,
+      "bpms": [
+        168.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 168.0,
+          "start_bar": 0.0,
+          "end_bar": 85.0,
+          "duration_sec": 121.43
+        }
+      ]
+    },
+    {
       "music_id": 811,
       "title": "ヘレディティ",
       "source": "jp",
@@ -17567,6 +17585,24 @@
           "start_bar": 0.0,
           "end_bar": 65.0,
           "duration_sec": 120.0
+        }
+      ]
+    },
+    {
+      "music_id": 826,
+      "title": "スロウライト",
+      "source": "jp",
+      "bpm": 142.0,
+      "bpms": [
+        142.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 142.0,
+          "start_bar": 0.0,
+          "end_bar": 69.0,
+          "duration_sec": 116.62
         }
       ]
     },
