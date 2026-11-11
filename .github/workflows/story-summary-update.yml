@@ -33,6 +33,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   update:
@@ -119,6 +120,7 @@ jobs:
           uv run python -m src.cli update-story-summary $args
 
       - name: Commit and push if changed
+        id: commit
         if: always()  # 生成步骤超时/失败时也提交已完成的部分
         run: |
           git config user.name "github-actions[bot]"
@@ -129,9 +131,18 @@ jobs:
           fi
 
           if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No changes to commit."
             exit 0
           fi
 
           git commit -m "chore(data): daily story summary update [skip ci]"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # GITHUB_TOKEN 推送和 [skip ci] 都不会触发 push 工作流；显式派发 Deploy。
+      - name: Trigger deploy
+        if: always() && steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main --repo "$GITHUB_REPOSITORY"
