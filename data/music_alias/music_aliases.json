@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T05:44:58Z",
+  "generated_at": "2026-11-19T05:43:45Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17363,6 +17363,11 @@
       "aliases": []
     },
     {
+      "music_id": 777,
+      "title": "レグルス（REMIX）",
+      "aliases": []
+    },
+    {
       "music_id": 782,
       "title": "プシ",
       "aliases": [
@@ -17440,6 +17445,11 @@
         "一亿年恋",
         "亿年爱恋"
       ]
+    },
+    {
+      "music_id": 796,
+      "title": "ジグソーパズル",
+      "aliases": []
     },
     {
       "music_id": 802,

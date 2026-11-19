@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18 05:45:06",
+  "generated_at": "2026-11-19 05:43:53",
   "songs": [
     {
       "music_id": 1,
@@ -16408,6 +16408,24 @@
       ]
     },
     {
+      "music_id": 777,
+      "title": "レグルス（REMIX）",
+      "source": "jp",
+      "bpm": 150.0,
+      "bpms": [
+        150.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 150.0,
+          "start_bar": 0.0,
+          "end_bar": 92.0,
+          "duration_sec": 147.2
+        }
+      ]
+    },
+    {
       "music_id": 782,
       "title": "プシ",
       "source": "jp",
@@ -17202,6 +17220,24 @@
           "start_bar": 0.0,
           "end_bar": 99.0,
           "duration_sec": 118.8
+        }
+      ]
+    },
+    {
+      "music_id": 796,
+      "title": "ジグソーパズル",
+      "source": "jp",
+      "bpm": 172.0,
+      "bpms": [
+        172.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 172.0,
+          "start_bar": 0.0,
+          "end_bar": 85.0,
+          "duration_sec": 118.6
         }
       ]
     },
