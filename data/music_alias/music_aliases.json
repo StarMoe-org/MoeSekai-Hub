@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T05:31:32Z",
+  "generated_at": "2026-11-21T05:25:33Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -9057,6 +9057,7 @@
         "我我",
         "我我们",
         "我是",
+        "我是我们是",
         "我是，我们是",
         "我，我们",
         "拇指姑娘",
@@ -13925,6 +13926,7 @@
         "the song we keep getting",
         "二人转",
         "大漠波新",
+        "爱之歌",
         "红钻头",
         "钻头"
       ]
@@ -17054,7 +17056,9 @@
     {
       "music_id": 729,
       "title": "LEMON MELON COOKIE",
-      "aliases": []
+      "aliases": [
+        "柠檬蜜瓜曲奇"
+      ]
     },
     {
       "music_id": 730,
@@ -17103,7 +17107,9 @@
       "title": "傀儡のうつつ",
       "aliases": [
         "rui6",
-        "类6"
+        "傀儡",
+        "类6",
+        "类六"
       ]
     },
     {
@@ -17291,6 +17297,7 @@
       "aliases": [
         "knd7",
         "奏7",
+        "寻找星星b",
         "星探",
         "走7"
       ]
@@ -17365,7 +17372,9 @@
     {
       "music_id": 777,
       "title": "レグルス（REMIX）",
-      "aliases": []
+      "aliases": [
+        "hnm4remix"
+      ]
     },
     {
       "music_id": 782,
@@ -17449,7 +17458,9 @@
     {
       "music_id": 796,
       "title": "ジグソーパズル",
-      "aliases": []
+      "aliases": [
+        "拼图"
+      ]
     },
     {
       "music_id": 802,
@@ -17490,7 +17501,10 @@
     {
       "music_id": 810,
       "title": "ノーモアフィクション",
-      "aliases": []
+      "aliases": [
+        "no more fiction",
+        "szk7"
+      ]
     },
     {
       "music_id": 811,
