@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26 06:38:17",
+  "generated_at": "2026-11-27 06:28:20",
   "songs": [
     {
       "music_id": 1,
@@ -17657,6 +17657,24 @@
           "start_bar": 0.0,
           "end_bar": 52.0,
           "duration_sec": 120.0
+        }
+      ]
+    },
+    {
+      "music_id": 830,
+      "title": "再会",
+      "source": "jp",
+      "bpm": 137.0,
+      "bpms": [
+        137.0
+      ],
+      "bpm_count": 1,
+      "bpm_segments": [
+        {
+          "bpm": 137.0,
+          "start_bar": 0.0,
+          "end_bar": 69.0,
+          "duration_sec": 120.88
         }
       ]
     },

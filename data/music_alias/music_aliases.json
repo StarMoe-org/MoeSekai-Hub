@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T06:38:07Z",
+  "generated_at": "2026-11-27T06:28:09Z",
   "source": {
     "musics": "https://raw.githubusercontent.com/Team-Haruki/haruki-sekai-master/refs/heads/main/master/musics.json",
     "alias_api": "https://neo-api.haruki.seiunx.com/api/bot/v2/pjsk/alias/music/{music_id}"
@@ -17553,6 +17553,11 @@
     {
       "music_id": 828,
       "title": "プレデター",
+      "aliases": []
+    },
+    {
+      "music_id": 830,
+      "title": "再会",
       "aliases": []
     }
   ]
